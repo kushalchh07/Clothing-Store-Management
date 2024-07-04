@@ -2,14 +2,14 @@ import 'dart:developer';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-
+import '../../pages/SplashScreen/splashScreen.dart';
 
 Future<void> saveName(String name) async {
   var prefs = await SharedPreferences.getInstance();
   prefs.setString('name', name);
 
   print("Name saved to device.");
-  log("Name Saved to device" );
+  log("Name Saved to device");
 }
 
 Future<void> clearData() async {

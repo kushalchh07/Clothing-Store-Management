@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:nepstyle_management_system/constants/color/color_converter.dart';
 
@@ -6,14 +5,14 @@ ColorConverter convert = ColorConverter();
 
 // Color mainColor = convert.hexColor(color: '#003400');
 // Color mainColor = Colors.teal;
-Color secondaryColor = const Color.fromARGB(255, 5, 176, 74);
+// Color secondaryColor = const Color.fromARGB(255, 5, 176, 74);
 Color secondaryColorwithOpasity = const Color(0xffFB7393);
 Color inputFieldColor = convert.hexColor(color: '#FFFFFF');
 Color kgreyColor = const Color(0xFFD9D9D9);
 Color kborderColorReview = convert.hexColor(color: '#EAEAEA');
 Color questionContainerColor = whiteColor;
 
-Color appBackgroundColor = const Color.fromARGB(255, 197, 196, 184);
+Color appBackgroundColor = Color.fromARGB(255, 255, 255, 255);
 Color greyColor = Colors.grey;
 Color lightGrey = Colors.grey[200]!;
 
@@ -23,7 +22,7 @@ Color blackColor = Colors.black;
 Color errorColor = Colors.red;
 Color successColor = Colors.green;
 Color blueColor = const Color.fromARGB(255, 12, 133, 181);
-Color primaryColor = convert.hexColor(color: '#00A6A6');
+// Color primaryColor = convert.hexColor(color: '#00A6A6');
 Color greenColor = const Color.fromARGB(255, 26, 116, 107);
 Color browncolor = const Color.fromARGB(255, 194, 94, 58);
 Color yellowColor = const Color.fromARGB(255, 198, 163, 47);
@@ -50,3 +49,6 @@ Color myMainText = const Color.fromARGB(255, 0, 52, 0);
 Color myInputBorderColor = const Color.fromARGB(255, 197, 197, 197);
 
 Color myMoneyColor = const Color.fromARGB(255, 24, 162, 92);
+
+const Color primaryColor = Color.fromARGB(255, 117, 63, 0);
+const Color secondaryColor = Color.fromARGB(255, 255, 145, 1);
