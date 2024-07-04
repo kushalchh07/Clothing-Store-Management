@@ -50,5 +50,5 @@ Color myInputBorderColor = const Color.fromARGB(255, 197, 197, 197);
 
 Color myMoneyColor = const Color.fromARGB(255, 24, 162, 92);
 
-const Color primaryColor = Color.fromARGB(255, 117, 63, 0);
+const Color primaryColor = Color.fromARGB(255, 97, 97, 97);
 const Color secondaryColor = Color.fromARGB(255, 255, 145, 1);
