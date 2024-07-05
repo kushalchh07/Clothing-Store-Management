@@ -5,6 +5,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:get/get_utils/get_utils.dart';
 import 'package:nepstyle_management_system/constants/color/color.dart';
+import 'package:nepstyle_management_system/utils/customwidgets/dividerText.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -17,6 +18,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     return NestedScrollView(
+      physics: BouncingScrollPhysics(),
       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
         return <Widget>[
           SliverAppBar(
@@ -31,27 +33,38 @@ class _DashboardScreenState extends State<DashboardScreen> {
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
               // centerTitle: true,
-              title: Padding(
-                padding: const EdgeInsets.only(right: 20, bottom: 10),
-                child: Text("Dashboard ",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16.0,
-                    )),
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: Text("Dashboard ",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16.0,
+                        )),
+                  ),
+                  Expanded(child: SizedBox()),
+                ],
               ),
             ),
           ),
         ];
       },
-      body: ListView.builder(
-        padding: EdgeInsets.all(8.0),
-        itemCount: 50,
-        itemBuilder: (BuildContext context, int index) {
-          return ListTile(
-            leading: Icon(Icons.photo),
-            title: Text('Item $index'),
-          );
-        },
+      body: SingleChildScrollView(
+        child: Container(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              dividerText(
+                  context: context, dividerText: "Stock Report", desc: ""),
+              Image.asset("assets/images/stock.png"),
+              dividerText(
+                  context: context, dividerText: "Sales Report", desc: ""),
+              Image.asset("assets/images/sales.png"),
+            ],
+          ),
+        ),
       ),
     );
   }

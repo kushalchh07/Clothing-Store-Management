@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 
 import '../../constants/color/color.dart';
 
-class CustomerScreen extends StatefulWidget {
-  const CustomerScreen({super.key});
+class Settings extends StatefulWidget {
+  const Settings({super.key});
 
   @override
-  State<CustomerScreen> createState() => _CustomerScreenState();
+  State<Settings> createState() => _SettingsState();
 }
 
-class _CustomerScreenState extends State<CustomerScreen> {
+class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
     return NestedScrollView(
@@ -29,11 +29,14 @@ class _CustomerScreenState extends State<CustomerScreen> {
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
               // centerTitle: true,
-              title: Text("Customers",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16.0,
-                  )),
+              title: Padding(
+                padding: const EdgeInsets.only(right: 20, bottom: 10),
+                child: Text("Settings",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16.0,
+                    )),
+              ),
             ),
           ),
         ];
