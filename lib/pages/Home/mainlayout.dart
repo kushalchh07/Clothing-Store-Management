@@ -6,6 +6,7 @@ import 'package:nepstyle_management_system/pages/Home/dashboard.dart';
 import 'package:nepstyle_management_system/pages/Home/help.dart';
 import 'package:nepstyle_management_system/pages/Home/inventory.dart';
 import 'package:nepstyle_management_system/pages/Home/orders.dart';
+import 'package:nepstyle_management_system/pages/Home/purchases.dart';
 import 'package:nepstyle_management_system/pages/Home/report.dart';
 import 'package:nepstyle_management_system/pages/Home/sales.dart';
 import 'package:nepstyle_management_system/pages/Home/settings.dart';
@@ -26,6 +27,7 @@ class _MainLayoutState extends State<MainLayout> {
     OrderScreen(),
     InventoryScreen(),
     Supplier(),
+    Purchases(),
     Sales(),
     Report(),
     Help(),
@@ -119,6 +121,10 @@ class _MainLayoutState extends State<MainLayout> {
                               label: Text('Supplier'),
                             ),
                             NavigationRailDestination(
+                              icon: Icon(Icons.shopping_bag),
+                              label: Text('Purchases'),
+                            ),
+                            NavigationRailDestination(
                               icon: Icon(Icons.receipt),
                               label: Text('Sales'),
                             ),
@@ -137,7 +143,6 @@ class _MainLayoutState extends State<MainLayout> {
                           ],
                         ),
                       ),
-                      
                     ],
                   ),
                   VerticalDivider(thickness: 1, width: 1),

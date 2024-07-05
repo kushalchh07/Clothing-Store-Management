@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:nepstyle_management_system/Logic/Bloc/LoginBloc/login_bloc.dart';
+import 'package:nepstyle_management_system/Logic/Bloc/customersBloc/customer_bloc.dart';
 
 import 'package:nepstyle_management_system/pages/SplashScreen/splashScreen.dart';
 
@@ -20,9 +21,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => LoginBloc(),
         ),
-        // BlocProvider(
-        //   create: (context) => SubjectBloc(),
-        // ),
+        BlocProvider(
+          create: (context) => CustomerBloc(),
+        ),
       ],
       child: GetMaterialApp(
         title: 'Clothing Store Management System',
