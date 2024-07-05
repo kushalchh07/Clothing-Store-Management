@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1043235069211",
+    "project_id": "clothing-store-managemen-7b030",
+    "storage_bucket": "clothing-store-managemen-7b030.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1043235069211:android:b82e0bf0f8304474c847be",
+        "android_client_info": {
+          "package_name": "com.example.nepstyle_management_system"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWofnYwAm3AphSIIpDfDRgM4WtjeAqJYg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
