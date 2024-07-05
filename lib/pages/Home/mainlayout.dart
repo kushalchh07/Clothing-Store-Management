@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_final_fields
 
 import 'package:flutter/material.dart';
+import 'package:nepstyle_management_system/pages/Home/billing.dart';
 import 'package:nepstyle_management_system/pages/Home/customers.dart';
 import 'package:nepstyle_management_system/pages/Home/dashboard.dart';
 import 'package:nepstyle_management_system/pages/Home/help.dart';
@@ -30,6 +31,7 @@ class _MainLayoutState extends State<MainLayout> {
     Purchases(),
     Sales(),
     Report(),
+    Billing(),
     Help(),
     Settings(),
   ];
@@ -131,6 +133,10 @@ class _MainLayoutState extends State<MainLayout> {
                             NavigationRailDestination(
                               icon: Icon(Icons.report_outlined),
                               label: Text('Report'),
+                            ),
+                            NavigationRailDestination(
+                              icon: Icon(Icons.credit_card_outlined),
+                              label: Text('Billing'),
                             ),
                             NavigationRailDestination(
                               icon: Icon(Icons.help_center_outlined),

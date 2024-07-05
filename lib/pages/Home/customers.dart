@@ -34,6 +34,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 TextFormField(
+                  
                   decoration: InputDecoration(labelText: 'Name'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -102,6 +103,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                   print('Address: $_address');
                   print('Phone Number: $_phoneNumber');
                   print('Email Address: $_emailAddress');
+                  // Add the customer to the database 
                   BlocProvider.of<CustomerBloc>(context).add(
                     CustomerAddButtonTappedEvent(
                       name: _name,
