@@ -3,8 +3,13 @@
 import 'package:flutter/material.dart';
 import 'package:nepstyle_management_system/pages/Home/customers.dart';
 import 'package:nepstyle_management_system/pages/Home/dashboard.dart';
+import 'package:nepstyle_management_system/pages/Home/help.dart';
 import 'package:nepstyle_management_system/pages/Home/inventory.dart';
 import 'package:nepstyle_management_system/pages/Home/orders.dart';
+import 'package:nepstyle_management_system/pages/Home/report.dart';
+import 'package:nepstyle_management_system/pages/Home/sales.dart';
+import 'package:nepstyle_management_system/pages/Home/settings.dart';
+import 'package:nepstyle_management_system/pages/Home/supplier.dart';
 
 class MainLayout extends StatefulWidget {
   @override
@@ -20,6 +25,11 @@ class _MainLayoutState extends State<MainLayout> {
     CustomerScreen(),
     OrderScreen(),
     InventoryScreen(),
+    Supplier(),
+    Sales(),
+    Report(),
+    Help(),
+    Settings(),
   ];
   ScrollController _scrollController = ScrollController();
 
@@ -104,9 +114,30 @@ class _MainLayoutState extends State<MainLayout> {
                               icon: Icon(Icons.production_quantity_limits),
                               label: Text('Inventory'),
                             ),
+                            NavigationRailDestination(
+                              icon: Icon(Icons.local_shipping_outlined),
+                              label: Text('Supplier'),
+                            ),
+                            NavigationRailDestination(
+                              icon: Icon(Icons.receipt),
+                              label: Text('Sales'),
+                            ),
+                            NavigationRailDestination(
+                              icon: Icon(Icons.report_outlined),
+                              label: Text('Report'),
+                            ),
+                            NavigationRailDestination(
+                              icon: Icon(Icons.help_center_outlined),
+                              label: Text('Help'),
+                            ),
+                            NavigationRailDestination(
+                              icon: Icon(Icons.settings),
+                              label: Text('Settings'),
+                            ),
                           ],
                         ),
                       ),
+                      
                     ],
                   ),
                   VerticalDivider(thickness: 1, width: 1),
