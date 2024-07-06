@@ -8,6 +8,7 @@ final class CustomerAddButtonTappedEvent extends CustomerEvent {
   final String address;
   final String phone;
   final String email;
+  final String id;
   // final String gst;
   // final String pan;
   // final String city;
@@ -18,6 +19,7 @@ final class CustomerAddButtonTappedEvent extends CustomerEvent {
     required this.address,
     required this.phone,
     required this.email,
+    required this.id,
     // required this.gst,
     // required this.pan,
     // required this.city,

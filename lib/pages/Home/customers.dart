@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nepstyle_management_system/Logic/Bloc/customersBloc/customer_bloc.dart';
@@ -17,10 +19,10 @@ class CustomerScreen extends StatefulWidget {
 class _CustomerScreenState extends State<CustomerScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  String _name = '';
-  String _address = '';
-  String _phoneNumber = '';
-  String _emailAddress = '';
+  TextEditingController _nameController = TextEditingController();
+  TextEditingController _addressController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _phoneController = TextEditingController();
 
   void _showAddCustomerDialog() {
     showDialog(
@@ -34,7 +36,6 @@ class _CustomerScreenState extends State<CustomerScreen> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 TextFormField(
-                  
                   decoration: InputDecoration(labelText: 'Name'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -42,9 +43,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                     }
                     return null;
                   },
-                  onSaved: (value) {
-                    _name = value!;
-                  },
+                  controller: _nameController,
                 ),
                 TextFormField(
                   decoration: InputDecoration(labelText: 'Address'),
@@ -54,9 +53,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                     }
                     return null;
                   },
-                  onSaved: (value) {
-                    _address = value!;
-                  },
+                  controller: _addressController,
                 ),
                 TextFormField(
                   decoration: InputDecoration(labelText: 'Phone Number'),
@@ -66,9 +63,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                     }
                     return null;
                   },
-                  onSaved: (value) {
-                    _phoneNumber = value!;
-                  },
+                  controller: _phoneController,
                 ),
                 TextFormField(
                   decoration: InputDecoration(labelText: 'Email Address'),
@@ -78,9 +73,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                     }
                     return null;
                   },
-                  onSaved: (value) {
-                    _emailAddress = value!;
-                  },
+                  controller: _emailController,
                 ),
               ],
             ),
@@ -99,19 +92,22 @@ class _CustomerScreenState extends State<CustomerScreen> {
                   _formKey.currentState!.save();
                   // Save the customer information to your database or state management solution
                   // For example, you can print the values to the console
-                  print('Name: $_name');
-                  print('Address: $_address');
-                  print('Phone Number: $_phoneNumber');
-                  print('Email Address: $_emailAddress');
-                  // Add the customer to the database 
+                  log('Name: ${_nameController.text.trim()}');
+                  log('Address: ${_addressController.text}');
+                  log('Phone Number: ${_phoneController.text}');
+                  log('Email Address: ${_emailController.text}');
+
+                  // Add the customer to the database
                   BlocProvider.of<CustomerBloc>(context).add(
                     CustomerAddButtonTappedEvent(
-                      name: _name,
-                      address: _address,
-                      phone: _phoneNumber,
-                      email: _emailAddress,
+                      name: _nameController.text.trim(),
+                      address: _addressController.text.trim(),
+                      phone: _phoneController.text.trim(),
+                      email: _emailController.text.trim(),
+                      id: DateTime.now().toString(),
                     ),
                   );
+                  log("added to the bloc");
                   Navigator.of(context).pop(); // Close the dialog
                 }
               },
