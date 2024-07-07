@@ -1,19 +1,20 @@
 import 'dart:convert';
 
-class CustomerModel {
+class Customer {
+  String id;
   String name;
   String phone;
   String email;
   String address;
 
-  CustomerModel({
+  Customer({
+    required this.id,
     required this.name,
     required this.phone,
     required this.email,
     required this.address,
   });
 
-  // Convert a Customer object into a Map object
   Map<String, dynamic> toMap() {
     return {
       'name': name,
@@ -23,20 +24,13 @@ class CustomerModel {
     };
   }
 
-  // Convert a Map object into a Customer object
-  factory CustomerModel.fromMap(Map<String, dynamic> map) {
-    return CustomerModel(
+  factory Customer.fromMap(String id, Map<String, dynamic> map) {
+    return Customer(
+      id: id,
       name: map['name'] ?? '',
       phone: map['phone'] ?? '',
       email: map['email'] ?? '',
       address: map['address'] ?? '',
     );
   }
-
-  // Convert a Customer object into a JSON object
-  String toJson() => json.encode(toMap());
-
-  // Convert a JSON object into a Customer object
-  factory CustomerModel.fromJson(String source) =>
-      CustomerModel.fromMap(json.decode(source));
 }

@@ -3,6 +3,7 @@ part of 'customer_bloc.dart';
 @immutable
 sealed class CustomerEvent {}
 final class CustomerInitial extends CustomerEvent {}
+final class CustomerLoadEvent extends CustomerEvent {}
 final class CustomerAddButtonTappedEvent extends CustomerEvent {
   final String name;
   final String address;

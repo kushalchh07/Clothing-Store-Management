@@ -35,7 +35,7 @@ class _MainLayoutState extends State<MainLayout> {
     Help(),
     Settings(),
   ];
-  ScrollController _scrollController = ScrollController();
+  // ScrollController _scrollController = ScrollController();
 
   void _onItemTapped(int index) {
     setState(() {
@@ -47,26 +47,26 @@ class _MainLayoutState extends State<MainLayout> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _scrollController.addListener(_scrollListener);
+    // _scrollController.addListener(_scrollListener);
   }
 
-  void _scrollListener() {
-    if (_scrollController.position.pixels ==
-        _scrollController.position.maxScrollExtent) {
-      setState(() {
-        _showFooter = true;
-      });
-    } else {
-      setState(() {
-        _showFooter = false;
-      });
-    }
-  }
+  // void _scrollListener() {
+  //   if (_scrollController.position.pixels ==
+  //       _scrollController.position.maxScrollExtent) {
+  //     setState(() {
+  //       _showFooter = true;
+  //     });
+  //   } else {
+  //     setState(() {
+  //       _showFooter = false;
+  //     });
+  //   }
+  // }
 
   @override
   void dispose() {
     // Dispose scroll controller to avoid memory leaks
-    _scrollController.dispose();
+    // _scrollController.dispose();
     super.dispose();
   }
 
@@ -76,7 +76,7 @@ class _MainLayoutState extends State<MainLayout> {
       body: NotificationListener<ScrollNotification>(
         onNotification: (notification) {
           if (notification is ScrollEndNotification) {
-            _scrollListener();
+            // _scrollListener();
           }
           return true;
         },

@@ -8,7 +8,7 @@ class CustomerInitialState extends CustomerState {}
 class CustomerLoadingState extends CustomerState {}
 
 class CustomerLoadedState extends CustomerState {
-  final List<CustomerModel> customers;
+  final List<Customer> customers;
   // final List customers;
 
   CustomerLoadedState(this.customers);

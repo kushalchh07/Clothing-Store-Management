@@ -16,6 +16,7 @@ part 'customer_state.dart';
 class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
   CustomerBloc() : super(CustomerInitialState()) {
     on<CustomerAddButtonTappedEvent>(_customerAddButtonTappedEvent);
+    on<CustomerLoadEvent>(_customerLoadEvent);
   }
 
   FutureOr<void> _customerAddButtonTappedEvent(
@@ -63,6 +64,20 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
       //   textStyle: TextStyle(color: Colors.white),
       // );
       emit(CustomerErrorState("An error occurred: $e"));
+    }
+  }
+
+  FutureOr<void> _customerLoadEvent(
+      CustomerLoadEvent event, Emitter<CustomerState> emit) async {
+    try {
+      FirebaseFirestore _firestore = FirebaseFirestore.instance;
+      final snapshot = await _firestore.collection('customers').get();
+      final customers = snapshot.docs.map((doc) {
+        return Customer.fromMap(doc.id, doc.data() as Map<String, dynamic>);
+      }).toList();
+      emit(CustomerLoadedState(customers));
+    } catch (_) {
+      emit(CustomerErrorState("An error occurred while loading customers"));
     }
   }
 }
