@@ -11,7 +11,7 @@ import 'package:meta/meta.dart';
 import 'package:nepstyle_management_system/models/customerModel.dart';
 import 'package:nepstyle_management_system/services/crud_services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:oktoast/oktoast.dart';
+
 
 part 'customer_event.dart';
 part 'customer_state.dart';
@@ -37,38 +37,17 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
       });
 
       log("Data Added");
-      // showToast(
-      //   "Customer Added",
-      //   duration: Duration(seconds: 2),
-      //   position: ToastPosition.bottom,
-      //   backgroundColor: Colors.green,
-      //   radius: 8.0,
-      //   textStyle: TextStyle(color: Colors.white),
-      // );
+     
                      
 
       // emit(CustomerLoadedState([]));
     } on FirebaseException catch (e) {
       log("FirebaseException: ${e.message}");
-      // showToast(
-      //   e.message ?? "Unknown Firebase error",
-      //   duration: Duration(seconds: 2),
-      //   position: ToastPosition.bottom,
-      //   backgroundColor: Colors.red,
-      //   radius: 8.0,
-      //   textStyle: TextStyle(color: Colors.white),
-      // );
+    
       emit(CustomerErrorState(e.message ?? "Unknown Firebase error"));
     } catch (e) {
       log("General Exception: $e");
-      // showToast(
-      //   "An error occurred: $e",
-      //   duration: Duration(seconds: 2),
-      //   position: ToastPosition.bottom,
-      //   backgroundColor: Colors.red,
-      //   radius: 8.0,
-      //   textStyle: TextStyle(color: Colors.white),
-      // );
+      
       emit(CustomerErrorState("An error occurred: $e"));
     }
   }

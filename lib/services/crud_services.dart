@@ -6,11 +6,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CrudServices {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  Future<String> addCustomer(
-      String name, String address, String phone, String email) async {
+  Future<String> addCustomer(String id, String name, String address,
+      String phone, String email) async {
     log("Inside addcustomer");
     try {
-      _firestore.collection('customers').add({
+      _firestore.collection('customers').doc(id).set({
         'name': name,
         'phone': phone,
         'email': email,

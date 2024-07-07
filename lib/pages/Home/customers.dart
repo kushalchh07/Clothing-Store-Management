@@ -110,9 +110,11 @@ class _CustomerScreenState extends State<CustomerScreen> {
                       id: DateTime.now().toString(),
                     ),
                   );
+
                   log("Added to the bloc");
                   BlocProvider.of<CustomerBloc>(context)
                       .add(CustomerLoadEvent());
+                  _clearControllers();
                   Navigator.of(context).pop();
                 }
               },
@@ -121,6 +123,13 @@ class _CustomerScreenState extends State<CustomerScreen> {
         );
       },
     );
+  }
+
+  void _clearControllers() {
+    _nameController.clear();
+    _addressController.clear();
+    _phoneController.clear();
+    _emailController.clear();
   }
 
   void _showDeleteConfirmationDialog(String customerId) {
@@ -144,7 +153,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                 // Perform delete operation here
                 BlocProvider.of<CustomerBloc>(context)
                     .add(CustomerDeleteButtonTappedEvent(id: customerId));
-                    BlocProvider.of<CustomerBloc>(context).add(CustomerLoadEvent());
+                BlocProvider.of<CustomerBloc>(context).add(CustomerLoadEvent());
                 Navigator.of(context).pop(); // Close the dialog
               },
             ),
