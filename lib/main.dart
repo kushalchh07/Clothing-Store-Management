@@ -1,13 +1,30 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:nepstyle_management_system/Logic/Bloc/LoginBloc/login_bloc.dart';
 import 'package:nepstyle_management_system/Logic/Bloc/customersBloc/customer_bloc.dart';
+import 'package:nepstyle_management_system/firebase_options.dart';
 
 import 'package:nepstyle_management_system/pages/SplashScreen/splashScreen.dart';
 
-void main() {
-  runApp(const MyApp());
+/// Initializes the Flutter application and runs it.
+///
+/// This function ensures that the Flutter framework is initialized,
+/// initializes Firebase, and runs the [MyApp] widget.
+///
+/// This function is typically called in the `main` function of the Dart
+/// entrypoint file.
+void main() async {
+  // Ensure that the Flutter framework is initialized.
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize Firebase.
+  // This function must be called before using any Firebase services.
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  // Run the MyApp widget as the root of the Flutter application.
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
