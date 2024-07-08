@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:bloc/bloc.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:meta/meta.dart';
 import 'package:nepstyle_management_system/services/crud_services.dart';
 
@@ -60,4 +62,5 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
       log("Product Deleted");
     } catch (e) {}
   }
+
 }

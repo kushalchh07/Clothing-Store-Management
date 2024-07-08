@@ -9,6 +9,8 @@ import 'package:nepstyle_management_system/firebase_options.dart';
 
 import 'package:nepstyle_management_system/pages/SplashScreen/splashScreen.dart';
 
+
+
 /// Initializes the Flutter application and runs it.
 ///
 /// This function ensures that the Flutter framework is initialized,
