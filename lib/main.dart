@@ -5,11 +5,10 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:nepstyle_management_system/Logic/Bloc/InventoryBloc/inventory_bloc.dart';
 import 'package:nepstyle_management_system/Logic/Bloc/LoginBloc/login_bloc.dart';
 import 'package:nepstyle_management_system/Logic/Bloc/customersBloc/customer_bloc.dart';
+import 'package:nepstyle_management_system/Logic/Bloc/supplierBloc/supplier_bloc.dart';
 import 'package:nepstyle_management_system/firebase_options.dart';
 
 import 'package:nepstyle_management_system/pages/SplashScreen/splashScreen.dart';
-
-
 
 /// Initializes the Flutter application and runs it.
 ///
@@ -46,6 +45,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => InventoryBloc(),
+        ),
+        BlocProvider(
+          create: (context) => SupplierBloc(),
         ),
       ],
       child: GetMaterialApp(

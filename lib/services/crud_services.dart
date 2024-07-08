@@ -3,7 +3,9 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:nepstyle_management_system/models/customerModel.dart';
 import 'package:nepstyle_management_system/models/inventory_model.dart';
+import 'package:nepstyle_management_system/models/supplier_model.dart';
 
 class CrudServices {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -23,7 +25,27 @@ class CrudServices {
       return e.toString();
     }
   }
-
+  Future<List<Customer>> getCustomers() async {
+    try {
+      final snapshot = await _firestore.collection('customers').get();
+      final customers = snapshot.docs.map((doc) {
+        return Customer.fromMap(doc.id, doc.data() as Map<String, dynamic>);
+      }).toList();
+      log(customers.toString());
+      return customers;
+    } catch (e) {
+      log('error during geting  customers');
+      rethrow;
+    }
+  }
+Future<String> deleteCustomer(String id) async {
+    try {
+      await _firestore.collection('customers').doc(id).delete();
+      return "Customer deleted";
+    } catch (e) {
+      return e.toString();
+    }
+  }
   Future<String> addProducts(
       String id,
       String productName,
@@ -69,6 +91,43 @@ class CrudServices {
   Future<String> deleteProduct(String id) async {
     try {
       await _firestore.collection('products').doc(id).delete();
+      return "deleted";
+    } catch (e) {
+      return e.toString();
+    }
+  }
+  Future<String> addSuppliers(String id, String name, String address,
+      String phone, String email) async {
+    log("Inside add Suppliers");
+    try {
+      _firestore.collection('suppliers').doc(id).set({
+        'name': name,
+        'phone': phone,
+        'email': email,
+        'address': address,
+      });
+      log("data added");
+      return "Data added";
+    } catch (e) {
+      return e.toString();
+    }
+  }
+  Future<List<SupplierModel>> getSuppliers() async {
+    try {
+      final snapshot = await _firestore.collection('suppliers').get();
+      final suppliers = snapshot.docs.map((doc) {
+        return SupplierModel.fromMap(doc.id, doc.data() as Map<String, dynamic>);
+      }).toList();
+      log(suppliers.toString());
+      return suppliers;
+    } catch (e) {
+      log('error during geting  suppliers');
+      rethrow;
+    }
+  }
+  Future<String> deleteSupplier(String id) async {
+    try {
+      await _firestore.collection('suppliers').doc(id).delete();
       return "deleted";
     } catch (e) {
       return e.toString();

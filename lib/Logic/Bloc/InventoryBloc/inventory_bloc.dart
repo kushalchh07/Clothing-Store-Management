@@ -18,11 +18,11 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
     on<InventoryAddButtonTappedEvent>(_inventoryAddButtonTappedEvent);
     on<InventoryDeleteButtonTappedEvent>(_inventoryDeleteButtonTappedEvent);
   }
-
+CrudServices _crudServices = CrudServices();
   FutureOr<void> _inventoryLoadEvent(
       InventoryLoadEvent event, Emitter<InventoryState> emit) async {
     try {
-      CrudServices _crudServices = CrudServices();
+      
       List<Inventory> inventoryList = await _crudServices.getInventory();
       log(inventoryList.toString());
       emit(InventoryLoadedState(inventoryList));
@@ -34,7 +34,7 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
 
   FutureOr<void> _inventoryAddButtonTappedEvent(
       InventoryAddButtonTappedEvent event, Emitter<InventoryState> emit) async {
-    CrudServices _crudServices = CrudServices();
+    
     try {
       await _crudServices.addProducts(
         event.id,
@@ -57,8 +57,8 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
       InventoryDeleteButtonTappedEvent event,
       Emitter<InventoryState> emit) async {
     try {
-      CrudServices _crudService = CrudServices();
-      await _crudService.deleteProduct(event.id);
+    
+      await _crudServices.deleteProduct(event.id);
       log("Product Deleted");
     } catch (e) {}
   }
