@@ -6,6 +6,7 @@ import 'package:nepstyle_management_system/Logic/Bloc/InventoryBloc/inventory_bl
 import 'package:nepstyle_management_system/Logic/Bloc/LoginBloc/login_bloc.dart';
 import 'package:nepstyle_management_system/Logic/Bloc/customersBloc/customer_bloc.dart';
 import 'package:nepstyle_management_system/Logic/Bloc/purchaseBloc/purchase_bloc.dart';
+import 'package:nepstyle_management_system/Logic/Bloc/salesBloc/sales_bloc.dart';
 import 'package:nepstyle_management_system/Logic/Bloc/supplierBloc/supplier_bloc.dart';
 import 'package:nepstyle_management_system/firebase_options.dart';
 
@@ -50,8 +51,12 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => SupplierBloc(),
         ),
+       
         BlocProvider(
           create: (context) => PurchaseBloc(),
+        ),
+         BlocProvider(
+          create: (context) => SalesBloc(),
         ),
       ],
       child: GetMaterialApp(

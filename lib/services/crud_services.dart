@@ -6,7 +6,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:nepstyle_management_system/models/customerModel.dart';
 import 'package:nepstyle_management_system/models/inventory_model.dart';
 import 'package:nepstyle_management_system/models/purchase_model.dart';
+import 'package:nepstyle_management_system/models/sales_model.dart';
 import 'package:nepstyle_management_system/models/supplier_model.dart';
+import 'package:nepstyle_management_system/pages/Home/sales.dart';
 
 class CrudServices {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -26,6 +28,7 @@ class CrudServices {
       return e.toString();
     }
   }
+
   Future<List<Customer>> getCustomers() async {
     try {
       final snapshot = await _firestore.collection('customers').get();
@@ -39,7 +42,8 @@ class CrudServices {
       rethrow;
     }
   }
-Future<String> deleteCustomer(String id) async {
+
+  Future<String> deleteCustomer(String id) async {
     try {
       await _firestore.collection('customers').doc(id).delete();
       return "Customer deleted";
@@ -47,6 +51,7 @@ Future<String> deleteCustomer(String id) async {
       return e.toString();
     }
   }
+
   Future<String> addProducts(
       String id,
       String productName,
@@ -59,7 +64,7 @@ Future<String> deleteCustomer(String id) async {
     log("Inside addproducts");
     try {
       _firestore.collection('products').doc(id).set({
-        'id':id,
+        'id': id,
         'name': productName,
         'description': description,
         'purPrice': purPrice,
@@ -97,6 +102,7 @@ Future<String> deleteCustomer(String id) async {
       return e.toString();
     }
   }
+
   Future<String> addSuppliers(String id, String name, String address,
       String phone, String email) async {
     log("Inside add Suppliers");
@@ -113,11 +119,13 @@ Future<String> deleteCustomer(String id) async {
       return e.toString();
     }
   }
+
   Future<List<SupplierModel>> getSuppliers() async {
     try {
       final snapshot = await _firestore.collection('suppliers').get();
       final suppliers = snapshot.docs.map((doc) {
-        return SupplierModel.fromMap(doc.id, doc.data() as Map<String, dynamic>);
+        return SupplierModel.fromMap(
+            doc.id, doc.data() as Map<String, dynamic>);
       }).toList();
       log(suppliers.toString());
       return suppliers;
@@ -126,6 +134,7 @@ Future<String> deleteCustomer(String id) async {
       rethrow;
     }
   }
+
   Future<String> deleteSupplier(String id) async {
     try {
       await _firestore.collection('suppliers').doc(id).delete();
@@ -134,21 +143,29 @@ Future<String> deleteCustomer(String id) async {
       return e.toString();
     }
   }
-  Future<String> addPurchases(String id,String date,String supplier,String category, String productName, String quantity,
-      String perPiecePrice, String totalAmount,String description) async {
+
+  Future<String> addPurchases(
+      String id,
+      String date,
+      String supplier,
+      String category,
+      String productName,
+      String quantity,
+      String perPiecePrice,
+      String totalAmount,
+      String description) async {
     log("Inside add purchases");
     try {
       _firestore.collection('purchases').doc(id).set({
-        'id':id,
-      'date': date,
-      'supplier': supplier,
-      'category':category,
-      'productName': productName,
-      'quantity': quantity,
-      'perPiecePrice': perPiecePrice,
-      'totalAmount': totalAmount,
-      'description': description
-
+        'id': id,
+        'date': date,
+        'supplier': supplier,
+        'category': category,
+        'productName': productName,
+        'quantity': quantity,
+        'perPiecePrice': perPiecePrice,
+        'totalAmount': totalAmount,
+        'description': description
       });
       log("data added");
       return "Data added";
@@ -156,11 +173,13 @@ Future<String> deleteCustomer(String id) async {
       return e.toString();
     }
   }
+
   Future<List<PurchaseModel>> getPurchases() async {
     try {
       final snapshot = await _firestore.collection('purchases').get();
       final purchases = snapshot.docs.map((doc) {
-        return PurchaseModel.fromMap(doc.id, doc.data() as Map<String, dynamic>);
+        return PurchaseModel.fromMap(
+            doc.id, doc.data() as Map<String, dynamic>);
       }).toList();
       log(purchases.toString());
       return purchases;
@@ -169,9 +188,61 @@ Future<String> deleteCustomer(String id) async {
       rethrow;
     }
   }
+
   Future<String> deletePurchase(String id) async {
     try {
       await _firestore.collection('purchases').doc(id).delete();
+      return "deleted";
+    } catch (e) {
+      return e.toString();
+    }
+  }
+
+  Future<String> addSales(
+      String id,
+      String date,
+      String customerName,
+      String category,
+      String productName,
+      String quantity,
+      String perPiecePrice,
+      String totalAmount) async {
+    log("Inside add sales");
+    try {
+      _firestore.collection('sales').doc(id).set({
+        'id': id,
+        'date': date,
+        'customerName': customerName,
+        'category': category,
+        'productName': productName,
+        'quantity': quantity,
+        'perPiecePrice': perPiecePrice,
+        'totalAmount': totalAmount,
+      });
+      log("data added");
+      return "Data added";
+    } catch (e) {
+      return e.toString();
+    }
+  }
+
+  Future<List<SalesModel>> getSales() async {
+    try {
+      final snapshot = await _firestore.collection('sales').get();
+      final sales = snapshot.docs.map((doc) {
+        return SalesModel.fromMap(doc.id, doc.data() as Map<String, dynamic>);
+      }).toList();
+      log(sales.toString());
+      return sales;
+    } catch (e) {
+      log('error during geting  purchases');
+      rethrow;
+    }
+  }
+
+  Future<String> deleteSales(String id) async {
+    try {
+      await _firestore.collection('sales').doc(id).delete();
       return "deleted";
     } catch (e) {
       return e.toString();
