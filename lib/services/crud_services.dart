@@ -5,6 +5,7 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:nepstyle_management_system/models/customerModel.dart';
 import 'package:nepstyle_management_system/models/inventory_model.dart';
+import 'package:nepstyle_management_system/models/order_model.dart';
 import 'package:nepstyle_management_system/models/purchase_model.dart';
 import 'package:nepstyle_management_system/models/sales_model.dart';
 import 'package:nepstyle_management_system/models/supplier_model.dart';
@@ -202,7 +203,6 @@ class CrudServices {
       String id,
       String date,
       String customerName,
-    
       String productName,
       String quantity,
       String perPiecePrice,
@@ -213,7 +213,6 @@ class CrudServices {
         'id': id,
         'date': date,
         'customerName': customerName,
-        
         'productName': productName,
         'quantity': quantity,
         'perPiecePrice': perPiecePrice,
@@ -243,6 +242,59 @@ class CrudServices {
   Future<String> deleteSales(String id) async {
     try {
       await _firestore.collection('sales').doc(id).delete();
+      return "deleted";
+    } catch (e) {
+      return e.toString();
+    }
+  }
+
+  Future<String> addOrders(
+      String id,
+      String date,
+      String customerName,
+      String orderCode,
+      String productName,
+      String category,
+      String quantity,
+      String perPiecePrice,
+      String totalAmount) async {
+    log("Inside add sales");
+    try {
+      _firestore.collection('orders').doc(id).set({
+        'id': id,
+        'date': date,
+        'customerName': customerName,
+        'orderCode': orderCode,
+        'productName': productName,
+        'category': category,
+        'quantity': quantity,
+        'perPiecePrice': perPiecePrice,
+        'totalAmount': totalAmount,
+      });
+      log("data added");
+      return "Data added";
+    } catch (e) {
+      return e.toString();
+    }
+  }
+
+  Future<List<OrderModel>> getOrder() async {
+    try {
+      final snapshot = await _firestore.collection('orders').get();
+      final orders = snapshot.docs.map((doc) {
+        return OrderModel.fromMap(doc.id, doc.data() as Map<String, dynamic>);
+      }).toList();
+      log(orders.toString());
+      return orders;
+    } catch (e) {
+      log('error during geting  orders');
+      rethrow;
+    }
+  }
+
+  Future<String> deleteOrder(String id) async {
+    try {
+      await _firestore.collection('orders').doc(id).delete();
       return "deleted";
     } catch (e) {
       return e.toString();

@@ -11,6 +11,6 @@ class Billing extends StatefulWidget {
 class _BillingState extends State<Billing> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return const Scaffold();
   }
 }
