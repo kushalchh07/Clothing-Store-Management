@@ -5,6 +5,7 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:nepstyle_management_system/Logic/Bloc/InventoryBloc/inventory_bloc.dart';
 import 'package:nepstyle_management_system/Logic/Bloc/LoginBloc/login_bloc.dart';
 import 'package:nepstyle_management_system/Logic/Bloc/customersBloc/customer_bloc.dart';
+import 'package:nepstyle_management_system/Logic/Bloc/orderBloc/order_bloc.dart';
 import 'package:nepstyle_management_system/Logic/Bloc/purchaseBloc/purchase_bloc.dart';
 import 'package:nepstyle_management_system/Logic/Bloc/salesBloc/sales_bloc.dart';
 import 'package:nepstyle_management_system/Logic/Bloc/supplierBloc/supplier_bloc.dart';
@@ -58,6 +59,9 @@ class MyApp extends StatelessWidget {
          BlocProvider(
           create: (context) => SalesBloc(),
         ),
+        BlocProvider(
+          create: (context) => OrderBloc(),
+        )
       ],
       child: GetMaterialApp(
         title: 'Clothing Store Management System',
