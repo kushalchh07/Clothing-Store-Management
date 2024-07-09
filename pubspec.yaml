@@ -48,6 +48,7 @@ dependencies:
   oktoast: ^3.4.0
   image_picker: ^1.1.2
   firebase_storage: ^12.1.0
+  intl: ^0.19.0
 
 dev_dependencies:
   flutter_test:
