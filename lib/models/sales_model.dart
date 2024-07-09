@@ -21,8 +21,8 @@ class SalesModel {
 
   Map<String, dynamic> toMap() {
     return {
-      'nameCustomer': nameCustomer,
-      'nameProduct': nameProduct,
+      'customerName': nameCustomer,
+      'productName': nameProduct,
       'quantity': quantity,
       'perPiecePrice': perPiecePrice,
       'totalAmount': totalAmount,
@@ -33,8 +33,8 @@ class SalesModel {
   factory SalesModel.fromMap(String id, Map<String, dynamic> map) {
     return SalesModel(
       id: id,
-      nameCustomer: map['nameCustomer'] ?? '',
-      nameProduct: map['nameProduct'] ?? '',
+      nameCustomer: map['customerName'] ?? '',
+      nameProduct: map['productName'] ?? '',
       quantity: map['quantity'] ?? '',
       perPiecePrice: map['perPiecePrice'] ?? '',
       totalAmount: map['totalAmount'] ?? '',

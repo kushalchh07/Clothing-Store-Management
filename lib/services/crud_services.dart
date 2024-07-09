@@ -202,7 +202,7 @@ class CrudServices {
       String id,
       String date,
       String customerName,
-      String category,
+    
       String productName,
       String quantity,
       String perPiecePrice,
@@ -213,7 +213,7 @@ class CrudServices {
         'id': id,
         'date': date,
         'customerName': customerName,
-        'category': category,
+        
         'productName': productName,
         'quantity': quantity,
         'perPiecePrice': perPiecePrice,

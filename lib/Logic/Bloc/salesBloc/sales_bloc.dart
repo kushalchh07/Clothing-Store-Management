@@ -43,7 +43,6 @@ class SalesBloc extends Bloc<SalesEvent, SalesState> {
         event.id,
         formattedDate,
         event.customerName,
-        event.category,
         event.productName,
         event.quantity.toString(),
         event.salesPrice.toString(),

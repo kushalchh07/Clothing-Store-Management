@@ -37,7 +37,7 @@ class PurchaseBloc extends Bloc<PurchaseEvent, PurchaseState> {
     final perPrice = event.purPrice;
     final quantity = event.quantity;
     final totalAmount = perPrice * quantity;
-    String formattedDate = DateFormat('yyyy-MM-dd HH:mm:ss').format(event.date);
+    String formattedDate = DateFormat('yyyy-MM-dd').format(event.date);
 
     try {
       await _crudServices.addPurchases(
