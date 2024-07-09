@@ -5,6 +5,7 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:nepstyle_management_system/models/customerModel.dart';
 import 'package:nepstyle_management_system/models/inventory_model.dart';
+import 'package:nepstyle_management_system/models/purchase_model.dart';
 import 'package:nepstyle_management_system/models/supplier_model.dart';
 
 class CrudServices {
@@ -128,6 +129,49 @@ Future<String> deleteCustomer(String id) async {
   Future<String> deleteSupplier(String id) async {
     try {
       await _firestore.collection('suppliers').doc(id).delete();
+      return "deleted";
+    } catch (e) {
+      return e.toString();
+    }
+  }
+  Future<String> addPurchases(String id,String date,String supplier,String category, String productName, String quantity,
+      String perPiecePrice, String totalAmount,String description) async {
+    log("Inside add purchases");
+    try {
+      _firestore.collection('purchases').doc(id).set({
+        'id':id,
+      'date': date,
+      'supplier': supplier,
+      'category':category,
+      'productName': productName,
+      'quantity': quantity,
+      'perPiecePrice': perPiecePrice,
+      'totalAmount': totalAmount,
+      'description': description
+
+      });
+      log("data added");
+      return "Data added";
+    } catch (e) {
+      return e.toString();
+    }
+  }
+  Future<List<PurchaseModel>> getPurchases() async {
+    try {
+      final snapshot = await _firestore.collection('purchases').get();
+      final purchases = snapshot.docs.map((doc) {
+        return PurchaseModel.fromMap(doc.id, doc.data() as Map<String, dynamic>);
+      }).toList();
+      log(purchases.toString());
+      return purchases;
+    } catch (e) {
+      log('error during geting  purchases');
+      rethrow;
+    }
+  }
+  Future<String> deletePurchase(String id) async {
+    try {
+      await _firestore.collection('purchases').doc(id).delete();
       return "deleted";
     } catch (e) {
       return e.toString();
