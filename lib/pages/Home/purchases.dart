@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/route_manager.dart';
 import 'package:nepstyle_management_system/Logic/Bloc/supplierBloc/supplier_bloc.dart';
+import 'package:nepstyle_management_system/pages/Home/customers.dart';
 
 import '../../Logic/Bloc/purchaseBloc/purchase_bloc.dart';
 import '../../constants/color/color.dart';
@@ -62,14 +63,24 @@ class _PurchasesState extends State<Purchases> {
           content: Text('Are you sure you want to delete this detail?'),
           actions: <Widget>[
             TextButton(
-              child: Text('No'),
+              style: ButtonStyle(
+                  backgroundColor: WidgetStatePropertyAll(greenColor)),
+              child: Text(
+                'No',
+                style: TextStyle(
+                    color: whiteColor, fontFamily: 'inter', fontSize: 16),
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-              child: Text('Yes'),
+              child: Text(
+                'Yes',
+                style: TextStyle(
+                    color: whiteColor, fontFamily: 'inter', fontSize: 16),
+              ),
               onPressed: () {
                 BlocProvider.of<PurchaseBloc>(context)
                     .add(PurchaseDeleteButtonTappedEvent(id: id));
@@ -95,7 +106,16 @@ class _PurchasesState extends State<Purchases> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 TextFormField(
-                  decoration: InputDecoration(labelText: 'Product Name'),
+                  decoration: InputDecoration(
+                      floatingLabelStyle: floatingLabelTextStyle(),
+                      focusedBorder: customFocusBorder(),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide:
+                              BorderSide(color: primaryColor, width: 2)),
+                      labelStyle: TextStyle(color: greyColor, fontSize: 13),
+                      labelText: 'Product Name',
+                      hintText: 'Product Name'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter the Product name';
@@ -104,8 +124,20 @@ class _PurchasesState extends State<Purchases> {
                   },
                   controller: _productNameController,
                 ),
+                const SizedBox(
+                  height: 10,
+                ),
                 TextFormField(
-                  decoration: InputDecoration(labelText: 'Category'),
+                  decoration: InputDecoration(
+                      floatingLabelStyle: floatingLabelTextStyle(),
+                      focusedBorder: customFocusBorder(),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide:
+                              BorderSide(color: primaryColor, width: 2)),
+                      labelStyle: TextStyle(color: greyColor, fontSize: 13),
+                      labelText: 'Category',
+                      hintText: 'Category'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter the Category';
@@ -114,8 +146,20 @@ class _PurchasesState extends State<Purchases> {
                   },
                   controller: _categoryController,
                 ),
+                const SizedBox(
+                  height: 10,
+                ),
                 TextFormField(
-                  decoration: InputDecoration(labelText: 'Quantity'),
+                  decoration: InputDecoration(
+                      floatingLabelStyle: floatingLabelTextStyle(),
+                      focusedBorder: customFocusBorder(),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide:
+                              BorderSide(color: primaryColor, width: 2)),
+                      labelStyle: TextStyle(color: greyColor, fontSize: 13),
+                      labelText: 'Quantity',
+                      hintText: 'Quantity'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter the Quantity';
@@ -124,8 +168,20 @@ class _PurchasesState extends State<Purchases> {
                   },
                   controller: _quantityController,
                 ),
+                const SizedBox(
+                  height: 10,
+                ),
                 TextFormField(
-                  decoration: InputDecoration(labelText: 'Per Piece Price'),
+                  decoration: InputDecoration(
+                      floatingLabelStyle: floatingLabelTextStyle(),
+                      focusedBorder: customFocusBorder(),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide:
+                              BorderSide(color: primaryColor, width: 2)),
+                      labelStyle: TextStyle(color: greyColor, fontSize: 13),
+                      labelText: 'Per Piece Price',
+                      hintText: 'Per Piece Price'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter the Purchase price';
@@ -134,18 +190,42 @@ class _PurchasesState extends State<Purchases> {
                   },
                   controller: _purPriceController,
                 ),
+                const SizedBox(
+                  height: 10,
+                ),
                 TextFormField(
-                  decoration: InputDecoration(labelText: 'Supplier Name'),
+                  decoration: InputDecoration(
+                      floatingLabelStyle: floatingLabelTextStyle(),
+                      focusedBorder: customFocusBorder(),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide:
+                              BorderSide(color: primaryColor, width: 2)),
+                      labelStyle: TextStyle(color: greyColor, fontSize: 13),
+                      labelText: 'Supplier Name',
+                      hintText: 'Supplier Name'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter the Selling price';
+                      return 'Please enter the Supplier name';
                     }
                     return null;
                   },
                   controller: _supplierNameController,
                 ),
+                const SizedBox(
+                  height: 10,
+                ),
                 TextFormField(
-                  decoration: InputDecoration(labelText: 'Description'),
+                  decoration: InputDecoration(
+                      floatingLabelStyle: floatingLabelTextStyle(),
+                      focusedBorder: customFocusBorder(),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide:
+                              BorderSide(color: primaryColor, width: 2)),
+                      labelStyle: TextStyle(color: greyColor, fontSize: 13),
+                      labelText: 'Description',
+                      hintText: 'Description'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter the Description';
@@ -154,25 +234,53 @@ class _PurchasesState extends State<Purchases> {
                   },
                   controller: _descriptionController,
                 ),
-                SizedBox(
-                  height: 4,
+                const SizedBox(
+                  height: 10,
                 ),
-                TextButton(
-                  onPressed: () => _selectDate(context),
-                  child: Text('Select Date'),
+                Container(
+                  height: 40,
+                  width: 180,
+                  child: TextButton(
+                    style: ButtonStyle(
+                      iconColor: WidgetStatePropertyAll(Colors.white),
+                      backgroundColor: WidgetStatePropertyAll(myButtonColor),
+                    ),
+                    onPressed: () => _selectDate(context),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Icon(Icons.calendar_month_outlined),
+                        Text(
+                          'Select Date',
+                          style: TextStyle(color: Colors.white, fontSize: 16),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ],
             ),
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('Cancel'),
+              style: ButtonStyle(
+                  backgroundColor: WidgetStatePropertyAll(redColor)),
+              child: Text(
+                'Cancel',
+                style: TextStyle(
+                    color: whiteColor, fontFamily: 'inter', fontSize: 16),
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             ElevatedButton(
-              child: Text('Save'),
+              style: ElevatedButton.styleFrom(backgroundColor: greenColor),
+              child: Text(
+                'Save',
+                style: TextStyle(
+                    color: whiteColor, fontFamily: 'inter', fontSize: 16),
+              ),
               onPressed: () async {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
@@ -247,32 +355,32 @@ class _PurchasesState extends State<Purchases> {
                   dividerText: "Purchases",
                   desc: "",
                 ),
-               ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.black,
-                      shape: StadiumBorder(),
-                    ),
-                    onPressed: _showPurchaseAdd,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Icon(
-                          Icons.add_circle_outline_outlined,
-                          color: Colors.white,
-                        ),
-                        const SizedBox(
-                          width: 4,
-                        ),
-                        Text(
-                          "Add Purchases",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontFamily: 'inter'),
-                        ),
-                      ],
-                    ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.black,
+                    shape: StadiumBorder(),
                   ),
+                  onPressed: _showPurchaseAdd,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Icon(
+                        Icons.add_circle_outline_outlined,
+                        color: Colors.white,
+                      ),
+                      const SizedBox(
+                        width: 4,
+                      ),
+                      Text(
+                        "Add Purchases",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontFamily: 'inter'),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
             Divider(

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/route_manager.dart';
 import 'package:nepstyle_management_system/Logic/Bloc/salesBloc/sales_bloc.dart';
+import 'package:nepstyle_management_system/pages/Home/customers.dart';
 
 import '../../constants/color/color.dart';
 import '../../utils/customwidgets/dividerText.dart';
@@ -289,14 +290,25 @@ class _SalesState extends State<Sales> {
           content: Text('Are you sure you want to delete this customer?'),
           actions: <Widget>[
             TextButton(
-              child: Text('No'),
+              style: TextButton.styleFrom(
+                backgroundColor: greenColor,
+              ),
+              child: Text(
+                'No',
+                style: TextStyle(
+                    color: whiteColor, fontFamily: 'inter', fontSize: 16),
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-              child: Text('Yes'),
+              child: Text(
+                'Yes',
+                style: TextStyle(
+                    color: whiteColor, fontFamily: 'inter', fontSize: 16),
+              ),
               onPressed: () {
                 // Perform delete operation here
                 BlocProvider.of<SalesBloc>(context)
@@ -316,14 +328,23 @@ class _SalesState extends State<Sales> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Add New Customer'),
+          title: Text('Add Sales'),
           content: Form(
             key: _formKey,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 TextFormField(
-                  decoration: InputDecoration(labelText: ' Customer Name'),
+                  decoration: InputDecoration(
+                    floatingLabelStyle: floatingLabelTextStyle(),
+                    focusedBorder: customFocusBorder(),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
+                        borderSide: BorderSide(color: primaryColor, width: 2)),
+                    labelStyle: TextStyle(color: greyColor, fontSize: 13),
+                    labelText: 'Customer Name',
+                    hintText: 'Customer Name',
+                  ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter the name';
@@ -332,8 +353,20 @@ class _SalesState extends State<Sales> {
                   },
                   controller: _customerNameController,
                 ),
+                const SizedBox(
+                  height: 10,
+                ),
                 TextFormField(
-                  decoration: InputDecoration(labelText: 'Product Name'),
+                  decoration: InputDecoration(
+                      floatingLabelStyle: floatingLabelTextStyle(),
+                      focusedBorder: customFocusBorder(),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide:
+                              BorderSide(color: primaryColor, width: 2)),
+                      labelStyle: TextStyle(color: greyColor, fontSize: 13),
+                      labelText: 'Product Name',
+                      hintText: 'Product Name'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter the Product name';
@@ -342,8 +375,20 @@ class _SalesState extends State<Sales> {
                   },
                   controller: _productNameController,
                 ),
+                const SizedBox(
+                  height: 10,
+                ),
                 TextFormField(
-                  decoration: InputDecoration(labelText: 'Selling Price'),
+                  decoration: InputDecoration(
+                      floatingLabelStyle: floatingLabelTextStyle(),
+                      focusedBorder: customFocusBorder(),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide:
+                              BorderSide(color: primaryColor, width: 2)),
+                      labelStyle: TextStyle(color: greyColor, fontSize: 13),
+                      labelText: 'Selling Price',
+                      hintText: 'Selling Price'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter the selling Price';
@@ -352,35 +397,75 @@ class _SalesState extends State<Sales> {
                   },
                   controller: _salesPriceController,
                 ),
+                const SizedBox(
+                  height: 10,
+                ),
                 TextFormField(
-                  decoration: InputDecoration(labelText: 'Quantity'),
+                  decoration: InputDecoration(
+                      floatingLabelStyle: floatingLabelTextStyle(),
+                      focusedBorder: customFocusBorder(),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide:
+                              BorderSide(color: primaryColor, width: 2)),
+                      labelStyle: TextStyle(color: greyColor, fontSize: 13),
+                      labelText: 'Quantity',
+                      hintText: 'Quantity'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter the email address';
+                      return 'Please enter the Quantity';
                     }
                     return null;
                   },
                   controller: _quantityController,
                 ),
-                SizedBox(
-                  height: 4,
+                const SizedBox(
+                  height: 10,
                 ),
-                TextButton(
-                  onPressed: () => _selectDate(context),
-                  child: Text('Select Date'),
+                Container(
+                  height: 40,
+                  width: 180,
+                  child: TextButton(
+                    style: ButtonStyle(
+                      iconColor: WidgetStatePropertyAll(Colors.white),
+                      backgroundColor: WidgetStatePropertyAll(myButtonColor),
+                    ),
+                    onPressed: () => _selectDate(context),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Icon(Icons.calendar_month_outlined),
+                        Text(
+                          'Select Date',
+                          style: TextStyle(color: Colors.white, fontSize: 16),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ],
             ),
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('Cancel'),
+              style: ButtonStyle(
+                  backgroundColor: WidgetStatePropertyAll(redColor)),
+              child: Text(
+                'Cancel',
+                style: TextStyle(
+                    color: whiteColor, fontFamily: 'inter', fontSize: 16),
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             ElevatedButton(
-              child: Text('Save'),
+              style: ElevatedButton.styleFrom(backgroundColor: greenColor),
+              child: Text(
+                'Save',
+                style: TextStyle(
+                    color: whiteColor, fontFamily: 'inter', fontSize: 16),
+              ),
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
