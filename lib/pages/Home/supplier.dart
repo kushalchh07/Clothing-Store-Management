@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/route_manager.dart';
 import 'package:nepstyle_management_system/Logic/Bloc/supplierBloc/supplier_bloc.dart';
+import 'package:nepstyle_management_system/pages/Home/customers.dart';
 
 import '../../constants/color/color.dart';
 import '../../utils/customwidgets/dividerText.dart';
@@ -49,14 +50,24 @@ class _SupplierState extends State<Supplier> {
           content: Text('Are you sure you want to delete this Supplier?'),
           actions: <Widget>[
             TextButton(
-              child: Text('No'),
+              style: ButtonStyle(
+                  backgroundColor: WidgetStatePropertyAll(greenColor)),
+              child: Text(
+                'No',
+                style: TextStyle(
+                    color: whiteColor, fontFamily: 'inter', fontSize: 16),
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-              child: Text('Yes'),
+              child: Text(
+                'Yes',
+                style: TextStyle(
+                    color: whiteColor, fontFamily: 'inter', fontSize: 16),
+              ),
               onPressed: () {
                 // Perform delete operation here
                 BlocProvider.of<SupplierBloc>(context)
@@ -83,7 +94,15 @@ class _SupplierState extends State<Supplier> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 TextFormField(
-                  decoration: InputDecoration(labelText: 'Name'),
+                  decoration: InputDecoration(
+                      floatingLabelStyle: floatingLabelTextStyle(),
+                      focusedBorder: customFocusBorder(),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide:
+                              BorderSide(color: primaryColor, width: 2)),
+                      labelStyle: TextStyle(color: greyColor, fontSize: 13),
+                      hintText: 'Name'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter the name';
@@ -92,8 +111,17 @@ class _SupplierState extends State<Supplier> {
                   },
                   controller: _nameController,
                 ),
+                const SizedBox(height: 10),
                 TextFormField(
-                  decoration: InputDecoration(labelText: 'Address'),
+                  decoration: InputDecoration(
+                      floatingLabelStyle: floatingLabelTextStyle(),
+                      focusedBorder: customFocusBorder(),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide:
+                              BorderSide(color: primaryColor, width: 2)),
+                      labelStyle: TextStyle(color: greyColor, fontSize: 13),
+                      hintText: 'Address'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter the address';
@@ -102,8 +130,17 @@ class _SupplierState extends State<Supplier> {
                   },
                   controller: _addressController,
                 ),
+                const SizedBox(height: 10),
                 TextFormField(
-                  decoration: InputDecoration(labelText: 'Phone Number'),
+                  decoration: InputDecoration(
+                      floatingLabelStyle: floatingLabelTextStyle(),
+                      focusedBorder: customFocusBorder(),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide:
+                              BorderSide(color: primaryColor, width: 2)),
+                      labelStyle: TextStyle(color: greyColor, fontSize: 13),
+                      hintText: 'Phone Number'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter the phone number';
@@ -112,8 +149,17 @@ class _SupplierState extends State<Supplier> {
                   },
                   controller: _phoneController,
                 ),
+                const SizedBox(height: 10),
                 TextFormField(
-                  decoration: InputDecoration(labelText: 'Email Address'),
+                  decoration: InputDecoration(
+                      floatingLabelStyle: floatingLabelTextStyle(),
+                      focusedBorder: customFocusBorder(),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide:
+                              BorderSide(color: primaryColor, width: 2)),
+                      labelStyle: TextStyle(color: greyColor, fontSize: 13),
+                      hintText: 'Email Address'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter the email address';
@@ -122,18 +168,30 @@ class _SupplierState extends State<Supplier> {
                   },
                   controller: _emailController,
                 ),
+                const SizedBox(height: 10),
               ],
             ),
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('Cancel'),
+              style: ButtonStyle(
+                  backgroundColor: WidgetStatePropertyAll(redColor)),
+              child: Text(
+                'Cancel',
+                style: TextStyle(
+                    color: whiteColor, fontFamily: 'inter', fontSize: 16),
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             ElevatedButton(
-              child: Text('Save'),
+              style: ElevatedButton.styleFrom(backgroundColor: greenColor),
+              child: Text(
+                'Save',
+                style: TextStyle(
+                    color: whiteColor, fontFamily: 'inter', fontSize: 16),
+              ),
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
@@ -216,32 +274,32 @@ class _SupplierState extends State<Supplier> {
                   dividerText: "Suppliers",
                   desc: "",
                 ),
-                 ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.black,
-                      shape: StadiumBorder(),
-                    ),
-                    onPressed: _showAddCSupplierDialog,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Icon(
-                          Icons.add_circle_outline_outlined,
-                          color: Colors.white,
-                        ),
-                        const SizedBox(
-                          width: 4,
-                        ),
-                        Text(
-                          "Add Supplier",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontFamily: 'inter'),
-                        ),
-                      ],
-                    ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.black,
+                    shape: StadiumBorder(),
                   ),
+                  onPressed: _showAddCSupplierDialog,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Icon(
+                        Icons.add_circle_outline_outlined,
+                        color: Colors.white,
+                      ),
+                      const SizedBox(
+                        width: 4,
+                      ),
+                      Text(
+                        "Add Supplier",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontFamily: 'inter'),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
             Divider(
