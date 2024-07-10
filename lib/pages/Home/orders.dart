@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/route_manager.dart';
 import 'package:nepstyle_management_system/Logic/Bloc/orderBloc/order_bloc.dart';
+import 'package:nepstyle_management_system/pages/Home/customers.dart';
 
 import '../../constants/color/color.dart';
 import '../../utils/customwidgets/dividerText.dart';
@@ -66,14 +67,24 @@ class _OrderScreenState extends State<OrderScreen> {
           content: Text('Are you sure you want to delete this detail?'),
           actions: <Widget>[
             TextButton(
-              child: Text('No'),
+              style: ButtonStyle(
+                  backgroundColor: WidgetStatePropertyAll(greenColor)),
+              child: Text(
+                'No',
+                style: TextStyle(
+                    color: whiteColor, fontFamily: 'inter', fontSize: 16),
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-              child: Text('Yes'),
+              child: Text(
+                'Yes',
+                style: TextStyle(
+                    color: whiteColor, fontFamily: 'inter', fontSize: 16),
+              ),
               onPressed: () {
                 BlocProvider.of<OrderBloc>(context)
                     .add(OrderDeleteButtonTappedEvent(id: id));
@@ -99,7 +110,15 @@ class _OrderScreenState extends State<OrderScreen> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 TextFormField(
-                  decoration: InputDecoration(labelText: 'Product Name'),
+                  decoration: InputDecoration(
+                      floatingLabelStyle: floatingLabelTextStyle(),
+                      focusedBorder: customFocusBorder(),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide:
+                              BorderSide(color: primaryColor, width: 2)),
+                      labelStyle: TextStyle(color: greyColor, fontSize: 13),
+                      hintText: 'Product Name'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter the Product name';
@@ -108,8 +127,19 @@ class _OrderScreenState extends State<OrderScreen> {
                   },
                   controller: _productNameController,
                 ),
+                const SizedBox(
+                  height: 10,
+                ),
                 TextFormField(
-                  decoration: InputDecoration(labelText: 'Category'),
+                  decoration: InputDecoration(
+                      floatingLabelStyle: floatingLabelTextStyle(),
+                      focusedBorder: customFocusBorder(),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide:
+                              BorderSide(color: primaryColor, width: 2)),
+                      labelStyle: TextStyle(color: greyColor, fontSize: 13),
+                      hintText: 'Category'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter the Category';
@@ -118,8 +148,19 @@ class _OrderScreenState extends State<OrderScreen> {
                   },
                   controller: _categoryController,
                 ),
+                const SizedBox(
+                  height: 10,
+                ),
                 TextFormField(
-                  decoration: InputDecoration(labelText: 'Quantity'),
+                  decoration: InputDecoration(
+                      floatingLabelStyle: floatingLabelTextStyle(),
+                      focusedBorder: customFocusBorder(),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide:
+                              BorderSide(color: primaryColor, width: 2)),
+                      labelStyle: TextStyle(color: greyColor, fontSize: 13),
+                      hintText: 'Quantity'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter the Quantity';
@@ -128,8 +169,19 @@ class _OrderScreenState extends State<OrderScreen> {
                   },
                   controller: _quantityController,
                 ),
+                const SizedBox(
+                  height: 10,
+                ),
                 TextFormField(
-                  decoration: InputDecoration(labelText: 'Per Piece Price'),
+                  decoration: InputDecoration(
+                      floatingLabelStyle: floatingLabelTextStyle(),
+                      focusedBorder: customFocusBorder(),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide:
+                              BorderSide(color: primaryColor, width: 2)),
+                      labelStyle: TextStyle(color: greyColor, fontSize: 13),
+                      hintText: 'Purchase Price'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter the Purchase price';
@@ -138,8 +190,19 @@ class _OrderScreenState extends State<OrderScreen> {
                   },
                   controller: _purPriceController,
                 ),
+                const SizedBox(
+                  height: 10,
+                ),
                 TextFormField(
-                  decoration: InputDecoration(labelText: 'Customer Name'),
+                  decoration: InputDecoration(
+                      floatingLabelStyle: floatingLabelTextStyle(),
+                      focusedBorder: customFocusBorder(),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide:
+                              BorderSide(color: primaryColor, width: 2)),
+                      labelStyle: TextStyle(color: greyColor, fontSize: 13),
+                      hintText: 'Customer Name'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter the Customer name';
@@ -149,24 +212,53 @@ class _OrderScreenState extends State<OrderScreen> {
                   controller: _customerNameController,
                 ),
                 SizedBox(
-                  height: 4,
+                  height: 12,
                 ),
-                TextButton(
-                  onPressed: () => _selectDate(context),
-                  child: Text('Select Date'),
+                Container(
+                  height: 40,
+                  width: 180,
+                  child: TextButton(
+                    style: ButtonStyle(
+                      iconColor: WidgetStatePropertyAll(Colors.white),
+                      backgroundColor: WidgetStatePropertyAll(myButtonColor),
+                    ),
+                    onPressed: () => _selectDate(context),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Icon(Icons.calendar_month_outlined),
+                        Text(
+                          'Select Date',
+                          style: TextStyle(color: Colors.white, fontSize: 16),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ],
             ),
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('Cancel'),
+              style: ButtonStyle(
+                backgroundColor: WidgetStatePropertyAll(redColor),
+              ),
+              child: Text(
+                'Cancel',
+                style: TextStyle(
+                    color: whiteColor, fontFamily: 'inter', fontSize: 16),
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             ElevatedButton(
-              child: Text('Save'),
+              style: ElevatedButton.styleFrom(backgroundColor: greenColor),
+              child: Text(
+                'Save',
+                style: TextStyle(
+                    color: whiteColor, fontFamily: 'inter', fontSize: 16),
+              ),
               onPressed: () async {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
@@ -241,8 +333,30 @@ class _OrderScreenState extends State<OrderScreen> {
                   desc: "",
                 ),
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: myButtonColor,
+                    shape: StadiumBorder(),
+                  ),
                   onPressed: _showOrderAdd,
-                  child: Text("Add new"),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Icon(
+                        Icons.add_circle_outline_outlined,
+                        color: Colors.white,
+                      ),
+                      const SizedBox(
+                        width: 4,
+                      ),
+                      Text(
+                        "Place Order",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontFamily: 'inter'),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),

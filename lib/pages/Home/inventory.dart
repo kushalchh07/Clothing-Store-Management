@@ -271,9 +271,31 @@ class _InventoryScreenState extends State<InventoryScreen> {
                   desc: "",
                 ),
                 ElevatedButton(
-                  onPressed: _showInventoryadd,
-                  child: Text("Add new"),
-                ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.black,
+                      shape: StadiumBorder(),
+                    ),
+                    onPressed: _showInventoryadd,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Icon(
+                          Icons.add_circle_outline_outlined,
+                          color: Colors.white,
+                        ),
+                        const SizedBox(
+                          width: 4,
+                        ),
+                        Text(
+                          "Add Product",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontFamily: 'inter'),
+                        ),
+                      ],
+                    ),
+                  ),
               ],
             ),
             Divider(

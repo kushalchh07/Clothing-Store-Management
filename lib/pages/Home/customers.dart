@@ -292,7 +292,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                   ),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.black,
+                      backgroundColor: myButtonColor,
                       shape: StadiumBorder(),
                     ),
                     onPressed: _showAddCustomerDialog,
@@ -302,6 +302,9 @@ class _CustomerScreenState extends State<CustomerScreen> {
                         Icon(
                           Icons.add_circle_outline_outlined,
                           color: Colors.white,
+                        ),
+                        const SizedBox(
+                          width: 4,
                         ),
                         Text(
                           "Add new",

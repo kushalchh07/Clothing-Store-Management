@@ -83,7 +83,7 @@ class _PurchasesState extends State<Purchases> {
     );
   }
 
-  void _showpurchaseadd() {
+  void _showPurchaseAdd() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -247,10 +247,32 @@ class _PurchasesState extends State<Purchases> {
                   dividerText: "Purchases",
                   desc: "",
                 ),
-                ElevatedButton(
-                  onPressed: _showpurchaseadd,
-                  child: Text("Add new"),
-                ),
+               ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.black,
+                      shape: StadiumBorder(),
+                    ),
+                    onPressed: _showPurchaseAdd,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Icon(
+                          Icons.add_circle_outline_outlined,
+                          color: Colors.white,
+                        ),
+                        const SizedBox(
+                          width: 4,
+                        ),
+                        Text(
+                          "Add Purchases",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontFamily: 'inter'),
+                        ),
+                      ],
+                    ),
+                  ),
               ],
             ),
             Divider(

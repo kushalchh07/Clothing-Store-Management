@@ -71,7 +71,7 @@ class _SupplierState extends State<Supplier> {
     );
   }
 
-  void _showAddCustomerDialog() {
+  void _showAddCSupplierDialog() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -216,10 +216,32 @@ class _SupplierState extends State<Supplier> {
                   dividerText: "Suppliers",
                   desc: "",
                 ),
-                ElevatedButton(
-                  onPressed: _showAddCustomerDialog,
-                  child: Text("Add new"),
-                ),
+                 ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.black,
+                      shape: StadiumBorder(),
+                    ),
+                    onPressed: _showAddCSupplierDialog,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Icon(
+                          Icons.add_circle_outline_outlined,
+                          color: Colors.white,
+                        ),
+                        const SizedBox(
+                          width: 4,
+                        ),
+                        Text(
+                          "Add Supplier",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontFamily: 'inter'),
+                        ),
+                      ],
+                    ),
+                  ),
               ],
             ),
             Divider(
