@@ -247,15 +247,35 @@ class _SalesState extends State<Sales> {
                                   DataCell(Row(
                                     children: [
                                       IconButton(
-                                        icon: Icon(Icons.edit),
+                                        style: ButtonStyle(
+                                          backgroundColor:
+                                              WidgetStatePropertyAll(
+                                            editButtonColor,
+                                          ),
+                                        ),
+                                        icon: Icon(
+                                          Icons.edit,
+                                          color: whiteColor,
+                                        ),
                                         onPressed: () {
                                           // Handle edit action
                                           // You can navigate to an edit screen or show a dialog
-                                          log('Edit ${sales.nameCustomer}');
                                         },
                                       ),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
                                       IconButton(
-                                          icon: Icon(Icons.delete),
+                                          style: ButtonStyle(
+                                            backgroundColor:
+                                                WidgetStatePropertyAll(
+                                              redColor,
+                                            ),
+                                          ),
+                                          icon: Icon(
+                                            Icons.delete,
+                                            color: whiteColor,
+                                          ),
                                           onPressed: () {
                                             _showDeleteConfirmationDialog(
                                                 sales.id);

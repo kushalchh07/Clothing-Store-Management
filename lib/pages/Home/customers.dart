@@ -333,7 +333,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                         child: Container(
                           constraints: BoxConstraints(minWidth: Get.width),
                           child: DataTable(
-                            columnSpacing: 20,
+                            columnSpacing: 10,
                             columns: [
                               DataColumn(
                                 label: Text(
@@ -419,15 +419,35 @@ class _CustomerScreenState extends State<CustomerScreen> {
                                     DataCell(Row(
                                       children: [
                                         IconButton(
-                                          icon: Icon(Icons.edit),
+                                          style: ButtonStyle(
+                                            backgroundColor:
+                                                WidgetStatePropertyAll(
+                                              editButtonColor,
+                                            ),
+                                          ),
+                                          icon: Icon(
+                                            Icons.edit,
+                                            color: whiteColor,
+                                          ),
                                           onPressed: () {
                                             // Handle edit action
                                             // You can navigate to an edit screen or show a dialog
-                                            log('Edit ${customer.name}');
                                           },
                                         ),
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
                                         IconButton(
-                                            icon: Icon(Icons.delete),
+                                            style: ButtonStyle(
+                                              backgroundColor:
+                                                  WidgetStatePropertyAll(
+                                                redColor,
+                                              ),
+                                            ),
+                                            icon: Icon(
+                                              Icons.delete,
+                                              color: whiteColor,
+                                            ),
                                             onPressed: () {
                                               _showDeleteConfirmationDialog(
                                                   customer.id);

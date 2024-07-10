@@ -401,23 +401,36 @@ class _SupplierState extends State<Supplier> {
                                     style: TextStyle(fontSize: 14),
                                   )),
                                   DataCell(Row(
-                                    children: [
-                                      IconButton(
-                                        icon: Icon(Icons.edit),
-                                        onPressed: () {
-                                          // Handle edit action
-                                          // You can navigate to an edit screen or show a dialog
-                                          log('Edit ${supplier.name}');
-                                        },
-                                      ),
-                                      IconButton(
-                                          icon: Icon(Icons.delete),
+                                      children: [
+                                        IconButton(
+                                          style: ButtonStyle(
+                                            backgroundColor:
+                                                WidgetStatePropertyAll(
+                                              editButtonColor,
+                                            ),
+                                          ),
+                                          icon: Icon(Icons.edit,color: whiteColor,),
                                           onPressed: () {
-                                            _showDeleteConfirmationDialog(
-                                                supplier.id);
-                                          }),
-                                    ],
-                                  )),
+                                            // Handle edit action
+                                            // You can navigate to an edit screen or show a dialog
+                                           
+                                          },
+                                        ), const SizedBox(
+                                        width: 10,
+                                      ),
+                                        IconButton(style: ButtonStyle(
+                                            backgroundColor:
+                                                WidgetStatePropertyAll(
+                                              redColor,
+                                            ),
+                                          ),
+                                            icon: Icon(Icons.delete,color: whiteColor,),
+                                            onPressed: () {
+                                              _showDeleteConfirmationDialog(
+                                                  supplier.id);
+                                            }),
+                                      ],
+                                    )),
                                 ],
                               );
                             },

@@ -54,3 +54,4 @@ const Color primaryColor = Color.fromARGB(255, 97, 97, 97);
 const Color secondaryColor = Color.fromARGB(255, 255, 145, 1);
 const Color myButtonColor = Colors.black;
 const Color redColor = Colors.red;
+const Color editButtonColor = Colors.blueAccent;

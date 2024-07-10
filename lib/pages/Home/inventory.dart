@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last
 
 import 'dart:developer';
 import 'dart:io' as io; // Alias for native file handling
@@ -548,23 +548,37 @@ class _InventoryScreenState extends State<InventoryScreen> {
                                     inventory.sellingPrice.toString(),
                                     style: TextStyle(fontSize: 14),
                                   )),
-                                  DataCell(Row(
-                                    children: [
-                                      IconButton(
-                                        icon: Icon(Icons.edit),
-                                        onPressed: () {
-                                          log('Edit ${inventory.productName}');
-                                        },
+                                   DataCell(Row(
+                                      children: [
+                                        IconButton(
+                                          style: ButtonStyle(
+                                            backgroundColor:
+                                                WidgetStatePropertyAll(
+                                              editButtonColor,
+                                            ),
+                                          ),
+                                          icon: Icon(Icons.edit,color: whiteColor,),
+                                          onPressed: () {
+                                            // Handle edit action
+                                            // You can navigate to an edit screen or show a dialog
+                                           
+                                          },
+                                        ), const SizedBox(
+                                        width: 10,
                                       ),
-                                      IconButton(
-                                        icon: Icon(Icons.delete),
-                                        onPressed: () {
-                                          _showDeleteConfirmationDialog(
-                                              inventory.id);
-                                        },
-                                      ),
-                                    ],
-                                  )),
+                                        IconButton(style: ButtonStyle(
+                                            backgroundColor:
+                                                WidgetStatePropertyAll(
+                                              redColor,
+                                            ),
+                                          ),
+                                            icon: Icon(Icons.delete,color: whiteColor,),
+                                            onPressed: () {
+                                              _showDeleteConfirmationDialog(
+                                                  inventory.id);
+                                            }),
+                                      ],
+                                    )),
                                   DataCell(
                                     ElevatedButton(
                                         onPressed: () {},

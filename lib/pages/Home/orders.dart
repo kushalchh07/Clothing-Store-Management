@@ -521,22 +521,36 @@ class _OrderScreenState extends State<OrderScreen> {
                                     style: TextStyle(fontSize: 14),
                                   )),
                                   DataCell(Row(
-                                    children: [
-                                      IconButton(
-                                        icon: Icon(Icons.edit),
-                                        onPressed: () {
-                                          // log('Edit ${orders.productName}');
-                                        },
+                                      children: [
+                                        IconButton(
+                                          style: ButtonStyle(
+                                            backgroundColor:
+                                                WidgetStatePropertyAll(
+                                              editButtonColor,
+                                            ),
+                                          ),
+                                          icon: Icon(Icons.edit,color: whiteColor,),
+                                          onPressed: () {
+                                            // Handle edit action
+                                            // You can navigate to an edit screen or show a dialog
+                                           
+                                          },
+                                        ), const SizedBox(
+                                        width: 10,
                                       ),
-                                      IconButton(
-                                        icon: Icon(Icons.delete),
-                                        onPressed: () {
-                                          _showDeleteConfirmationDialog(
-                                              orders.id);
-                                        },
-                                      ),
-                                    ],
-                                  )),
+                                        IconButton(style: ButtonStyle(
+                                            backgroundColor:
+                                                WidgetStatePropertyAll(
+                                              redColor,
+                                            ),
+                                          ),
+                                            icon: Icon(Icons.delete,color: whiteColor,),
+                                            onPressed: () {
+                                              _showDeleteConfirmationDialog(
+                                                  orders.id);
+                                            }),
+                                      ],
+                                    )),
                                   DataCell(
                                     ElevatedButton(
                                         onPressed: () {},
