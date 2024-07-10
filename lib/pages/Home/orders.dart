@@ -3,10 +3,12 @@
 import 'dart:developer';
 import 'dart:math';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/route_manager.dart';
 import 'package:nepstyle_management_system/Logic/Bloc/orderBloc/order_bloc.dart';
+import 'package:nepstyle_management_system/models/order_model.dart';
 import 'package:nepstyle_management_system/pages/Home/customers.dart';
 
 import '../../constants/color/color.dart';
@@ -287,6 +289,133 @@ class _OrderScreenState extends State<OrderScreen> {
     );
   }
 
+  void _showEditOrderDialog(OrderModel order) {
+    _productNameController.text = order.productName;
+    _categoryController.text = order.category;
+    _customerNameController.text = order.customerName;
+    _purPriceController.text = order.perPiecePrice.toString();
+    _quantityController.text = order.quantity.toString();
+    _selectedDate = order.date;
+    _buildTextFormField(
+      TextEditingController controller,
+      String hint,
+    ) {
+      return TextFormField(
+        decoration: InputDecoration(
+            floatingLabelStyle: floatingLabelTextStyle(),
+            focusedBorder: customFocusBorder(),
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+                borderSide: BorderSide(color: primaryColor, width: 2)),
+            labelStyle: TextStyle(color: greyColor, fontSize: 13),
+            labelText: hint,
+            hintText: hint),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Please enter the  ${hint}';
+          }
+          return null;
+        },
+        controller: controller,
+      );
+    }
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'Edit Order',
+            style: TextStyle(fontFamily: 'inter', fontSize: 16),
+          ),
+          content: SingleChildScrollView(
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  _buildTextFormField(_productNameController, 'Name'),
+                  const SizedBox(height: 10),
+                  _buildTextFormField(_categoryController, 'Category'),
+                  const SizedBox(height: 10),
+                  _buildTextFormField(_quantityController, 'Quantity'),
+                  const SizedBox(height: 10),
+                  _buildTextFormField(_purPriceController, 'Purchase Price'),
+                  const SizedBox(height: 10),
+                  _buildTextFormField(_customerNameController, 'Customer Name'),
+                  const SizedBox(height: 12),
+                  Container(
+                    height: 40,
+                    width: 180,
+                    child: TextButton(
+                      style: ButtonStyle(
+                        iconColor: WidgetStatePropertyAll(Colors.white),
+                        backgroundColor: WidgetStatePropertyAll(myButtonColor),
+                      ),
+                      onPressed: () => _selectDate(context),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Icon(Icons.calendar_month_outlined),
+                          Text(
+                            'Select Date',
+                            style: TextStyle(color: Colors.white, fontSize: 16),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              style: ButtonStyle(
+                  backgroundColor: WidgetStatePropertyAll(redColor)),
+              child: Text(
+                'Cancel',
+                style: TextStyle(
+                    color: whiteColor, fontFamily: 'inter', fontSize: 16),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(backgroundColor: greenColor),
+              child: Text(
+                'Save',
+                style: TextStyle(
+                    color: whiteColor, fontFamily: 'inter', fontSize: 16),
+              ),
+              onPressed: () async {
+                if (_formKey.currentState!.validate()) {
+                  _formKey.currentState!.save();
+
+                  BlocProvider.of<OrderBloc>(context)
+                      .add(OrderUpdateButtonTappedEvent(
+                    id: order.id,
+                    productName: _productNameController.text.trim(),
+                    category: _categoryController.text.trim(),
+                    orderCode: order.orderCode,
+                    customerName: _customerNameController.text.trim(),
+                    orderPrice: double.parse(_purPriceController.text.trim()),
+                    quantity: int.parse(_quantityController.text.trim()),
+                    date: _selectedDate,
+                  ));
+                  BlocProvider.of<OrderBloc>(context).add(OrderLoadEvent());
+                  _clearControllers();
+                  Navigator.of(context).pop();
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -521,36 +650,44 @@ class _OrderScreenState extends State<OrderScreen> {
                                     style: TextStyle(fontSize: 14),
                                   )),
                                   DataCell(Row(
-                                      children: [
-                                        IconButton(
-                                          style: ButtonStyle(
-                                            backgroundColor:
-                                                WidgetStatePropertyAll(
-                                              editButtonColor,
-                                            ),
+                                    children: [
+                                      IconButton(
+                                        style: ButtonStyle(
+                                          backgroundColor:
+                                              WidgetStatePropertyAll(
+                                            editButtonColor,
                                           ),
-                                          icon: Icon(Icons.edit,color: whiteColor,),
-                                          onPressed: () {
-                                            // Handle edit action
-                                            // You can navigate to an edit screen or show a dialog
-                                           
-                                          },
-                                        ), const SizedBox(
+                                        ),
+                                        icon: Icon(
+                                          Icons.edit,
+                                          color: whiteColor,
+                                        ),
+                                        onPressed: () {
+                                          _showEditOrderDialog(orders);
+                                          // Handle edit action
+                                          // You can navigate to an edit screen or show a dialog
+                                        },
+                                      ),
+                                      const SizedBox(
                                         width: 10,
                                       ),
-                                        IconButton(style: ButtonStyle(
+                                      IconButton(
+                                          style: ButtonStyle(
                                             backgroundColor:
                                                 WidgetStatePropertyAll(
                                               redColor,
                                             ),
                                           ),
-                                            icon: Icon(Icons.delete,color: whiteColor,),
-                                            onPressed: () {
-                                              _showDeleteConfirmationDialog(
-                                                  orders.id);
-                                            }),
-                                      ],
-                                    )),
+                                          icon: Icon(
+                                            Icons.delete,
+                                            color: whiteColor,
+                                          ),
+                                          onPressed: () {
+                                            _showDeleteConfirmationDialog(
+                                                orders.id);
+                                          }),
+                                    ],
+                                  )),
                                   DataCell(
                                     ElevatedButton(
                                         onPressed: () {},
