@@ -8,6 +8,7 @@ import 'package:nepstyle_management_system/Logic/Bloc/customersBloc/customer_blo
 
 import 'package:nepstyle_management_system/utils/customwidgets/dividerText.dart';
 import '../../constants/color/color.dart';
+import '../../models/customerModel.dart';
 
 class CustomerScreen extends StatefulWidget {
   const CustomerScreen({Key? key}) : super(key: key);
@@ -186,6 +187,73 @@ class _CustomerScreenState extends State<CustomerScreen> {
               ),
             ],
           ),
+        );
+      },
+    );
+  }
+
+  void _showEditDialog(Customer customer) {
+    _nameController.text = customer.name;
+    _addressController.text = customer.address;
+    _phoneController.text = customer.phone;
+    _emailController.text = customer.email;
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'Edit Customer',
+            style: TextStyle(fontFamily: 'inter', fontSize: 16),
+          ),
+          content: SingleChildScrollView(
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  _buildTextFormField(_nameController, 'Name'),
+                  const SizedBox(height: 8),
+                  _buildTextFormField(_addressController, 'Address'),
+                  const SizedBox(height: 8),
+                  _buildTextFormField(_phoneController, 'Phone Number'),
+                  const SizedBox(height: 8),
+                  _buildTextFormField(_emailController, 'Email Address'),
+                ],
+              ),
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              style: TextButton.styleFrom(
+                backgroundColor: Colors.red,
+              ),
+              child: Text(
+                'Cancel',
+                style: TextStyle(
+                    color: Colors.white, fontSize: 16, fontFamily: 'inter'),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+              child: Text(
+                'Save',
+                style: TextStyle(
+                    color: Colors.white, fontSize: 16, fontFamily: 'inter'),
+              ),
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  _formKey.currentState!.save();
+
+                  _clearControllers();
+                  Navigator.of(context).pop();
+                }
+              },
+            ),
+          ],
         );
       },
     );
@@ -429,10 +497,8 @@ class _CustomerScreenState extends State<CustomerScreen> {
                                             Icons.edit,
                                             color: whiteColor,
                                           ),
-                                          onPressed: () {
-                                            // Handle edit action
-                                            // You can navigate to an edit screen or show a dialog
-                                          },
+                                          onPressed: () =>
+                                              _showEditDialog(customer),
                                         ),
                                         const SizedBox(
                                           width: 10,
@@ -471,6 +537,30 @@ class _CustomerScreenState extends State<CustomerScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  _buildTextFormField(
+    TextEditingController controller,
+    String hint,
+  ) {
+    return TextFormField(
+      decoration: InputDecoration(
+          floatingLabelStyle: floatingLabelTextStyle(),
+          focusedBorder: customFocusBorder(),
+          border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(15),
+              borderSide: BorderSide(color: primaryColor, width: 2)),
+          labelStyle: TextStyle(color: greyColor, fontSize: 13),
+          labelText: hint,
+          hintText: hint),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter the  ${hint}';
+        }
+        return null;
+      },
+      controller: controller,
     );
   }
 }
