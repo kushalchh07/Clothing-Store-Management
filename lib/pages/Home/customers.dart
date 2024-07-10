@@ -42,7 +42,18 @@ class _CustomerScreenState extends State<CustomerScreen> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 TextFormField(
-                  decoration: InputDecoration(labelText: 'Name'),
+                  cursorColor: primaryColor,
+                  textInputAction: TextInputAction.next,
+                  keyboardType: TextInputType.name,
+                  decoration: InputDecoration(
+                      floatingLabelStyle: floatingLabelTextStyle(),
+                      focusedBorder: customFocusBorder(),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide:
+                              BorderSide(color: primaryColor, width: 2)),
+                      labelStyle: TextStyle(color: greyColor, fontSize: 13),
+                      hintText: 'Name'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter the name';
@@ -354,4 +365,14 @@ class _CustomerScreenState extends State<CustomerScreen> {
       ),
     );
   }
+}
+
+OutlineInputBorder customFocusBorder() {
+  return OutlineInputBorder(
+      borderRadius: BorderRadius.circular(35),
+      borderSide: BorderSide(color: primaryColor, width: 2));
+}
+
+TextStyle floatingLabelTextStyle() {
+  return TextStyle(color: primaryColor, fontSize: 13);
 }
