@@ -247,7 +247,15 @@ class _CustomerScreenState extends State<CustomerScreen> {
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
-
+                  BlocProvider.of<CustomerBloc>(context).add(
+                      CustomerUpdateButtonTappedEvent(
+                          name: _nameController.text.trim(),
+                          address: _addressController.text.trim(),
+                          phone: _phoneController.text.trim(),
+                          email: _emailController.text.trim(),
+                          id: customer.id));
+                  BlocProvider.of<CustomerBloc>(context)
+                      .add(CustomerLoadEvent());
                   _clearControllers();
                   Navigator.of(context).pop();
                 }

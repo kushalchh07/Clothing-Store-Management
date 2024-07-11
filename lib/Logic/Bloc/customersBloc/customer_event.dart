@@ -28,7 +28,20 @@ final class CustomerAddButtonTappedEvent extends CustomerEvent {
     // required this.pincode,
   });
 }
-
+class CustomerUpdateButtonTappedEvent extends CustomerEvent {
+  final String id;
+  final String name;
+  final String address;
+  final String phone;
+  final String email;
+  CustomerUpdateButtonTappedEvent({
+    required this.id,
+    required this.name,
+    required this.address,
+    required this.phone,
+    required this.email,
+  });
+}
 class CustomerDeleteButtonTappedEvent extends CustomerEvent {
   final String id;
 

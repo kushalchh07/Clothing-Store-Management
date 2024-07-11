@@ -20,8 +20,9 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
     on<CustomerAddButtonTappedEvent>(_customerAddButtonTappedEvent);
     on<CustomerLoadEvent>(_customerLoadEvent);
     on<CustomerDeleteButtonTappedEvent>(_customerDeleteButtonTappedEvent);
+    on<CustomerUpdateButtonTappedEvent>(_customerUpdateButtonTappedEvent);
   }
-
+  CrudServices _crudServices = CrudServices();
   FutureOr<void> _customerAddButtonTappedEvent(
       CustomerAddButtonTappedEvent event, Emitter<CustomerState> emit) async {
     try {
@@ -78,6 +79,17 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
       await _firestore.collection('customers').doc(event.id).delete();
     } catch (e) {
       emit(CustomerErrorState("Failed to delete customer: $e"));
+    }
+  }
+
+  FutureOr<void> _customerUpdateButtonTappedEvent(
+      CustomerUpdateButtonTappedEvent event,
+      Emitter<CustomerState> emit) async {
+    try {
+      await _crudServices.updateCustomer(
+          event.id, event.name, event.address, event.phone, event.email);
+    } catch (e) {
+      emit(CustomerErrorState("Failed to update customer: $e"));
     }
   }
 }
