@@ -2,8 +2,11 @@ part of 'supplier_bloc.dart';
 
 @immutable
 sealed class SupplierEvent {}
+
 final class SupplierInitial extends SupplierEvent {}
+
 final class SupplierLoadEvent extends SupplierEvent {}
+
 final class SupplierAddButtonTappedEvent extends SupplierEvent {
   final String name;
   final String address;
@@ -26,6 +29,22 @@ final class SupplierAddButtonTappedEvent extends SupplierEvent {
     // required this.city,
     // required this.state,
     // required this.pincode,
+  });
+}
+
+class SupplierUpdateButtonTappedEvent extends SupplierEvent {
+  String id;
+  String name;
+  String address;
+  String phone;
+  String email;
+
+  SupplierUpdateButtonTappedEvent({
+    required this.id,
+    required this.name,
+    required this.address,
+    required this.phone,
+    required this.email,
   });
 }
 

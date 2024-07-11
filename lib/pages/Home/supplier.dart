@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/route_manager.dart';
 import 'package:nepstyle_management_system/Logic/Bloc/supplierBloc/supplier_bloc.dart';
+import 'package:nepstyle_management_system/models/supplier_model.dart';
 import 'package:nepstyle_management_system/pages/Home/customers.dart';
 
 import '../../constants/color/color.dart';
@@ -39,6 +40,109 @@ class _SupplierState extends State<Supplier> {
     _addressController.clear();
     _phoneController.clear();
     _emailController.clear();
+  }
+
+  void _showEditSupplierDialog(SupplierModel supplier) {
+    _nameController.text = supplier.name;
+    _addressController.text = supplier.address;
+    _emailController.text = supplier.email;
+    _phoneController.text = supplier.phone;
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Edit Supplier'),
+          content: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                _buildTextFormField(_nameController, 'Name'),
+                const SizedBox(height: 10),
+                _buildTextFormField(_addressController, 'Address'),
+                const SizedBox(height: 10),
+                _buildTextFormField(_phoneController, 'Phone Number'),
+                const SizedBox(height: 10),
+                _buildTextFormField(_emailController, 'Email Address'),
+                const SizedBox(height: 10),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              style: ButtonStyle(
+                  backgroundColor: WidgetStatePropertyAll(redColor)),
+              child: Text(
+                'Cancel',
+                style: TextStyle(
+                    color: whiteColor, fontFamily: 'inter', fontSize: 16),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(backgroundColor: greenColor),
+              child: Text(
+                'Save',
+                style: TextStyle(
+                    color: whiteColor, fontFamily: 'inter', fontSize: 16),
+              ),
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  _formKey.currentState!.save();
+                  log('Name: ${_nameController.text.trim()}');
+                  log('Address: ${_addressController.text}');
+                  log('Phone Number: ${_phoneController.text}');
+                  log('Email Address: ${_emailController.text}');
+
+                  BlocProvider.of<SupplierBloc>(context).add(
+                    SupplierUpdateButtonTappedEvent(
+                      id: supplier.id,
+                      name: _nameController.text.trim(),
+                      address: _addressController.text.trim(),
+                      phone: _phoneController.text.trim(),
+                      email: _emailController.text.trim(),
+                    ),
+                  );
+
+                  log("Updated in the bloc");
+                  BlocProvider.of<SupplierBloc>(context)
+                      .add(SupplierLoadEvent());
+                  _clearControllers();
+                  Navigator.of(context).pop();
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildTextFormField(
+    TextEditingController controller,
+    String hint,
+  ) {
+    return TextFormField(
+      decoration: InputDecoration(
+          floatingLabelStyle: floatingLabelTextStyle(),
+          focusedBorder: customFocusBorder(),
+          border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(15),
+              borderSide: BorderSide(color: primaryColor, width: 2)),
+          labelStyle: TextStyle(color: greyColor, fontSize: 13),
+          labelText: hint,
+          hintText: hint),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter the $hint';
+        }
+        return null;
+      },
+      controller: controller,
+    );
   }
 
   void _showDeleteConfirmationDialog(String customerId) {
@@ -401,36 +505,44 @@ class _SupplierState extends State<Supplier> {
                                     style: TextStyle(fontSize: 14),
                                   )),
                                   DataCell(Row(
-                                      children: [
-                                        IconButton(
-                                          style: ButtonStyle(
-                                            backgroundColor:
-                                                WidgetStatePropertyAll(
-                                              editButtonColor,
-                                            ),
+                                    children: [
+                                      IconButton(
+                                        style: ButtonStyle(
+                                          backgroundColor:
+                                              WidgetStatePropertyAll(
+                                            editButtonColor,
                                           ),
-                                          icon: Icon(Icons.edit,color: whiteColor,),
-                                          onPressed: () {
-                                            // Handle edit action
-                                            // You can navigate to an edit screen or show a dialog
-                                           
-                                          },
-                                        ), const SizedBox(
+                                        ),
+                                        icon: Icon(
+                                          Icons.edit,
+                                          color: whiteColor,
+                                        ),
+                                        onPressed: () {
+                                          // Handle edit action
+                                          // You can navigate to an edit screen or show a dialog
+                                          _showEditSupplierDialog(supplier);
+                                        },
+                                      ),
+                                      const SizedBox(
                                         width: 10,
                                       ),
-                                        IconButton(style: ButtonStyle(
+                                      IconButton(
+                                          style: ButtonStyle(
                                             backgroundColor:
                                                 WidgetStatePropertyAll(
                                               redColor,
                                             ),
                                           ),
-                                            icon: Icon(Icons.delete,color: whiteColor,),
-                                            onPressed: () {
-                                              _showDeleteConfirmationDialog(
-                                                  supplier.id);
-                                            }),
-                                      ],
-                                    )),
+                                          icon: Icon(
+                                            Icons.delete,
+                                            color: whiteColor,
+                                          ),
+                                          onPressed: () {
+                                            _showDeleteConfirmationDialog(
+                                                supplier.id);
+                                          }),
+                                    ],
+                                  )),
                                 ],
                               );
                             },
