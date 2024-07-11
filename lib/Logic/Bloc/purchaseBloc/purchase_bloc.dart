@@ -61,21 +61,27 @@ class PurchaseBloc extends Bloc<PurchaseEvent, PurchaseState> {
   FutureOr<void> _onPurchaseUpdateButtonTappedEvent(
       PurchaseUpdateButtonTappedEvent event,
       Emitter<PurchaseState> emit) async {
-        try{
-          await _crudServices.updatePurchases(
-            event.id,
-            event.supplierName,
-            event.category,
-            event.productName,
-            event.quantity.toString(),
-            event.purPrice.toString(),
-            event.description,
-          );
-        }catch(e){
-          log(e.toString());
-          rethrow;
-        }
-      }
+    try {
+      final perPrice = event.purPrice;
+      final quantity = event.quantity;
+      final totalAmount = perPrice * quantity;
+      String formattedDate = DateFormat('yyyy-MM-dd').format(event.date);
+      await _crudServices.updatePurchases(
+        event.id,
+        event.supplierName,
+        event.category,
+        event.productName,
+        event.quantity.toString(),
+        event.purPrice.toString(),
+        event.description,
+        totalAmount.toString(),
+        formattedDate,
+      );
+    } catch (e) {
+      log(e.toString());
+      rethrow;
+    }
+  }
 
   FutureOr<void> _onPurchaseDeleteButtonTappedEvent(
       PurchaseDeleteButtonTappedEvent event,

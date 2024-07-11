@@ -55,7 +55,26 @@ class SalesBloc extends Bloc<SalesEvent, SalesState> {
   }
 
   FutureOr<void> _onSalesUpdateButtonTappedEvent(
-      SalesUpdateButtonTappedEvent event, Emitter<SalesState> emit) async {}
+      SalesUpdateButtonTappedEvent event, Emitter<SalesState> emit) async {
+        try{
+          final perprice = event.salesPrice;
+          final quantity = event.quantity;
+          final totalAmount = perprice * quantity;
+          String formattedDate = DateFormat('yyyy-MM-dd').format(event.date);
+          await _crudServices.updateSales(
+            event.id,
+            formattedDate,
+            event.customerName,
+            event.productName,
+            event.quantity.toString(),
+            event.salesPrice.toString(),
+            totalAmount.toString(),
+          );
+        }catch(e){
+          log(e.toString());
+          emit(SalesLoadErrorState());
+        }
+      }
 
   FutureOr<void> _onSalesDeleteButtonTappedEvent(
       SalesDeleteButtonTappedEvent event, Emitter<SalesState> emit) async {
