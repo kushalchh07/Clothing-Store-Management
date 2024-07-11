@@ -15,6 +15,7 @@ import 'package:flutter/foundation.dart' show kIsWeb; // Import kIsWeb
 import 'package:nepstyle_management_system/pages/Home/customers.dart';
 import 'dart:typed_data';
 import '../../constants/color/color.dart';
+import '../../models/inventory_model.dart';
 import '../../utils/customwidgets/dividerText.dart';
 
 class InventoryScreen extends StatefulWidget {
@@ -305,6 +306,136 @@ class _InventoryScreenState extends State<InventoryScreen> {
     );
   }
 
+  _buildTextFormField(
+    TextEditingController controller,
+    String hint,
+  ) {
+    return TextFormField(
+      decoration: InputDecoration(
+          floatingLabelStyle: floatingLabelTextStyle(),
+          focusedBorder: customFocusBorder(),
+          border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(15),
+              borderSide: BorderSide(color: primaryColor, width: 2)),
+          labelStyle: TextStyle(color: greyColor, fontSize: 13),
+          labelText: hint,
+          hintText: hint),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter the  ${hint}';
+        }
+        return null;
+      },
+      controller: controller,
+    );
+  }
+
+  void _showInventoryEditDialog(Inventory inventory) {
+    _productNameController.text = inventory.productName;
+    _categoryController.text = inventory.category;
+    _descriptionController.text = inventory.description;
+    _purPriceController.text = inventory.purchasePrice.toString();
+    _sellingPriceController.text = inventory.sellingPrice.toString();
+    _quantityController.text = inventory.quantity.toString();
+    _imageFile = null;
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'Edit Product',
+            style: TextStyle(fontFamily: 'inter', fontSize: 16),
+          ),
+          content: SingleChildScrollView(
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  _buildTextFormField(_productNameController, 'Product Name'),
+                  const SizedBox(height: 10),
+                  _buildTextFormField(_categoryController, 'Category'),
+                  const SizedBox(height: 10),
+                  _buildTextFormField(_quantityController, 'Quantity'),
+                  const SizedBox(height: 10),
+                  _buildTextFormField(_purPriceController, 'Purchase Price'),
+                  const SizedBox(height: 10),
+                  _buildTextFormField(_sellingPriceController, 'Selling Price'),
+                  const SizedBox(height: 10),
+                  _buildTextFormField(_descriptionController, 'Description'),
+                  const SizedBox(height: 10),
+                  ElevatedButton(
+                    onPressed: _pickImage,
+                    child: Text('Pick Image'),
+                  ),
+                  if (_imageFile != null)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10.0),
+                      child: kIsWeb
+                          ? Image.network((_imageFile as html.File).name,
+                              height: 150)
+                          : Image.file(_imageFile as io.File, height: 150),
+                    ),
+                ],
+              ),
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              style: ButtonStyle(
+                  backgroundColor: WidgetStatePropertyAll(redColor)),
+              child: Text(
+                'Cancel',
+                style: TextStyle(
+                    color: whiteColor, fontFamily: 'inter', fontSize: 16),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(backgroundColor: greenColor),
+              child: Text(
+                'Save',
+                style: TextStyle(
+                    color: whiteColor, fontFamily: 'inter', fontSize: 16),
+              ),
+              onPressed: () async {
+                if (_formKey.currentState!.validate()) {
+                  _formKey.currentState!.save();
+                  if (_imageFile != null) {
+                    _imageUrl = await uploadImage(_imageFile);
+                  } else {
+                    _imageUrl = inventory.productImage;
+                  }
+
+                  BlocProvider.of<InventoryBloc>(context).add(
+                    InventoryUpdateButtonTappedEvent(
+                      id: inventory.id,
+                      name: _productNameController.text.trim(),
+                      category: _categoryController.text.trim(),
+                      description: _descriptionController.text.trim(),
+                      purPrice: _purPriceController.text.trim(),
+                      sellingPrice: _sellingPriceController.text.trim(),
+                      quantity: _quantityController.text.trim(),
+                      productImage: _imageUrl!,
+                    ),
+                  );
+                  log("Updated in the bloc");
+                  BlocProvider.of<InventoryBloc>(context)
+                      .add(InventoryLoadEvent());
+                  _clearControllers();
+                  Navigator.of(context).pop();
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -548,37 +679,43 @@ class _InventoryScreenState extends State<InventoryScreen> {
                                     inventory.sellingPrice.toString(),
                                     style: TextStyle(fontSize: 14),
                                   )),
-                                   DataCell(Row(
-                                      children: [
-                                        IconButton(
-                                          style: ButtonStyle(
-                                            backgroundColor:
-                                                WidgetStatePropertyAll(
-                                              editButtonColor,
-                                            ),
+                                  DataCell(Row(
+                                    children: [
+                                      IconButton(
+                                        style: ButtonStyle(
+                                          backgroundColor:
+                                              WidgetStatePropertyAll(
+                                            editButtonColor,
                                           ),
-                                          icon: Icon(Icons.edit,color: whiteColor,),
-                                          onPressed: () {
-                                            // Handle edit action
-                                            // You can navigate to an edit screen or show a dialog
-                                           
-                                          },
-                                        ), const SizedBox(
+                                        ),
+                                        icon: Icon(
+                                          Icons.edit,
+                                          color: whiteColor,
+                                        ),
+                                        onPressed: () {
+                                          _showInventoryEditDialog(inventory);
+                                        },
+                                      ),
+                                      const SizedBox(
                                         width: 10,
                                       ),
-                                        IconButton(style: ButtonStyle(
+                                      IconButton(
+                                          style: ButtonStyle(
                                             backgroundColor:
                                                 WidgetStatePropertyAll(
                                               redColor,
                                             ),
                                           ),
-                                            icon: Icon(Icons.delete,color: whiteColor,),
-                                            onPressed: () {
-                                              _showDeleteConfirmationDialog(
-                                                  inventory.id);
-                                            }),
-                                      ],
-                                    )),
+                                          icon: Icon(
+                                            Icons.delete,
+                                            color: whiteColor,
+                                          ),
+                                          onPressed: () {
+                                            _showDeleteConfirmationDialog(
+                                                inventory.id);
+                                          }),
+                                    ],
+                                  )),
                                   DataCell(
                                     ElevatedButton(
                                         onPressed: () {},
