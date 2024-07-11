@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/route_manager.dart';
 import 'package:nepstyle_management_system/Logic/Bloc/supplierBloc/supplier_bloc.dart';
+import 'package:nepstyle_management_system/models/purchase_model.dart';
 import 'package:nepstyle_management_system/pages/Home/customers.dart';
 
 import '../../Logic/Bloc/purchaseBloc/purchase_bloc.dart';
@@ -91,6 +92,143 @@ class _PurchasesState extends State<Purchases> {
           ],
         );
       },
+    );
+  }
+
+  void _showEditPurchaseDialog(PurchaseModel purchase) {
+    _productNameController.text = purchase.productName;
+    _categoryController.text = purchase.category;
+    _descriptionController.text = purchase.description;
+    _purPriceController.text = purchase.perPiecePrice.toString();
+    _quantityController.text = purchase.quantity.toString();
+    _supplierNameController.text = purchase.supplier;
+    _selectedDate = purchase.date;
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Edit Purchase'),
+          content: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                _buildTextFormField(_productNameController, 'Product Name'),
+                const SizedBox(height: 10),
+                _buildTextFormField(_categoryController, 'Category'),
+                const SizedBox(height: 10),
+                _buildTextFormField(_quantityController, 'Quantity'),
+                const SizedBox(height: 10),
+                _buildTextFormField(_purPriceController, 'Per Piece Price'),
+                const SizedBox(height: 10),
+                _buildTextFormField(_supplierNameController, 'Supplier Name'),
+                const SizedBox(height: 10),
+                _buildTextFormField(_descriptionController, 'Description'),
+                const SizedBox(height: 10),
+                Container(
+                  height: 40,
+                  width: 180,
+                  child: TextButton(
+                    style: ButtonStyle(
+                      iconColor: WidgetStatePropertyAll(Colors.white),
+                      backgroundColor: WidgetStatePropertyAll(myButtonColor),
+                    ),
+                    onPressed: () => _selectDate(context),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Icon(Icons.calendar_month_outlined),
+                        Text(
+                          'Select Date',
+                          style: TextStyle(color: Colors.white, fontSize: 16),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              style: ButtonStyle(
+                  backgroundColor: WidgetStatePropertyAll(redColor)),
+              child: Text(
+                'Cancel',
+                style: TextStyle(
+                    color: whiteColor, fontFamily: 'inter', fontSize: 16),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(backgroundColor: greenColor),
+              child: Text(
+                'Save',
+                style: TextStyle(
+                    color: whiteColor, fontFamily: 'inter', fontSize: 16),
+              ),
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  _formKey.currentState!.save();
+                  log('Product Name: ${_productNameController.text.trim()}');
+                  log('Category: ${_categoryController.text.trim()}');
+                  log('Quantity: ${_quantityController.text.trim()}');
+                  log('Per Piece Price: ${_purPriceController.text.trim()}');
+                  log('Supplier Name: ${_supplierNameController.text.trim()}');
+                  log('Description: ${_descriptionController.text.trim()}');
+                  log('Date: $_selectedDate');
+
+                  BlocProvider.of<PurchaseBloc>(context).add(
+                    PurchaseUpdateButtonTappedEvent(
+                      id: purchase.id,
+                      productName: _productNameController.text.trim(),
+                      category: _categoryController.text.trim(),
+                      description: _descriptionController.text.trim(),
+                      purPrice: double.parse(_purPriceController.text.trim()),
+                      quantity: int.parse(_quantityController.text.trim()),
+                      supplierName: _supplierNameController.text.trim(),
+                      date: _selectedDate,
+                    ),
+                  );
+
+                  log("Updated in the bloc");
+                  BlocProvider.of<PurchaseBloc>(context)
+                      .add(PurchaseLoadEvent());
+                  _clearControllers();
+                  Navigator.of(context).pop();
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildTextFormField(
+    TextEditingController controller,
+    String hint,
+  ) {
+    return TextFormField(
+      decoration: InputDecoration(
+          floatingLabelStyle: floatingLabelTextStyle(),
+          focusedBorder: customFocusBorder(),
+          border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(15),
+              borderSide: BorderSide(color: primaryColor, width: 2)),
+          labelStyle: TextStyle(color: greyColor, fontSize: 13),
+          labelText: hint,
+          hintText: hint),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter the $hint';
+        }
+        return null;
+      },
+      controller: controller,
     );
   }
 
@@ -517,37 +655,45 @@ class _PurchasesState extends State<Purchases> {
                                     purchase.totalAmount.toString(),
                                     style: TextStyle(fontSize: 14),
                                   )),
-                                   DataCell(Row(
-                                      children: [
-                                        IconButton(
-                                          style: ButtonStyle(
-                                            backgroundColor:
-                                                WidgetStatePropertyAll(
-                                              editButtonColor,
-                                            ),
+                                  DataCell(Row(
+                                    children: [
+                                      IconButton(
+                                        style: ButtonStyle(
+                                          backgroundColor:
+                                              WidgetStatePropertyAll(
+                                            editButtonColor,
                                           ),
-                                          icon: Icon(Icons.edit,color: whiteColor,),
-                                          onPressed: () {
-                                            // Handle edit action
-                                            // You can navigate to an edit screen or show a dialog
-                                           
-                                          },
-                                        ), const SizedBox(
+                                        ),
+                                        icon: Icon(
+                                          Icons.edit,
+                                          color: whiteColor,
+                                        ),
+                                        onPressed: () {
+                                          // Handle edit action
+                                          // You can navigate to an edit screen or show a dialog
+                                          _showEditPurchaseDialog(purchase);
+                                        },
+                                      ),
+                                      const SizedBox(
                                         width: 10,
                                       ),
-                                        IconButton(style: ButtonStyle(
+                                      IconButton(
+                                          style: ButtonStyle(
                                             backgroundColor:
                                                 WidgetStatePropertyAll(
                                               redColor,
                                             ),
                                           ),
-                                            icon: Icon(Icons.delete,color: whiteColor,),
-                                            onPressed: () {
-                                              _showDeleteConfirmationDialog(
-                                                  purchase.id);
-                                            }),
-                                      ],
-                                    )),
+                                          icon: Icon(
+                                            Icons.delete,
+                                            color: whiteColor,
+                                          ),
+                                          onPressed: () {
+                                            _showDeleteConfirmationDialog(
+                                                purchase.id);
+                                          }),
+                                    ],
+                                  )),
                                   DataCell(
                                     ElevatedButton(
                                         onPressed: () {},
