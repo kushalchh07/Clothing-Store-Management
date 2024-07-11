@@ -295,7 +295,7 @@ class _OrderScreenState extends State<OrderScreen> {
     _customerNameController.text = order.customerName;
     _purPriceController.text = order.perPiecePrice.toString();
     _quantityController.text = order.quantity.toString();
-    _selectedDate = order.date;
+    _selectedDate = DateTime.parse(order.date);
     _buildTextFormField(
       TextEditingController controller,
       String hint,
@@ -646,7 +646,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                     style: TextStyle(fontSize: 14),
                                   )),
                                   DataCell(Text(
-                                    orders.date.toString(),
+                                    orders.date,
                                     style: TextStyle(fontSize: 14),
                                   )),
                                   DataCell(Row(

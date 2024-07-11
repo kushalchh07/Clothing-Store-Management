@@ -102,7 +102,7 @@ class _PurchasesState extends State<Purchases> {
     _purPriceController.text = purchase.perPiecePrice.toString();
     _quantityController.text = purchase.quantity.toString();
     _supplierNameController.text = purchase.supplier;
-    _selectedDate = purchase.date;
+    _selectedDate = DateTime.parse(purchase.date);
 
     showDialog(
       context: context,
@@ -193,10 +193,10 @@ class _PurchasesState extends State<Purchases> {
                       date: _selectedDate,
                     ),
                   );
-
-                  log("Updated in the bloc");
                   BlocProvider.of<PurchaseBloc>(context)
                       .add(PurchaseLoadEvent());
+                  log("Updated in the bloc");
+
                   _clearControllers();
                   Navigator.of(context).pop();
                 }
@@ -632,7 +632,7 @@ class _PurchasesState extends State<Purchases> {
                                     style: TextStyle(fontSize: 14),
                                   )),
                                   DataCell(Text(
-                                    purchase.date.toString(),
+                                    purchase.date,
                                     style: TextStyle(fontSize: 14),
                                   )),
                                   DataCell(Text(

@@ -1,6 +1,6 @@
 class PurchaseModel {
   String id;
-  DateTime date;
+  String date;
   String supplier;
   String productName;
   String quantity;
@@ -23,7 +23,7 @@ class PurchaseModel {
 
   Map<String, dynamic> toMap() {
     return {
-      'date': date.toIso8601String(),
+      'date': date,
       'supplier': supplier,
       'productName': productName,
       'quantity': quantity,
@@ -38,7 +38,7 @@ class PurchaseModel {
   factory PurchaseModel.fromMap(String id, Map<String, dynamic> map) {
     return PurchaseModel(
       id: id,
-      date: DateTime.parse(map['date'] ?? ''),
+      date: map['date'] ?? '',
       supplier: map['supplier'] ?? '',
       productName: map['productName'] ?? '',
       quantity: map['quantity'] ?? 0,

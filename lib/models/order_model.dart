@@ -1,6 +1,6 @@
 class OrderModel {
   String id;
-  DateTime date;
+  String date;
   String customerName;
   String orderCode;
   String productName;
@@ -26,7 +26,7 @@ class OrderModel {
 
   Map<String, dynamic> toMap() {
     return {
-      'date': date.toIso8601String(),
+      'date': date,
       'customerName': customerName,
       'productName': productName,
       'quantity': quantity,
@@ -43,7 +43,7 @@ class OrderModel {
   factory OrderModel.fromMap(String id, Map<String, dynamic> map) {
     return OrderModel(
       id: id,
-      date: DateTime.parse(map['date'] ?? ''),
+      date: map['date'] ?? '',
       customerName: map['customerName'] ?? '',
       productName: map['productName'] ?? '',
       quantity: map['quantity'] ?? 0,

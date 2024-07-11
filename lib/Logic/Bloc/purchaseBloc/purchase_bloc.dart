@@ -65,17 +65,18 @@ class PurchaseBloc extends Bloc<PurchaseEvent, PurchaseState> {
       final perPrice = event.purPrice;
       final quantity = event.quantity;
       final totalAmount = perPrice * quantity;
+      log("Inside Purchase Update bloc Supplier Name: ${event.supplierName}");
       String formattedDate = DateFormat('yyyy-MM-dd').format(event.date);
       await _crudServices.updatePurchases(
         event.id,
+        formattedDate,
         event.supplierName,
         event.category,
         event.productName,
         event.quantity.toString(),
         event.purPrice.toString(),
-        event.description,
         totalAmount.toString(),
-        formattedDate,
+        event.description,
       );
     } catch (e) {
       log(e.toString());
