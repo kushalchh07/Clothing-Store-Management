@@ -17,12 +17,12 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
     on<InventoryLoadEvent>(_inventoryLoadEvent);
     on<InventoryAddButtonTappedEvent>(_inventoryAddButtonTappedEvent);
     on<InventoryDeleteButtonTappedEvent>(_inventoryDeleteButtonTappedEvent);
+    on<InventoryUpdateButtonTappedEvent>(_inventoryUpdateButtonTappedEvent);
   }
-CrudServices _crudServices = CrudServices();
+  CrudServices _crudServices = CrudServices();
   FutureOr<void> _inventoryLoadEvent(
       InventoryLoadEvent event, Emitter<InventoryState> emit) async {
     try {
-      
       List<Inventory> inventoryList = await _crudServices.getInventory();
       log(inventoryList.toString());
       emit(InventoryLoadedState(inventoryList));
@@ -34,7 +34,6 @@ CrudServices _crudServices = CrudServices();
 
   FutureOr<void> _inventoryAddButtonTappedEvent(
       InventoryAddButtonTappedEvent event, Emitter<InventoryState> emit) async {
-    
     try {
       await _crudServices.addProducts(
         event.id,
@@ -57,10 +56,30 @@ CrudServices _crudServices = CrudServices();
       InventoryDeleteButtonTappedEvent event,
       Emitter<InventoryState> emit) async {
     try {
-    
       await _crudServices.deleteProduct(event.id);
       log("Product Deleted");
-    } catch (e) {}
+    } catch (e) {
+      log("item delete failed");
+    }
   }
 
+  FutureOr<void> _inventoryUpdateButtonTappedEvent(
+      InventoryUpdateButtonTappedEvent event,
+      Emitter<InventoryState> emit) async {
+    try {
+      await _crudServices.updateProducts(
+        event.id,
+        event.name,
+        event.description,
+        event.purPrice,
+        event.sellingPrice,
+        event.quantity,
+        event.productImage,
+        event.category,
+      );
+      log("Product Updated");
+    } catch (e) {
+      log(e.toString());
+    }
+  }
 }
