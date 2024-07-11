@@ -1,4 +1,4 @@
-// ignore_for_file: empty_constructor_bodies
+// ignore_for_file: empty_constructor_bodies, empty_catches
 
 import 'dart:async';
 import 'dart:developer';
@@ -18,6 +18,7 @@ class SupplierBloc extends Bloc<SupplierEvent, SupplierState> {
     on<SupplierLoadEvent>(_supplierLoadEvent);
     on<SupplierAddButtonTappedEvent>(_supplierAddButtonTappedEvent);
     on<SupplierDeleteButtonTappedEvent>(_supplierDeleteButtonTappedEvent);
+    on<SupplierUpdateButtonTappedEvent>(_supplierUpdateButtonTappedEvent);
   }
   CrudServices _crudServices = CrudServices();
   FutureOr<void> _supplierLoadEvent(
@@ -59,6 +60,18 @@ class SupplierBloc extends Bloc<SupplierEvent, SupplierState> {
     } catch (e) {
       log(e.toString());
       rethrow;
+    }
+  }
+
+  FutureOr<void> _supplierUpdateButtonTappedEvent(
+      SupplierUpdateButtonTappedEvent event,
+      Emitter<SupplierState> emit) async {
+    try {
+      await _crudServices.updateSuppliers(
+          event.id, event.name, event.address, event.phone, event.email);
+      log("supplier updated");
+    } catch (e) {
+      log("U[pdate failed]");
     }
   }
 }
