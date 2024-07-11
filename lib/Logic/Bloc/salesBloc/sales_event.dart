@@ -7,7 +7,6 @@ class SalesLoadEvent extends SalesEvent{}
 class SalesAddButtonTappedEvent extends SalesEvent{
   SalesAddButtonTappedEvent({
     required this.productName,
-    
     required this.salesPrice,
     required this.date,
     required this.quantity,
@@ -16,7 +15,6 @@ class SalesAddButtonTappedEvent extends SalesEvent{
     
   });
   final String productName;
-
   final double salesPrice;
   final String id;
   final int quantity;
@@ -32,13 +30,13 @@ class SalesUpdateButtonTappedEvent extends SalesEvent{
     required this.salesPrice,
     required this.quantity,
     required this.date,
-    required this.supplierName,
+    required this.customerName,
   });
   final String id;
   final String productName;
   
   final double salesPrice;
-  final String supplierName;
+  final String customerName;
   final int quantity;
   final DateTime date;
 }
