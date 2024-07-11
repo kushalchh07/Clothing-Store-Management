@@ -54,7 +54,26 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
   }
 
   FutureOr<void> _onOrderUpdateButtonTappedEvent(
-      OrderUpdateButtonTappedEvent event, Emitter<OrderState> emit) async {}
+      OrderUpdateButtonTappedEvent event, Emitter<OrderState> emit) async {
+    try {
+      final totalAmount = event.quantity * event.orderPrice;
+      String formattedDate = DateFormat('yyyy-MM-dd').format(event.date);
+      await _crudServices.updateOrder(
+        event.id,
+        formattedDate,
+        event.customerName,
+        event.orderCode,
+        event.productName,
+        event.category,
+        event.quantity.toString(),
+        event.orderPrice.toString(),
+        totalAmount.toString(),
+      );
+    } catch (e) {
+      log(e.toString());
+      emit(OrderLoadErrorState());
+    }
+  }
 
   FutureOr<void> _onOrderDeleteButtonTappedEvent(
       OrderDeleteButtonTappedEvent event, Emitter<OrderState> emit) async {
