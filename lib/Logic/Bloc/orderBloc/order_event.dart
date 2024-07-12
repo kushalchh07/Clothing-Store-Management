@@ -15,6 +15,7 @@ class OrderAddButtonTappedEvent extends OrderEvent {
     required this.id,
     required this.orderCode,
     required this.category,
+    required this.status
   });
   final String productName;
   final double orderPrice;
@@ -24,6 +25,7 @@ class OrderAddButtonTappedEvent extends OrderEvent {
   final String customerName;
   final String orderCode;
   final String category;
+  final String status;
 }
 
 class OrderUpdateButtonTappedEvent extends OrderEvent {
