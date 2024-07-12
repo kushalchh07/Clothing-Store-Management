@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:nepstyle_management_system/Logic/Bloc/InventoryBloc/inventory_bloc.dart';
 import 'package:nepstyle_management_system/Logic/Bloc/LoginBloc/login_bloc.dart';
+import 'package:nepstyle_management_system/Logic/Bloc/categoryBloc/category_bloc.dart';
 import 'package:nepstyle_management_system/Logic/Bloc/customersBloc/customer_bloc.dart';
 import 'package:nepstyle_management_system/Logic/Bloc/orderBloc/order_bloc.dart';
 import 'package:nepstyle_management_system/Logic/Bloc/purchaseBloc/purchase_bloc.dart';
@@ -52,16 +53,18 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => SupplierBloc(),
         ),
-       
         BlocProvider(
           create: (context) => PurchaseBloc(),
         ),
-         BlocProvider(
+        BlocProvider(
           create: (context) => SalesBloc(),
         ),
         BlocProvider(
           create: (context) => OrderBloc(),
-        )
+        ),
+        BlocProvider(
+          create: (context) => CategoryBloc(),
+        ),
       ],
       child: GetMaterialApp(
         title: 'Clothing Store Management System',

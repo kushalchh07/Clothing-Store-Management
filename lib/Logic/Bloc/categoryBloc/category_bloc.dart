@@ -18,8 +18,6 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
   CrudServices _crudServices = CrudServices();
   FutureOr<void> _categoryLoadEvent(
       CategoryLoadEvent event, Emitter<CategoryState> emit) async {
-    emit(CategoryInitial());
-
     try {
       await _crudServices.getCategory().then((value) {
         emit(CategoryLoaded(category: value));
