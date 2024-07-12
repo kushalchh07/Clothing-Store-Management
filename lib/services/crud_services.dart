@@ -3,6 +3,7 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:nepstyle_management_system/models/category_model.dart';
 import 'package:nepstyle_management_system/models/customerModel.dart';
 import 'package:nepstyle_management_system/models/inventory_model.dart';
 import 'package:nepstyle_management_system/models/order_model.dart';
@@ -434,6 +435,73 @@ Future<String> updateOrder(
   Future<String> deleteOrder(String id) async {
     try {
       await _firestore.collection('orders').doc(id).delete();
+      return "deleted";
+    } catch (e) {
+      return e.toString();
+    }
+  }
+  Future<String> addCategory(
+      String id,
+      
+ 
+      String category,
+      String quantity,
+     
+    ) async {
+    log("Inside add sales");
+    try {
+      _firestore.collection('category').doc(id).set({
+        'id': id,
+      
+        'category': category,
+        'quantity': quantity,
+     
+      });
+      log("data added");
+      return "Data added";
+    } catch (e) {
+      return e.toString();
+    }
+  }
+  Future<String> updateCategory(
+  String id,
+ 
+  String category,
+  String quantity,
+  
+) async {
+  log("Inside updateOrder");
+  try {
+    _firestore.collection('category').doc(id).update({
+      'id':id,
+      'category': category,
+      'quantity': quantity,
+     
+    });
+    log("data updated");
+    return "Data updated";
+  } catch (e) {
+    return e.toString();
+  }
+}
+
+  Future<List<CategoryModel>> getCategory() async {
+    try {
+      final snapshot = await _firestore.collection('category').get();
+      final category = snapshot.docs.map((doc) {
+        return CategoryModel.fromMap(doc.id, doc.data() as Map<String, dynamic>);
+      }).toList();
+      log(category.toString());
+      return category;
+    } catch (e) {
+      log('error during geting  category');
+      rethrow;
+    }
+  }
+
+  Future<String> deleteCategory(String id) async {
+    try {
+      await _firestore.collection('category').doc(id).delete();
       return "deleted";
     } catch (e) {
       return e.toString();

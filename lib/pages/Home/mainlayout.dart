@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:nepstyle_management_system/pages/Home/billing.dart';
+import 'package:nepstyle_management_system/pages/Home/category.dart';
 import 'package:nepstyle_management_system/pages/Home/customers.dart';
 import 'package:nepstyle_management_system/pages/Home/dashboard.dart';
 import 'package:nepstyle_management_system/pages/Home/help.dart';
@@ -27,6 +28,7 @@ class _MainLayoutState extends State<MainLayout> {
     CustomerScreen(),
     OrderScreen(),
     InventoryScreen(),
+    Category(),
     Supplier(),
     Purchases(),
     Sales(),
@@ -117,6 +119,10 @@ class _MainLayoutState extends State<MainLayout> {
                             NavigationRailDestination(
                               icon: Icon(Icons.production_quantity_limits),
                               label: Text('Inventory'),
+                            ),
+                            NavigationRailDestination(
+                              icon: Icon(Icons.folder),
+                              label: Text('Category'),
                             ),
                             NavigationRailDestination(
                               icon: Icon(Icons.local_shipping_outlined),
