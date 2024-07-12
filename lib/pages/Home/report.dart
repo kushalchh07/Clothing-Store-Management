@@ -1,6 +1,10 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
+import 'package:nepstyle_management_system/utils/customwidgets/dividerText.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 
 import '../../constants/color/color.dart';
 
@@ -12,6 +16,20 @@ class Report extends StatefulWidget {
 }
 
 class _ReportState extends State<Report> {
+  List<_SalesData1> data1 = [
+    _SalesData1('Jan', 35000),
+    _SalesData1('Feb', 28000),
+    _SalesData1('Mar', 34000),
+    _SalesData1('April', 32000),
+    _SalesData1('May', 40000)
+  ];
+  List<_SalesData> data = [
+    _SalesData('Jersey', 35),
+    _SalesData('Futsal Boots', 28),
+    _SalesData('Football Boots', 34),
+    _SalesData('Gloves', 32),
+    _SalesData('T-Shirts', 40)
+  ];
   @override
   Widget build(BuildContext context) {
     return NestedScrollView(
@@ -41,16 +59,96 @@ class _ReportState extends State<Report> {
           ),
         ];
       },
-      body: ListView.builder(
-        padding: EdgeInsets.all(8.0),
-        itemCount: 50,
-        itemBuilder: (BuildContext context, int index) {
-          return ListTile(
-            leading: Icon(Icons.photo),
-            title: Text('Item $index'),
-          );
-        },
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: [
+            //     dividerText(
+            //       context: context,
+            //       dividerText: "Report",
+            //       desc: "",
+            //     ),
+            //   ],
+            // ),
+            Divider(
+              thickness: 0.5,
+            ),
+            Container(
+              height: Get.height * 0.6,
+              width: Get.width * 0.5,
+              child: SfCartesianChart(
+                  primaryXAxis: CategoryAxis(),
+                  // Chart title
+                  title: ChartTitle(text: 'Half yearly sales analysis'),
+                  // Enable legend
+                  legend: Legend(isVisible: true),
+                  // Enable tooltip
+                  tooltipBehavior: TooltipBehavior(enable: true),
+                  series: <CartesianSeries<_SalesData1, String>>[
+                    LineSeries<_SalesData1, String>(
+                        dataSource: data1,
+                        xValueMapper: (_SalesData1 sales, _) => sales.x,
+                        yValueMapper: (_SalesData1 sales, _) => sales.y,
+                        name: 'Sales',
+                        // Enable data label
+                        dataLabelSettings: DataLabelSettings(isVisible: true))
+                  ]),
+            ),
+            Container(
+              height: Get.height * 0.6,
+              width: Get.width * 0.5,
+              child: SfCartesianChart(
+                primaryXAxis: CategoryAxis(),
+                primaryYAxis: NumericAxis(),
+                legend: Legend(isVisible: true),
+                series: [
+                  ColumnSeries<_SalesData, String>(
+                      dataSource: data,
+                      xValueMapper: (_SalesData sales, _) => sales.year,
+                      yValueMapper: (_SalesData sales, _) => sales.sales,
+                      name: 'Stock',
+                      dataLabelSettings: DataLabelSettings(isVisible: true))
+                ],
+              ),
+            ),
+            // Expanded(
+            //   child: Padding(
+            //     padding: const EdgeInsets.all(8.0),
+            //     //Initialize the spark charts widget
+            //     child: SfSparkLineChart.custom(
+            //       //Enable the trackball
+            //       trackball: SparkChartTrackball(
+            //           activationMode: SparkChartActivationMode.tap),
+            //       //Enable marker
+            //       marker: SparkChartMarker(
+            //           displayMode: SparkChartMarkerDisplayMode.all),
+            //       //Enable data label
+            //       labelDisplayMode: SparkChartLabelDisplayMode.all,
+            //       xValueMapper: (int index) => data[index].year,
+            //       yValueMapper: (int index) => data[index].sales,
+            //       dataCount: 5,
+            //     ),
+            //   ),
+            // )
+          ],
+        ),
       ),
     );
   }
+}
+
+class _SalesData {
+  final String year;
+  final double sales;
+
+  _SalesData(this.year, this.sales);
+}
+
+class _SalesData1 {
+  final String x;
+  final double y;
+
+  _SalesData1(this.x, this.y);
 }

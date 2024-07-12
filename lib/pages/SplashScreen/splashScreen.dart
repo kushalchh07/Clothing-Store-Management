@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
-import 'package:nepstyle_management_system/pages/Home/home.dart';
+import 'package:nepstyle_management_system/pages/Home/category.dart';
 import 'package:nepstyle_management_system/pages/login%20&%20signup/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
