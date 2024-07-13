@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/route_manager.dart';
@@ -33,6 +35,13 @@ class _ReportState extends State<Report> {
     _SalesData('T-Shirts', 40)
   ];
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    BlocProvider.of<ReportBloc>(context).add(ReportLoadEvent());
+  }
+
+  @override
   Widget build(BuildContext context) {
     return NestedScrollView(
       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
@@ -63,83 +72,93 @@ class _ReportState extends State<Report> {
       },
       body: BlocBuilder<ReportBloc, ReportState>(
         builder: (context, state) {
-          return SingleChildScrollView(
-            child: Column(
-              children: [
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     dividerText(
-                //       context: context,
-                //       dividerText: "Report",
-                //       desc: "",
-                //     ),
-                //   ],
-                // ),
-                Divider(
-                  thickness: 0.5,
-                ),
-                Container(
-                  height: Get.height * 0.6,
-                  width: Get.width * 0.5,
-                  child: SfCartesianChart(
+          if (state is ReportInitial) {
+            return Center(child: CircularProgressIndicator());
+          }
+          if (state is ReportLoaded) {
+            final report = state.report;
+            log(report.toString());
+            return SingleChildScrollView(
+              child: Column(
+                children: [
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //   children: [
+                  //     dividerText(
+                  //       context: context,
+                  //       dividerText: "Report",
+                  //       desc: "",
+                  //     ),
+                  //   ],
+                  // ),
+                  Divider(
+                    thickness: 0.5,
+                  ),
+                  Container(
+                    height: Get.height * 0.6,
+                    width: Get.width * 0.5,
+                    child: SfCartesianChart(
+                        primaryXAxis: CategoryAxis(),
+                        // Chart title
+                        title: ChartTitle(text: 'Half yearly sales analysis'),
+                        // Enable legend
+                        legend: Legend(isVisible: true),
+                        // Enable tooltip
+                        tooltipBehavior: TooltipBehavior(enable: true),
+                        series: <CartesianSeries<_SalesData1, String>>[
+                          LineSeries<_SalesData1, String>(
+                              dataSource: data1,
+                              xValueMapper: (_SalesData1 sales, _) => sales.x,
+                              yValueMapper: (_SalesData1 sales, _) => sales.y,
+                              name: 'Sales',
+                              // Enable data label
+                              dataLabelSettings:
+                                  DataLabelSettings(isVisible: true))
+                        ]),
+                  ),
+                  Container(
+                    height: Get.height * 0.6,
+                    width: Get.width * 0.5,
+                    child: SfCartesianChart(
                       primaryXAxis: CategoryAxis(),
-                      // Chart title
-                      title: ChartTitle(text: 'Half yearly sales analysis'),
-                      // Enable legend
+                      primaryYAxis: NumericAxis(),
                       legend: Legend(isVisible: true),
-                      // Enable tooltip
-                      tooltipBehavior: TooltipBehavior(enable: true),
-                      series: <CartesianSeries<_SalesData1, String>>[
-                        LineSeries<_SalesData1, String>(
-                            dataSource: data1,
-                            xValueMapper: (_SalesData1 sales, _) => sales.x,
-                            yValueMapper: (_SalesData1 sales, _) => sales.y,
-                            name: 'Sales',
-                            // Enable data label
+                      series: [
+                        ColumnSeries<_SalesData, String>(
+                            dataSource: data,
+                            xValueMapper: (_SalesData sales, _) => sales.year,
+                            yValueMapper: (_SalesData sales, _) => sales.sales,
+                            name: 'Stock',
                             dataLabelSettings:
                                 DataLabelSettings(isVisible: true))
-                      ]),
-                ),
-                Container(
-                  height: Get.height * 0.6,
-                  width: Get.width * 0.5,
-                  child: SfCartesianChart(
-                    primaryXAxis: CategoryAxis(),
-                    primaryYAxis: NumericAxis(),
-                    legend: Legend(isVisible: true),
-                    series: [
-                      ColumnSeries<_SalesData, String>(
-                          dataSource: data,
-                          xValueMapper: (_SalesData sales, _) => sales.year,
-                          yValueMapper: (_SalesData sales, _) => sales.sales,
-                          name: 'Stock',
-                          dataLabelSettings: DataLabelSettings(isVisible: true))
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                // Expanded(
-                //   child: Padding(
-                //     padding: const EdgeInsets.all(8.0),
-                //     //Initialize the spark charts widget
-                //     child: SfSparkLineChart.custom(
-                //       //Enable the trackball
-                //       trackball: SparkChartTrackball(
-                //           activationMode: SparkChartActivationMode.tap),
-                //       //Enable marker
-                //       marker: SparkChartMarker(
-                //           displayMode: SparkChartMarkerDisplayMode.all),
-                //       //Enable data label
-                //       labelDisplayMode: SparkChartLabelDisplayMode.all,
-                //       xValueMapper: (int index) => data[index].year,
-                //       yValueMapper: (int index) => data[index].sales,
-                //       dataCount: 5,
-                //     ),
-                //   ),
-                // )
-              ],
-            ),
-          );
+                  // Expanded(
+                  //   child: Padding(
+                  //     padding: const EdgeInsets.all(8.0),
+                  //     //Initialize the spark charts widget
+                  //     child: SfSparkLineChart.custom(
+                  //       //Enable the trackball
+                  //       trackball: SparkChartTrackball(
+                  //           activationMode: SparkChartActivationMode.tap),
+                  //       //Enable marker
+                  //       marker: SparkChartMarker(
+                  //           displayMode: SparkChartMarkerDisplayMode.all),
+                  //       //Enable data label
+                  //       labelDisplayMode: SparkChartLabelDisplayMode.all,
+                  //       xValueMapper: (int index) => data[index].year,
+                  //       yValueMapper: (int index) => data[index].sales,
+                  //       dataCount: 5,
+                  //     ),
+                  //   ),
+                  // )
+                ],
+              ),
+            );
+          } else {
+            return Center(child: Text('Failed to load customers'));
+          }
         },
       ),
     );
