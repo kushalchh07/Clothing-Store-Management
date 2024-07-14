@@ -65,7 +65,7 @@ const Color grey = Color.fromARGB(255, 175, 198, 207);
 const Color greyLight = Color.fromARGB(255, 231, 239, 243);
 const Color greyVeryLight = Color.fromARGB(255, 244, 249, 250);
 const Color paperBackgrounfd = Color.fromARGB(255, 255, 255, 254);
-
+const Color pageColor = Color.fromARGB(255, 229, 229, 229);
 const Color secondaryColor = Color.fromARGB(255, 255, 145, 1);
 const Color myButtonColor = Colors.black;
 const Color redColor = Colors.red;
