@@ -14,6 +14,8 @@ import 'package:nepstyle_management_system/firebase_options.dart';
 
 import 'package:nepstyle_management_system/pages/SplashScreen/splashScreen.dart';
 
+import 'Logic/Bloc/reportBloc/report_bloc.dart';
+
 /// Initializes the Flutter application and runs it.
 ///
 /// This function ensures that the Flutter framework is initialized,
@@ -64,6 +66,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => CategoryBloc(),
+        ),
+        BlocProvider(
+          create: (context) => ReportBloc(),
         ),
       ],
       child: GetMaterialApp(

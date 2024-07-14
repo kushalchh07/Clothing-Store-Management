@@ -8,6 +8,7 @@ import 'package:nepstyle_management_system/Logic/Bloc/categoryBloc/category_bloc
 import 'package:nepstyle_management_system/models/category_model.dart';
 import 'package:nepstyle_management_system/pages/Home/customers.dart';
 
+import '../../Logic/Bloc/reportBloc/report_bloc.dart';
 import '../../constants/color/color.dart';
 import '../../utils/customwidgets/dividerText.dart';
 
@@ -303,6 +304,7 @@ class _CategoryState extends State<Category> {
 
                     BlocProvider.of<CategoryBloc>(context)
                         .add(CategoryLoadEvent());
+                    BlocProvider.of<ReportBloc>(context).add(ReportLoadEvent());
                     _clearControllers();
                     Navigator.of(context).pop();
                   }
@@ -419,6 +421,7 @@ class _CategoryState extends State<Category> {
                           id: category.id));
                   BlocProvider.of<CategoryBloc>(context)
                       .add(CategoryLoadEvent());
+                  BlocProvider.of<ReportBloc>(context).add(ReportLoadEvent());
                   _clearControllers();
                   Navigator.of(context).pop();
                 }

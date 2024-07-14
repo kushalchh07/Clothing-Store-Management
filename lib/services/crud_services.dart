@@ -8,6 +8,7 @@ import 'package:nepstyle_management_system/models/customerModel.dart';
 import 'package:nepstyle_management_system/models/inventory_model.dart';
 import 'package:nepstyle_management_system/models/order_model.dart';
 import 'package:nepstyle_management_system/models/purchase_model.dart';
+import 'package:nepstyle_management_system/models/stock_data_model.dart';
 import 'package:nepstyle_management_system/models/sales_model.dart';
 import 'package:nepstyle_management_system/models/supplier_model.dart';
 import 'package:nepstyle_management_system/pages/Home/sales.dart';
@@ -507,4 +508,17 @@ Future<String> updateOrder(
       return e.toString();
     }
   }
+  Future<List<StockDataModel>> getStockData() async {
+  try {
+    final categories = await getCategory();
+    final stockData = categories.map((category) {
+      return StockDataModel(category.category, double.parse(category.quantity));
+    }).toList();
+    return stockData;
+  } catch (e) {
+    log('error during getting category');
+    rethrow;
+  }
+}
+
 }
