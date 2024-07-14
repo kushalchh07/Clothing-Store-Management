@@ -267,6 +267,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
     );
   }
 
+
   void _clearControllers() {
     _nameController.clear();
     _addressController.clear();

@@ -28,11 +28,11 @@ class _ReportState extends State<Report> {
     // _SalesData1('May', 40000)
   ];
   List<_SalesData> data = [
-    // _SalesData('Jersey', 35),
-    // _SalesData('Futsal Boots', 28),
-    // _SalesData('Football Boots', 34),
-    // _SalesData('Gloves', 32),
-    // _SalesData('T-Shirts', 40)
+    _SalesData('Jersey', 35),
+    _SalesData('Futsal Boots', 28),
+    _SalesData('Football Boots', 34),
+    _SalesData('Gloves', 32),
+    _SalesData('T-Shirts', 40)
   ];
   @override
   void initState() {
@@ -125,6 +125,7 @@ class _ReportState extends State<Report> {
                     height: Get.height * 0.6,
                     width: Get.width * 0.5,
                     child: SfCartesianChart(
+                      title: ChartTitle(text: 'Stock Report'),
                       primaryXAxis: CategoryAxis(),
                       primaryYAxis: NumericAxis(),
                       legend: Legend(isVisible: true),
