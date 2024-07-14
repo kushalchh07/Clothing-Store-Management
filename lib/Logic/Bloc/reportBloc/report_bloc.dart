@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:nepstyle_management_system/models/category_model.dart';
+import 'package:nepstyle_management_system/models/stock_data_model.dart';
 import 'package:nepstyle_management_system/services/crud_services.dart';
 
 part 'report_event.dart';
@@ -18,7 +19,7 @@ class ReportBloc extends Bloc<ReportEvent, ReportState> {
   FutureOr<void> _reportLoadEvent(
       ReportLoadEvent event, Emitter<ReportState> emit) async {
     try {
-      await _crudServices.getCategory().then((value) {
+      await _crudServices.getStockData().then((value) {
         emit(ReportLoaded(report: value));
       });
     } catch (e) {

@@ -21,18 +21,18 @@ class Report extends StatefulWidget {
 
 class _ReportState extends State<Report> {
   List<_SalesData1> data1 = [
-    _SalesData1('Jan', 35000),
-    _SalesData1('Feb', 28000),
-    _SalesData1('Mar', 34000),
-    _SalesData1('April', 32000),
-    _SalesData1('May', 40000)
+    // _SalesData1('Jan', 35000),
+    // _SalesData1('Feb', 28000),
+    // _SalesData1('Mar', 34000),
+    // _SalesData1('April', 32000),
+    // _SalesData1('May', 40000)
   ];
   List<_SalesData> data = [
-    _SalesData('Jersey', 35),
-    _SalesData('Futsal Boots', 28),
-    _SalesData('Football Boots', 34),
-    _SalesData('Gloves', 32),
-    _SalesData('T-Shirts', 40)
+    // _SalesData('Jersey', 35),
+    // _SalesData('Futsal Boots', 28),
+    // _SalesData('Football Boots', 34),
+    // _SalesData('Gloves', 32),
+    // _SalesData('T-Shirts', 40)
   ];
   @override
   void initState() {
@@ -77,6 +77,10 @@ class _ReportState extends State<Report> {
           }
           if (state is ReportLoaded) {
             final report = state.report;
+            final List<_SalesData1> data1 = report.map((data) {
+              return _SalesData1(
+                  data.category, double.parse(data.value.toString()));
+            }).toList();
             log(report.toString());
             return SingleChildScrollView(
               child: Column(
@@ -105,11 +109,12 @@ class _ReportState extends State<Report> {
                         legend: Legend(isVisible: true),
                         // Enable tooltip
                         tooltipBehavior: TooltipBehavior(enable: true),
-                        series: <CartesianSeries<_SalesData1, String>>[
-                          LineSeries<_SalesData1, String>(
-                              dataSource: data1,
-                              xValueMapper: (_SalesData1 sales, _) => sales.x,
-                              yValueMapper: (_SalesData1 sales, _) => sales.y,
+                        series: <CartesianSeries<_SalesData, String>>[
+                          LineSeries<_SalesData, String>(
+                              dataSource: data,
+                              xValueMapper: (_SalesData sales, _) => sales.year,
+                              yValueMapper: (_SalesData sales, _) =>
+                                  sales.sales,
                               name: 'Sales',
                               // Enable data label
                               dataLabelSettings:
@@ -124,10 +129,12 @@ class _ReportState extends State<Report> {
                       primaryYAxis: NumericAxis(),
                       legend: Legend(isVisible: true),
                       series: [
-                        ColumnSeries<_SalesData, String>(
-                            dataSource: data,
-                            xValueMapper: (_SalesData sales, _) => sales.year,
-                            yValueMapper: (_SalesData sales, _) => sales.sales,
+                        ColumnSeries<_SalesData1, String>(
+                            dataSource: data1,
+                            xValueMapper: (_SalesData1 sales, _) =>
+                                sales.category,
+                            yValueMapper: (_SalesData1 sales, _) =>
+                                sales.quantity,
                             name: 'Stock',
                             dataLabelSettings:
                                 DataLabelSettings(isVisible: true))
@@ -173,8 +180,8 @@ class _SalesData {
 }
 
 class _SalesData1 {
-  final String x;
-  final double y;
+  final String category;
+  final double quantity;
 
-  _SalesData1(this.x, this.y);
+  _SalesData1(this.category, this.quantity);
 }

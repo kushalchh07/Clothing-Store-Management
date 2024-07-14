@@ -7,7 +7,7 @@ final class ReportInitial extends ReportState {}
 final class ReportLoading extends ReportState {}  
 
 final class ReportLoaded extends ReportState {  
-  final List<CategoryModel> report;
+  final List<StockDataModel> report;
   ReportLoaded({required this.report});
 }
 final class ReportError extends ReportState {
