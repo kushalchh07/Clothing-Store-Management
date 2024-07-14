@@ -521,4 +521,21 @@ Future<String> updateOrder(
   }
 }
 
+
+Future<int>getCustomerCount()async{
+   final QuerySnapshot snapshot = await _firestore.collection('customers').get();
+    return snapshot.size;
+}
+Future<int>getCategoryCount()async{
+   final QuerySnapshot snapshot = await _firestore.collection('category').get();
+    return snapshot.size;
+}
+Future<int>getProductsCount()async{
+   final QuerySnapshot snapshot = await _firestore.collection('products').get();
+    return snapshot.size;
+}
+Future<int>getSuppliersCount()async{
+   final QuerySnapshot snapshot = await _firestore.collection('suppliers').get();
+    return snapshot.size;
+}
 }

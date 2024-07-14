@@ -6,6 +6,7 @@ import 'package:nepstyle_management_system/Logic/Bloc/InventoryBloc/inventory_bl
 import 'package:nepstyle_management_system/Logic/Bloc/LoginBloc/login_bloc.dart';
 import 'package:nepstyle_management_system/Logic/Bloc/categoryBloc/category_bloc.dart';
 import 'package:nepstyle_management_system/Logic/Bloc/customersBloc/customer_bloc.dart';
+import 'package:nepstyle_management_system/Logic/Bloc/dashboardBloc/dashboard_bloc.dart';
 import 'package:nepstyle_management_system/Logic/Bloc/orderBloc/order_bloc.dart';
 import 'package:nepstyle_management_system/Logic/Bloc/purchaseBloc/purchase_bloc.dart';
 import 'package:nepstyle_management_system/Logic/Bloc/salesBloc/sales_bloc.dart';
@@ -69,6 +70,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => ReportBloc(),
+        ),
+        BlocProvider(
+          create: (context) => DashboardBloc(),
         ),
       ],
       child: GetMaterialApp(
