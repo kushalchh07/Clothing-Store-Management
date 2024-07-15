@@ -49,13 +49,13 @@ class SplashScreenState extends State<SplashScreen> {
             Padding(
               padding: const EdgeInsets.only(bottom: 12.0),
               child: SizedBox(
-                width: Get.width * 0.50,
+                // width: Get.width * 0.80,
                 child: Image.asset(
                   "assets/icons/logo.png",
                   fit: BoxFit.fitWidth,
-                  scale: 2,
-                  height: 200,
-                  width: 200,
+                  // scale: 2,
+                  height: 400,
+                  width: 400,
                 ),
               ),
             ),

@@ -7,10 +7,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/route_manager.dart';
 import 'package:nepstyle_management_system/Logic/Bloc/reportBloc/report_bloc.dart';
 import 'package:nepstyle_management_system/utils/customwidgets/dividerText.dart';
+import 'package:pdf/pdf.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:syncfusion_flutter_charts/sparkcharts.dart';
-
+import 'package:universal_platform/universal_platform.dart';
+import 'dart:html' as html;
 import '../../constants/color/color.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
+import 'package:printing/printing.dart';
+import '../../models/sales_model.dart';
+import '../../services/crud_services.dart';
 
 class Report extends StatefulWidget {
   const Report({super.key});
@@ -34,6 +42,7 @@ class _ReportState extends State<Report> {
     _SalesData('Gloves', 32),
     _SalesData('T-Shirts', 40)
   ];
+
   @override
   void initState() {
     // TODO: implement initState
@@ -82,16 +91,6 @@ class _ReportState extends State<Report> {
             return SingleChildScrollView(
               child: Column(
                 children: [
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //   children: [
-                  //     dividerText(
-                  //       context: context,
-                  //       dividerText: "Report",
-                  //       desc: "",
-                  //     ),
-                  //   ],
-                  // ),
                   Divider(
                     thickness: 0.5,
                   ),

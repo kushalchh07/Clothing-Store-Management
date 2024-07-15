@@ -35,7 +35,7 @@ class _MainLayoutState extends State<MainLayout> {
     Sales(),
     Report(),
     Billing(),
-    Help(),
+    // Help(),
     Settings(),
   ];
   // ScrollController _scrollController = ScrollController();
@@ -235,19 +235,19 @@ class _MainLayoutState extends State<MainLayout> {
                                     fontWeight: FontWeight.w600),
                               ),
                             ),
-                            NavigationRailDestination(
-                              icon: Icon(
-                                Icons.help_center_outlined,
-                                color: primaryColorLight,
-                              ),
-                              label: Text(
-                                'Help',
-                                style: TextStyle(
-                                    color: greyVeryDark,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                            ),
+                            // NavigationRailDestination(
+                            //   icon: Icon(
+                            //     Icons.help_center_outlined,
+                            //     color: primaryColorLight,
+                            //   ),
+                            //   label: Text(
+                            //     'Help',
+                            //     style: TextStyle(
+                            //         color: greyVeryDark,
+                            //         fontSize: 16,
+                            //         fontWeight: FontWeight.w600),
+                            //   ),
+                            // ),
                             NavigationRailDestination(
                               icon: Icon(
                                 Icons.settings,
