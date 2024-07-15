@@ -47,6 +47,8 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
         event.orderPrice.toString(),
         totalAmount.toString(),
       );
+
+      emit(OrderAddedActionState());
     } catch (e) {
       log(e.toString());
       emit(OrderLoadErrorState());
@@ -69,6 +71,8 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
         event.orderPrice.toString(),
         totalAmount.toString(),
       );
+
+      emit(OrderEditedActionState());
     } catch (e) {
       log(e.toString());
       emit(OrderLoadErrorState());
@@ -79,6 +83,7 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
       OrderDeleteButtonTappedEvent event, Emitter<OrderState> emit) async {
     try {
       await _crudServices.deleteOrder(event.id);
+      emit(OrderDeletedActionState());
     } catch (e) {
       log(e.toString());
       emit(OrderLoadErrorState());

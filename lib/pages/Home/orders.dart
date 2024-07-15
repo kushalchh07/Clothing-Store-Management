@@ -6,6 +6,7 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/route_manager.dart';
 import 'package:nepstyle_management_system/Logic/Bloc/orderBloc/order_bloc.dart';
 import 'package:nepstyle_management_system/models/order_model.dart';
@@ -457,7 +458,7 @@ class _OrderScreenState extends State<OrderScreen> {
       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
         return <Widget>[
           SliverAppBar(
-            expandedHeight: 120.0,
+            expandedHeight: 80.0,
             backgroundColor: primaryColor,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.only(
@@ -474,24 +475,12 @@ class _OrderScreenState extends State<OrderScreen> {
                     fontSize: 16.0,
                   )),
             ),
-          ),
-        ];
-      },
-      body: Padding(
-        padding: const EdgeInsets.only(top: 20.0, left: 10, right: 10),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                dividerText(
-                  context: context,
-                  dividerText: "Orders",
-                  desc: "",
-                ),
-                ElevatedButton(
+            actions: [
+              Padding(
+                padding: const EdgeInsets.only(top: 25.0, right: 20),
+                child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: myButtonColor,
+                    backgroundColor: primaryColorJustLight,
                     shape: StadiumBorder(),
                   ),
                   onPressed: _showOrderAdd,
@@ -515,14 +504,84 @@ class _OrderScreenState extends State<OrderScreen> {
                     ],
                   ),
                 ),
-              ],
+              ),
+            ],
+          ),
+        ];
+      },
+      body: Padding(
+        padding: const EdgeInsets.only(top: 20.0, left: 10, right: 10),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [],
             ),
             Divider(
               thickness: 1,
               color: myBlack,
             ),
             Expanded(
-              child: BlocBuilder<OrderBloc, OrderState>(
+              child: BlocConsumer<OrderBloc, OrderState>(
+                listener: (context, state) {
+                  if (state is OrderDeletedActionState) {
+                    // ScaffoldMessenger.of(context).showSnackBar(
+                    //   SnackBar(
+                    //     content: Text('Deleted Successfully'),
+                    //     backgroundColor: Colors.red,
+                    //   ),
+                    // );
+                    Fluttertoast.showToast(
+                      msg: 'Deleted Successfully',
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      backgroundColor: Colors.red,
+                      textColor: whiteColor,
+                    );
+                  } else if (state is OrderAddedActionState) {
+                    // ScaffoldMessenger.of(context).showSnackBar(
+                    //   SnackBar(
+                    //     content: Text('Order Added Successfully'),
+                    //     backgroundColor: Colors.green,
+                    //   ),
+                    // );
+                     Fluttertoast.showToast(
+                      msg: 'Order Placed Successfully',
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      backgroundColor: Colors.green,
+                      textColor: whiteColor,
+                    );
+                  } else if (state is OrderErrorActionState) {
+                    // ScaffoldMessenger.of(context).showSnackBar(
+                    //   SnackBar(
+                    //     content: Text('Something went wrong'),
+                    //     backgroundColor: Colors.red,
+                    //   ),
+                    // );
+                     Fluttertoast.showToast(
+                      msg: 'Something went wrong',
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      backgroundColor: Colors.red,
+                      textColor: whiteColor,
+                    );
+                  } else if (state is OrderEditedActionState) {
+                    // ScaffoldMessenger.of(context).showSnackBar(
+                    //   SnackBar(
+                    //     content: Text('Edited Successfully'),
+                    //     backgroundColor: Colors.green,
+                    //   ),
+                    // );
+                    Fluttertoast.showToast(
+                      msg: 'Edited Successfully',
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      backgroundColor: Colors.green,
+                      textColor: whiteColor,
+                    );
+                  }
+                },
                 builder: (context, state) {
                   if (state is OrderLoadingState) {
                     return Center(child: CircularProgressIndicator());
@@ -633,15 +692,6 @@ class _OrderScreenState extends State<OrderScreen> {
                                 ),
                               ),
                             ),
-                            DataColumn(
-                              label: Text(
-                                'Details',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
                           ],
                           rows: List<DataRow>.generate(
                             state.orders.length,
@@ -693,6 +743,21 @@ class _OrderScreenState extends State<OrderScreen> {
                                   DataCell(Row(
                                     children: [
                                       IconButton(
+                                          style: ButtonStyle(
+                                            backgroundColor:
+                                                WidgetStatePropertyAll(
+                                              viewdetailsColor,
+                                            ),
+                                          ),
+                                          onPressed: () {},
+                                          icon: Icon(
+                                            Icons.visibility,
+                                            color: Colors.white,
+                                          )),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      IconButton(
                                         style: ButtonStyle(
                                           backgroundColor:
                                               WidgetStatePropertyAll(
@@ -729,19 +794,6 @@ class _OrderScreenState extends State<OrderScreen> {
                                           }),
                                     ],
                                   )),
-                                  DataCell(
-                                    ElevatedButton(
-                                        onPressed: () {},
-                                        child: Text('View More',
-                                            style: TextStyle(
-                                                fontSize: 14, color: myWhite)),
-                                        style: ElevatedButton.styleFrom(
-                                            backgroundColor: Colors.blue,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(8.0),
-                                            ))),
-                                  ),
                                 ],
                               );
                             },

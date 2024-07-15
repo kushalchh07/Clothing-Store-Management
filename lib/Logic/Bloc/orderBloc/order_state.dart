@@ -12,3 +12,7 @@ final class OrderLoadSuccessState extends OrderState {
 }
 
 final class OrderLoadErrorState extends OrderState {}
+final class OrderDeletedActionState extends OrderState {}
+final class OrderEditedActionState extends OrderState {}
+ final class OrderAddedActionState extends OrderState {}
+ final class OrderErrorActionState extends OrderState {}
