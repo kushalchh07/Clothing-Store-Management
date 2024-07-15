@@ -18,3 +18,9 @@ class CustomerErrorState extends CustomerState {
   final String message;
   CustomerErrorState(this.message);
 }
+
+
+final class CustomerDeletedActionState extends CustomerState {}
+final class CustomerEditedActionState extends CustomerState {}
+ final class CustomerAddedActionState extends CustomerState {}
+ final class CustomerErrorActionState extends CustomerState {}

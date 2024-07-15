@@ -42,7 +42,7 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
 
       await _crudServices.addCustomer(
           event.id, event.name, event.address, event.phone, event.email);
-
+      emit(CustomerAddedActionState());
       // emit(CustomerLoadedState([]));
     } on FirebaseException catch (e) {
       log("FirebaseException: ${e.message}");
@@ -77,6 +77,7 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
       FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
       await _firestore.collection('customers').doc(event.id).delete();
+      emit(CustomerDeletedActionState());
     } catch (e) {
       emit(CustomerErrorState("Failed to delete customer: $e"));
     }
@@ -88,6 +89,7 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
     try {
       await _crudServices.updateCustomer(
           event.id, event.name, event.address, event.phone, event.email);
+          emit(CustomerEditedActionState());
     } catch (e) {
       emit(CustomerErrorState("Failed to update customer: $e"));
     }
