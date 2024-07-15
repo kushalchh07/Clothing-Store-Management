@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_final_fields
 
 import 'package:flutter/material.dart';
+import 'package:nepstyle_management_system/constants/color/color.dart';
 import 'package:nepstyle_management_system/pages/Home/billing.dart';
 import 'package:nepstyle_management_system/pages/Home/category.dart';
 import 'package:nepstyle_management_system/pages/Home/customers.dart';
@@ -105,52 +106,160 @@ class _MainLayoutState extends State<MainLayout> {
                           minExtendedWidth: 200,
                           destinations: [
                             NavigationRailDestination(
-                              icon: Icon(Icons.dashboard),
-                              label: Text('Dashboard'),
+                              icon: Icon(
+                                Icons.dashboard,
+                                color: primaryColorLight,
+                              ),
+                              label: Text(
+                                'Dashboard',
+                                style: TextStyle(
+                                    color: greyVeryDark,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600),
+                              ),
                             ),
                             NavigationRailDestination(
-                              icon: Icon(Icons.people),
-                              label: Text('Customers'),
+                              icon: Icon(
+                                Icons.people,
+                                color: primaryColorLight,
+                              ),
+                              label: Text(
+                                'Customers',
+                                style: TextStyle(
+                                    color: greyVeryDark,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600),
+                              ),
                             ),
                             NavigationRailDestination(
-                              icon: Icon(Icons.shopping_cart),
-                              label: Text('Orders'),
+                              icon: Icon(
+                                Icons.shopping_cart,
+                                color: primaryColorLight,
+                              ),
+                              label: Text(
+                                'Orders',
+                                style: TextStyle(
+                                    color: greyVeryDark,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600),
+                              ),
                             ),
                             NavigationRailDestination(
-                              icon: Icon(Icons.production_quantity_limits),
-                              label: Text('Inventory'),
+                              icon: Icon(
+                                Icons.production_quantity_limits,
+                                color: primaryColorLight,
+                              ),
+                              label: Text(
+                                'Inventory',
+                                style: TextStyle(
+                                    color: greyVeryDark,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600),
+                              ),
                             ),
                             NavigationRailDestination(
-                              icon: Icon(Icons.folder),
-                              label: Text('Category'),
+                              icon: Icon(
+                                Icons.folder,
+                                color: primaryColorLight,
+                              ),
+                              label: Text(
+                                'Category',
+                                style: TextStyle(
+                                    color: greyVeryDark,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600),
+                              ),
                             ),
                             NavigationRailDestination(
-                              icon: Icon(Icons.local_shipping_outlined),
-                              label: Text('Supplier'),
+                              icon: Icon(
+                                Icons.local_shipping_outlined,
+                                color: primaryColorLight,
+                              ),
+                              label: Text(
+                                'Supplier',
+                                style: TextStyle(
+                                    color: greyVeryDark,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600),
+                              ),
                             ),
                             NavigationRailDestination(
-                              icon: Icon(Icons.shopping_bag),
-                              label: Text('Purchases'),
+                              icon: Icon(
+                                Icons.shopping_bag,
+                                color: primaryColorLight,
+                              ),
+                              label: Text(
+                                'Purchases',
+                                style: TextStyle(
+                                    color: greyVeryDark,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600),
+                              ),
                             ),
                             NavigationRailDestination(
-                              icon: Icon(Icons.receipt),
-                              label: Text('Sales'),
+                              icon: Icon(
+                                Icons.receipt,
+                                color: primaryColorLight,
+                              ),
+                              label: Text(
+                                'Sales',
+                                style: TextStyle(
+                                    color: greyVeryDark,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600),
+                              ),
                             ),
                             NavigationRailDestination(
-                              icon: Icon(Icons.report_outlined),
-                              label: Text('Report'),
+                              icon: Icon(
+                                Icons.report_outlined,
+                                color: primaryColorLight,
+                              ),
+                              label: Text(
+                                'Report',
+                                style: TextStyle(
+                                    color: greyVeryDark,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600),
+                              ),
                             ),
                             NavigationRailDestination(
-                              icon: Icon(Icons.credit_card_outlined),
-                              label: Text('Billing'),
+                              icon: Icon(
+                                Icons.credit_card_outlined,
+                                color: primaryColorLight,
+                              ),
+                              label: Text(
+                                'Billing',
+                                style: TextStyle(
+                                    color: greyVeryDark,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600),
+                              ),
                             ),
                             NavigationRailDestination(
-                              icon: Icon(Icons.help_center_outlined),
-                              label: Text('Help'),
+                              icon: Icon(
+                                Icons.help_center_outlined,
+                                color: primaryColorLight,
+                              ),
+                              label: Text(
+                                'Help',
+                                style: TextStyle(
+                                    color: greyVeryDark,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600),
+                              ),
                             ),
                             NavigationRailDestination(
-                              icon: Icon(Icons.settings),
-                              label: Text('Settings'),
+                              icon: Icon(
+                                Icons.settings,
+                                color: primaryColorLight,
+                              ),
+                              label: Text(
+                                'Settings',
+                                style: TextStyle(
+                                    color: greyVeryDark,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600),
+                              ),
                             ),
                           ],
                         ),

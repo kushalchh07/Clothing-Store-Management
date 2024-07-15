@@ -17,4 +17,7 @@ final class PurchaseLoadSuccessState extends PurchaseState {
 }
 
 
-
+final class PurchaseDeletedActionState extends PurchaseState {}
+final class PurchaseEditedActionState extends PurchaseState {}
+ final class PurchaseAddedActionState extends PurchaseState {}
+ final class PurchaseErrorActionState extends PurchaseState {}

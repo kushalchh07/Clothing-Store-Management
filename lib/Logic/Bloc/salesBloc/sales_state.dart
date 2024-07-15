@@ -14,3 +14,7 @@ final class SalesLoadSuccessState extends SalesState {
   });
   final List<SalesModel> sales;
 }
+final class SaleDeletedActionState extends SalesState {}
+final class SaleEditedActionState extends SalesState {}
+ final class SaleAddedActionState extends SalesState {}
+ final class SaleErrorActionState extends SalesState {}

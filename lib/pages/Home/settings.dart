@@ -18,7 +18,7 @@ class _SettingsState extends State<Settings> {
       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
         return <Widget>[
           SliverAppBar(
-            expandedHeight: 120.0,
+            expandedHeight: 80.0,
             backgroundColor: primaryColor,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.only(
@@ -29,14 +29,11 @@ class _SettingsState extends State<Settings> {
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
               // centerTitle: true,
-              title: Padding(
-                padding: const EdgeInsets.only(right: 20, bottom: 10),
-                child: Text("Settings",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16.0,
-                    )),
-              ),
+              title: Text("Settings",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16.0,
+                  )),
             ),
           ),
         ];

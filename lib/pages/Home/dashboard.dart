@@ -9,6 +9,7 @@ import 'package:get/get_utils/get_utils.dart';
 import 'package:nepstyle_management_system/Logic/Bloc/dashboardBloc/dashboard_bloc.dart';
 import 'package:nepstyle_management_system/constants/color/color.dart';
 import 'package:nepstyle_management_system/utils/customwidgets/dividerText.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -33,6 +34,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
     BlocProvider.of<DashboardBloc>(context).add(DashboardLoadEvent());
   }
 
+  final List<ChartData> data = [
+    ChartData('Nike', 35),
+    ChartData('Adidas', 28),
+    ChartData('Puma', 34),
+    ChartData('Reebok', 32),
+    ChartData('UnderArmour', 40),
+    ChartData('New Balance', 40),
+    ChartData('Fila', 40),
+  ];
   @override
   Widget build(BuildContext context) {
     return NestedScrollView(
@@ -40,7 +50,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
         return <Widget>[
           SliverAppBar(
-            expandedHeight: 90.0,
+            expandedHeight: 80.0,
             backgroundColor: primaryColor,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.only(
@@ -54,14 +64,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 10),
-                    child: Text("Dashboard ",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16.0,
-                        )),
-                  ),
+                  Text("Dashboard ",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16.0,
+                      )),
                   Expanded(child: SizedBox()),
                 ],
               ),
@@ -160,13 +167,42 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           ),
                         ],
                       ),
-                    )
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Center(
+                      child: Container(
+                        height: Get.height * 0.6,
+                        width: Get.width * 0.5,
+                        child: SfCircularChart(
+                          title: ChartTitle(
+                              text: 'Brand Analysis',
+                              textStyle: TextStyle(
+                                  fontSize: 25,
+                                  color: greyDark,
+                                  fontFamily: 'inter',
+                                  fontWeight: FontWeight.w700)),
+                          legend: Legend(isVisible: true),
+                          series: <CircularSeries>[
+                            PieSeries<ChartData, String>(
+                              dataSource: data,
+                              xValueMapper: (ChartData data, _) =>
+                                  data.category,
+                              yValueMapper: (ChartData data, _) => data.value,
+                              dataLabelSettings:
+                                  DataLabelSettings(isVisible: true),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
             );
           } else {
-            return Center(child: Text('Failed to load Screen'));
+            return Center(child: CircularProgressIndicator());
           }
         },
       ),
@@ -219,4 +255,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ),
     );
   }
+}
+
+class ChartData {
+  final String category;
+  final double value;
+
+  ChartData(this.category, this.value);
 }

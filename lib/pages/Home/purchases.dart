@@ -461,7 +461,7 @@ class _PurchasesState extends State<Purchases> {
       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
         return <Widget>[
           SliverAppBar(
-            expandedHeight: 120.0,
+            expandedHeight: 80.0,
             backgroundColor: primaryColor,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.only(
@@ -478,29 +478,17 @@ class _PurchasesState extends State<Purchases> {
                     fontSize: 16.0,
                   )),
             ),
-          ),
-        ];
-      },
-      body: Padding(
-        padding: const EdgeInsets.only(top: 20.0, left: 10, right: 10),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                dividerText(
-                  context: context,
-                  dividerText: "Purchases",
-                  desc: "",
-                ),
-                ElevatedButton(
+            actions: [
+              Padding(
+                padding: const EdgeInsets.only(top: 25.0, right: 20),
+                child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
+                    backgroundColor: primaryColorJustLight,
                     shape: StadiumBorder(),
                   ),
                   onPressed: _showPurchaseAdd,
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Icon(
                         Icons.add_circle_outline_outlined,
@@ -519,8 +507,15 @@ class _PurchasesState extends State<Purchases> {
                     ],
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
+          ),
+        ];
+      },
+      body: Padding(
+        padding: const EdgeInsets.only(top: 20.0, left: 10, right: 10),
+        child: Column(
+          children: [
             Divider(
               thickness: 1,
               color: myBlack,
@@ -657,6 +652,21 @@ class _PurchasesState extends State<Purchases> {
                                   )),
                                   DataCell(Row(
                                     children: [
+                                      IconButton(
+                                          style: ButtonStyle(
+                                            backgroundColor:
+                                                WidgetStatePropertyAll(
+                                              viewdetailsColor,
+                                            ),
+                                          ),
+                                          onPressed: () {},
+                                          icon: Icon(
+                                            Icons.visibility,
+                                            color: Colors.white,
+                                          )),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
                                       IconButton(
                                         style: ButtonStyle(
                                           backgroundColor:

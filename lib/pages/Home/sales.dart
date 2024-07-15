@@ -56,7 +56,7 @@ class _SalesState extends State<Sales> {
       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
         return <Widget>[
           SliverAppBar(
-            expandedHeight: 120.0,
+            expandedHeight: 80.0,
             backgroundColor: primaryColor,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.only(
@@ -67,38 +67,23 @@ class _SalesState extends State<Sales> {
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
               // centerTitle: true,
-              title: Padding(
-                padding: const EdgeInsets.only(right: 20, bottom: 10),
-                child: Text("Sales",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16.0,
-                    )),
-              ),
+              title: Text("Sales",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16.0,
+                  )),
             ),
-          ),
-        ];
-      },
-      body: Padding(
-        padding: const EdgeInsets.only(top: 20.0, left: 10, right: 10),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                dividerText(
-                  context: context,
-                  dividerText: "Sales",
-                  desc: "",
-                ),
-                ElevatedButton(
+            actions: [
+              Padding(
+                padding: const EdgeInsets.only(top: 25.0, right: 20),
+                child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
+                    backgroundColor: primaryColorJustLight,
                     shape: StadiumBorder(),
                   ),
                   onPressed: _showSalesAddDialog,
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Icon(
                         Icons.add_circle_outline_outlined,
@@ -117,8 +102,15 @@ class _SalesState extends State<Sales> {
                     ],
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
+          ),
+        ];
+      },
+      body: Padding(
+        padding: const EdgeInsets.only(top: 20.0, left: 10, right: 10),
+        child: Column(
+          children: [
             Divider(
               thickness: 1,
               color: myBlack,

@@ -31,9 +31,9 @@ class SplashScreenState extends State<SplashScreen> {
 
     Future.delayed(Duration(seconds: 1), () {
       if (isLoggedin != null && isLoggedin) {
-        Get.offAll(() => Login());
+        Get.offAll(() => MainLayout());
       } else {
-        Get.offAll(() => Login());
+        Get.offAll(() => MainLayout());
       }
     });
   }
