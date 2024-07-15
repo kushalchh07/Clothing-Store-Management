@@ -5,6 +5,7 @@ import 'dart:io' as io; // Alias for native file handling
 import 'dart:html' as html; // Import for web image handling
 
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -467,34 +468,34 @@ class _InventoryScreenState extends State<InventoryScreen> {
             ),
             actions: [
               Padding(
-                  padding: const EdgeInsets.only(top: 25.0,right: 20),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: primaryColorJustLight,
-                      shape: StadiumBorder(),
-                    ),
-                    onPressed: _showInventoryadd,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Icon(
-                          Icons.add_circle_outline_outlined,
-                          color: Colors.white,
-                        ),
-                        const SizedBox(
-                          width: 4,
-                        ),
-                        Text(
-                          "Add Product",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontFamily: 'inter'),
-                        ),
-                      ],
-                    ),
+                padding: const EdgeInsets.only(top: 25.0, right: 20),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: primaryColorJustLight,
+                    shape: StadiumBorder(),
+                  ),
+                  onPressed: _showInventoryadd,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Icon(
+                        Icons.add_circle_outline_outlined,
+                        color: Colors.white,
+                      ),
+                      const SizedBox(
+                        width: 4,
+                      ),
+                      Text(
+                        "Add Product",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontFamily: 'inter'),
+                      ),
+                    ],
                   ),
                 ),
+              ),
             ],
           ),
         ];
@@ -503,9 +504,6 @@ class _InventoryScreenState extends State<InventoryScreen> {
         padding: const EdgeInsets.only(top: 20.0, left: 10, right: 10),
         child: Column(
           children: [
-            
-                 
-              
             Divider(
               thickness: 1,
               color: myBlack,
@@ -513,13 +511,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
             Expanded(
               child: BlocConsumer<InventoryBloc, InventoryState>(
                 listener: (context, state) {
-                    if (state is InventoryDeletedActionState) {
-                    // ScaffoldMessenger.of(context).showSnackBar(
-                    //   SnackBar(
-                    //     content: Text('Deleted Successfully'),
-                    //     backgroundColor: Colors.red,
-                    //   ),
-                    // );
+                  if (state is InventoryDeletedActionState) {
                     Fluttertoast.showToast(
                       msg: 'Deleted Successfully',
                       toastLength: Toast.LENGTH_SHORT,
@@ -528,13 +520,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
                       textColor: whiteColor,
                     );
                   } else if (state is InventoryAddedActionState) {
-                    // ScaffoldMessenger.of(context).showSnackBar(
-                    //   SnackBar(
-                    //     content: Text('Order Added Successfully'),
-                    //     backgroundColor: Colors.green,
-                    //   ),
-                    // );
-                     Fluttertoast.showToast(
+                    Fluttertoast.showToast(
                       msg: 'Product Added Successfully',
                       toastLength: Toast.LENGTH_SHORT,
                       gravity: ToastGravity.BOTTOM,
@@ -542,13 +528,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
                       textColor: whiteColor,
                     );
                   } else if (state is InventoryErrorActionState) {
-                    // ScaffoldMessenger.of(context).showSnackBar(
-                    //   SnackBar(
-                    //     content: Text('Something went wrong'),
-                    //     backgroundColor: Colors.red,
-                    //   ),
-                    // );
-                     Fluttertoast.showToast(
+                    Fluttertoast.showToast(
                       msg: 'Something went wrong',
                       toastLength: Toast.LENGTH_SHORT,
                       gravity: ToastGravity.BOTTOM,
@@ -556,12 +536,6 @@ class _InventoryScreenState extends State<InventoryScreen> {
                       textColor: whiteColor,
                     );
                   } else if (state is InventoryEditedActionState) {
-                    // ScaffoldMessenger.of(context).showSnackBar(
-                    //   SnackBar(
-                    //     content: Text('Edited Successfully'),
-                    //     backgroundColor: Colors.green,
-                    //   ),
-                    // );
                     Fluttertoast.showToast(
                       msg: 'Edited Successfully',
                       toastLength: Toast.LENGTH_SHORT,
@@ -730,15 +704,16 @@ class _InventoryScreenState extends State<InventoryScreen> {
                                     style: TextStyle(fontSize: 14),
                                   )),
                                   DataCell(Text(
-                                    inventory.purchasePrice.toString(),
+                                    "Rs ${inventory.purchasePrice.toString()}",
                                     style: TextStyle(fontSize: 14),
                                   )),
                                   DataCell(Text(
-                                    inventory.sellingPrice.toString(),
+                                    "Rs ${inventory.sellingPrice.toString()}",
                                     style: TextStyle(fontSize: 14),
                                   )),
                                   DataCell(Row(
-                                    children: [ IconButton(
+                                    children: [
+                                      IconButton(
                                           style: ButtonStyle(
                                             backgroundColor:
                                                 WidgetStatePropertyAll(
@@ -809,7 +784,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
                       ),
                     );
                   } else {
-                    return Center(child: Text('Failed to load inventory'));
+                    return Center(child: CupertinoActivityIndicator());
                   }
                 },
               ),

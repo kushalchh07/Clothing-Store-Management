@@ -78,8 +78,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
       },
       body: BlocBuilder<DashboardBloc, DashboardState>(
         builder: (context, state) {
-          if (state is DashboardInitial) {
-            BlocProvider.of<DashboardBloc>(context).add(DashboardLoadEvent());
+          if (state is DashboardLoadingState) {
+            Center(child: CircularProgressIndicator());
           }
           if (state is DashboardLoadedState) {
             return SingleChildScrollView(

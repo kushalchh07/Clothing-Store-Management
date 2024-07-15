@@ -545,7 +545,7 @@ class _OrderScreenState extends State<OrderScreen> {
                     //     backgroundColor: Colors.green,
                     //   ),
                     // );
-                     Fluttertoast.showToast(
+                    Fluttertoast.showToast(
                       msg: 'Order Placed Successfully',
                       toastLength: Toast.LENGTH_SHORT,
                       gravity: ToastGravity.BOTTOM,
@@ -559,7 +559,7 @@ class _OrderScreenState extends State<OrderScreen> {
                     //     backgroundColor: Colors.red,
                     //   ),
                     // );
-                     Fluttertoast.showToast(
+                    Fluttertoast.showToast(
                       msg: 'Something went wrong',
                       toastLength: Toast.LENGTH_SHORT,
                       gravity: ToastGravity.BOTTOM,
@@ -717,7 +717,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                     style: TextStyle(fontSize: 14),
                                   )),
                                   DataCell(Text(
-                                    orders.perPiecePrice.toString(),
+                                    " Rs ${orders.perPiecePrice.toString()}",
                                     style: TextStyle(fontSize: 14),
                                   )),
                                   DataCell(Text(
@@ -725,7 +725,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                     style: TextStyle(fontSize: 14),
                                   )),
                                   DataCell(Text(
-                                    orders.totalAmount.toString(),
+                                    "Rs ${orders.totalAmount.toString()}",
                                     style: TextStyle(fontSize: 14),
                                   )),
                                   DataCell(Text(

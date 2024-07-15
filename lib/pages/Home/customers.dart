@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_final_fields
 
 import 'dart:developer';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -350,63 +351,39 @@ class _CustomerScreenState extends State<CustomerScreen> {
         },
         body: BlocConsumer<CustomerBloc, CustomerState>(
           listener: (context, state) {
-              if (state is CustomerDeletedActionState) {
-                    // ScaffoldMessenger.of(context).showSnackBar(
-                    //   SnackBar(
-                    //     content: Text('Deleted Successfully'),
-                    //     backgroundColor: Colors.red,
-                    //   ),
-                    // );
-                    Fluttertoast.showToast(
-                      msg: 'Deleted Successfully',
-                      toastLength: Toast.LENGTH_SHORT,
-                      gravity: ToastGravity.BOTTOM,
-                      backgroundColor: Colors.red,
-                      textColor: whiteColor,
-                    );
-                  } else if (state is CustomerAddedActionState) {
-                    // ScaffoldMessenger.of(context).showSnackBar(
-                    //   SnackBar(
-                    //     content: Text('Order Added Successfully'),
-                    //     backgroundColor: Colors.green,
-                    //   ),
-                    // );
-                     Fluttertoast.showToast(
-                      msg: 'Customer added Successfully',
-                      toastLength: Toast.LENGTH_SHORT,
-                      gravity: ToastGravity.BOTTOM,
-                      backgroundColor: Colors.green,
-                      textColor: whiteColor,
-                    );
-                  } else if (state is CustomerErrorActionState) {
-                    // ScaffoldMessenger.of(context).showSnackBar(
-                    //   SnackBar(
-                    //     content: Text('Something went wrong'),
-                    //     backgroundColor: Colors.red,
-                    //   ),
-                    // );
-                     Fluttertoast.showToast(
-                      msg: 'Something went wrong',
-                      toastLength: Toast.LENGTH_SHORT,
-                      gravity: ToastGravity.BOTTOM,
-                      backgroundColor: Colors.red,
-                      textColor: whiteColor,
-                    );
-                  } else if (state is CustomerEditedActionState) {
-                    // ScaffoldMessenger.of(context).showSnackBar(
-                    //   SnackBar(
-                    //     content: Text('Edited Successfully'),
-                    //     backgroundColor: Colors.green,
-                    //   ),
-                    // );
-                    Fluttertoast.showToast(
-                      msg: 'Edited Successfully',
-                      toastLength: Toast.LENGTH_SHORT,
-                      gravity: ToastGravity.BOTTOM,
-                      backgroundColor: Colors.green,
-                      textColor: whiteColor,
-                    );
-                  }
+            if (state is CustomerDeletedActionState) {
+              Fluttertoast.showToast(
+                msg: 'Deleted Successfully',
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: Colors.red,
+                textColor: whiteColor,
+              );
+            } else if (state is CustomerAddedActionState) {
+              Fluttertoast.showToast(
+                msg: 'Customer added Successfully',
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: Colors.green,
+                textColor: whiteColor,
+              );
+            } else if (state is CustomerErrorActionState) {
+              Fluttertoast.showToast(
+                msg: 'Something went wrong',
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: Colors.red,
+                textColor: whiteColor,
+              );
+            } else if (state is CustomerEditedActionState) {
+              Fluttertoast.showToast(
+                msg: 'Edited Successfully',
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: Colors.green,
+                textColor: whiteColor,
+              );
+            }
           },
           builder: (context, state) {
             if (state is CustomerLoadingState) {
@@ -476,6 +453,8 @@ class _CustomerScreenState extends State<CustomerScreen> {
                             icon: Icon(Icons.delete, color: Colors.red),
                             onPressed: () {
                               _showDeleteConfirmationDialog(customer.id);
+                              BlocProvider.of<CustomerBloc>(context)
+                                  .add(CustomerLoadEvent());
                             },
                           ),
                         ],
@@ -485,7 +464,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                 },
               );
             } else {
-              return Center(child: Text('Failed to load customers'));
+              return Center(child: CupertinoActivityIndicator());
             }
           },
         ),

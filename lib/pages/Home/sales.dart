@@ -119,9 +119,7 @@ class _SalesState extends State<Sales> {
             Expanded(
               child: BlocConsumer<SalesBloc, SalesState>(
                 listener: (context, state) {
-                  
                   if (state is SaleDeletedActionState) {
-                  
                     Fluttertoast.showToast(
                       msg: 'Deleted Successfully',
                       toastLength: Toast.LENGTH_SHORT,
@@ -130,7 +128,6 @@ class _SalesState extends State<Sales> {
                       textColor: whiteColor,
                     );
                   } else if (state is SaleAddedActionState) {
-                    
                     Fluttertoast.showToast(
                       msg: 'Added Successfully',
                       toastLength: Toast.LENGTH_SHORT,
@@ -139,7 +136,6 @@ class _SalesState extends State<Sales> {
                       textColor: whiteColor,
                     );
                   } else if (state is SaleErrorActionState) {
-                  
                     Fluttertoast.showToast(
                       msg: 'Something went wrong',
                       toastLength: Toast.LENGTH_SHORT,
@@ -148,7 +144,6 @@ class _SalesState extends State<Sales> {
                       textColor: whiteColor,
                     );
                   } else if (state is SaleEditedActionState) {
-                    
                     Fluttertoast.showToast(
                       msg: 'Edited Successfully',
                       toastLength: Toast.LENGTH_SHORT,
@@ -167,7 +162,7 @@ class _SalesState extends State<Sales> {
                       child: Container(
                         constraints: BoxConstraints(minWidth: Get.width),
                         child: DataTable(
-                          columnSpacing: 20,
+                          columnSpacing: 10,
                           columns: [
                             DataColumn(
                               label: Text(
@@ -179,11 +174,13 @@ class _SalesState extends State<Sales> {
                               ),
                             ),
                             DataColumn(
-                              label: Text(
-                                'Customer Name',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
+                              label: Flexible(
+                                child: Text(
+                                  'Customer Name',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                             ),
@@ -267,7 +264,7 @@ class _SalesState extends State<Sales> {
                                     style: TextStyle(fontSize: 14),
                                   )),
                                   DataCell(Text(
-                                    sales.perPiecePrice,
+                                    "Rs ${sales.perPiecePrice}",
                                     style: TextStyle(fontSize: 14),
                                   )),
                                   DataCell(Text(
@@ -275,7 +272,7 @@ class _SalesState extends State<Sales> {
                                     style: TextStyle(fontSize: 14),
                                   )),
                                   DataCell(Text(
-                                    sales.totalAmount,
+                                    "Rs ${sales.totalAmount}",
                                     style: TextStyle(fontSize: 14),
                                   )),
                                   DataCell(Row(

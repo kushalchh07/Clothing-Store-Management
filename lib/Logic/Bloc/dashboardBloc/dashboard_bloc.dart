@@ -18,6 +18,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   FutureOr<void> _dashBoardLoadEvent(
       DashboardLoadEvent event, Emitter<DashboardState> emit) async {
     try {
+      emit(DashboardLoadingState());
  int categorycount = await _crudServices.getCategoryCount();
 //  int purchasecount = await _crudServices.getPurchaseCount();
 //  int salescount = await _crudServices.getSalesCount();

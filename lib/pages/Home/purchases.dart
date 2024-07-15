@@ -683,11 +683,11 @@ class _PurchasesState extends State<Purchases> {
                                     style: TextStyle(fontSize: 14),
                                   )),
                                   DataCell(Text(
-                                    purchase.perPiecePrice.toString(),
+                                   "Rs ${purchase.perPiecePrice.toString()}",
                                     style: TextStyle(fontSize: 14),
                                   )),
                                   DataCell(Text(
-                                    purchase.totalAmount.toString(),
+                                    "Rs ${purchase.totalAmount.toString()}",
                                     style: TextStyle(fontSize: 14),
                                   )),
                                   DataCell(Row(
