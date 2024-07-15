@@ -32,6 +32,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     try {
       await _crudServices.addCategory(
           event.id, event.categoryName, event.quantity);
+          emit(CategoryAddedActionState());
     } catch (e) {
       emit(CategoryError(message: e.toString()));
     }
@@ -43,6 +44,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     try {
       await _crudServices.updateCategory(
           event.id, event.categoryName, event.quantity);
+          emit(CategoryEditedActionState());
     } catch (e) {
       emit(CategoryError(message: e.toString()));
     }
@@ -53,6 +55,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
       Emitter<CategoryState> emit) async {
     try {
       await _crudServices.deleteCategory(event.id);
+      emit(CategoryDeletedActionState());
     } catch (e) {
       emit(CategoryError(message: e.toString()));
     }

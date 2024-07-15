@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/route_manager.dart';
 import 'package:nepstyle_management_system/Logic/Bloc/categoryBloc/category_bloc.dart';
@@ -59,34 +60,34 @@ class _CategoryState extends State<Category> {
             ),
             actions: [
               Padding(
-                  padding: const EdgeInsets.only(top: 25.0,right: 20),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: primaryColorJustLight,
-                      shape: StadiumBorder(),
-                    ),
-                    onPressed: _showCategoryAddDialog,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Icon(
-                          Icons.add_circle_outline_outlined,
-                          color: Colors.white,
-                        ),
-                        const SizedBox(
-                          width: 4,
-                        ),
-                        Text(
-                          "Add Category",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontFamily: 'inter'),
-                        ),
-                      ],
-                    ),
+                padding: const EdgeInsets.only(top: 25.0, right: 20),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: primaryColorJustLight,
+                    shape: StadiumBorder(),
+                  ),
+                  onPressed: _showCategoryAddDialog,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Icon(
+                        Icons.add_circle_outline_outlined,
+                        color: Colors.white,
+                      ),
+                      const SizedBox(
+                        width: 4,
+                      ),
+                      Text(
+                        "Add Category",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontFamily: 'inter'),
+                      ),
+                    ],
                   ),
                 ),
+              ),
             ],
           ),
         ];
@@ -94,13 +95,47 @@ class _CategoryState extends State<Category> {
       body: Padding(
         padding: const EdgeInsets.only(top: 20.0, left: 10, right: 10),
         child: Column(children: [
-        
           Divider(
             thickness: 1,
             color: myBlack,
           ),
           Expanded(
-            child: BlocBuilder<CategoryBloc, CategoryState>(
+            child: BlocConsumer<CategoryBloc, CategoryState>(
+              listener: (context, state) {
+                if (state is CategoryDeletedActionState) {
+                  Fluttertoast.showToast(
+                    msg: 'Deleted Successfully',
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.BOTTOM,
+                    backgroundColor: Colors.red,
+                    textColor: whiteColor,
+                  );
+                } else if (state is CategoryAddedActionState) {
+                  Fluttertoast.showToast(
+                    msg: 'New category added Successfully',
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.BOTTOM,
+                    backgroundColor: Colors.green,
+                    textColor: whiteColor,
+                  );
+                } else if (state is CategoryErrorActionState) {
+                  Fluttertoast.showToast(
+                    msg: 'Something went wrong',
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.BOTTOM,
+                    backgroundColor: Colors.red,
+                    textColor: whiteColor,
+                  );
+                } else if (state is CategoryEditedActionState) {
+                  Fluttertoast.showToast(
+                    msg: 'Edited Successfully',
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.BOTTOM,
+                    backgroundColor: Colors.green,
+                    textColor: whiteColor,
+                  );
+                }
+              },
               builder: (context, state) {
                 if (state is CategoryLoading) {
                   return Center(child: CircularProgressIndicator());
