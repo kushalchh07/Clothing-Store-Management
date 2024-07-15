@@ -69,4 +69,5 @@ const Color pageColor = Color.fromARGB(255, 229, 229, 229);
 const Color secondaryColor = Color.fromARGB(255, 255, 145, 1);
 const Color myButtonColor = Colors.black;
 const Color redColor = Colors.red;
-const Color editButtonColor = Colors.blueAccent;
+const Color editButtonColor = Colors.green;
+const Color viewdetailsColor = Colors.blue;

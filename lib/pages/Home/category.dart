@@ -38,7 +38,7 @@ class _CategoryState extends State<Category> {
       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
         return <Widget>[
           SliverAppBar(
-            expandedHeight: 120.0,
+            expandedHeight: 80.0,
             backgroundColor: primaryColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
@@ -57,38 +57,44 @@ class _CategoryState extends State<Category> {
                 ),
               ),
             ),
+            actions: [
+              Padding(
+                  padding: const EdgeInsets.only(top: 25.0,right: 20),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: primaryColorJustLight,
+                      shape: StadiumBorder(),
+                    ),
+                    onPressed: _showCategoryAddDialog,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Icon(
+                          Icons.add_circle_outline_outlined,
+                          color: Colors.white,
+                        ),
+                        const SizedBox(
+                          width: 4,
+                        ),
+                        Text(
+                          "Add Category",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontFamily: 'inter'),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+            ],
           ),
         ];
       },
       body: Padding(
         padding: const EdgeInsets.only(top: 20.0, left: 10, right: 10),
         child: Column(children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              dividerText(
-                context: context,
-                dividerText: "Category",
-                desc: "",
-              ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: primaryColor,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                ),
-                onPressed: _showCategoryAddDialog,
-                child: Text(
-                  "Add Category",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontFamily: 'inter', // Add this line
-                  ),
-                ),
-              ),
-            ],
-          ),
+        
           Divider(
             thickness: 1,
             color: myBlack,
