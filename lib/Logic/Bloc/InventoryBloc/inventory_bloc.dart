@@ -45,6 +45,7 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
         event.productImage,
         event.category,
       );
+      emit(InventoryAddedActionState());
       log("Add products Added");
     } catch (e) {
       log(e.toString());
@@ -57,6 +58,7 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
       Emitter<InventoryState> emit) async {
     try {
       await _crudServices.deleteProduct(event.id);
+      emit(InventoryDeletedActionState());
       log("Product Deleted");
     } catch (e) {
       log("item delete failed");
@@ -77,6 +79,7 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
         event.productImage,
         event.category,
       );
+      emit(InventoryEditedActionState());
       log("Product Updated");
     } catch (e) {
       log(e.toString());

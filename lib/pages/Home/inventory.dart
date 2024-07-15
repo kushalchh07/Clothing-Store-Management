@@ -7,6 +7,7 @@ import 'dart:html' as html; // Import for web image handling
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/route_manager.dart';
 import 'package:image_picker/image_picker.dart';
@@ -448,7 +449,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
         return <Widget>[
           SliverAppBar(
-            expandedHeight: 120.0,
+            expandedHeight: 80.0,
             backgroundColor: primaryColor,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.only(
@@ -464,6 +465,37 @@ class _InventoryScreenState extends State<InventoryScreen> {
                     fontSize: 16.0,
                   )),
             ),
+            actions: [
+              Padding(
+                  padding: const EdgeInsets.only(top: 25.0,right: 20),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: primaryColorJustLight,
+                      shape: StadiumBorder(),
+                    ),
+                    onPressed: _showInventoryadd,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Icon(
+                          Icons.add_circle_outline_outlined,
+                          color: Colors.white,
+                        ),
+                        const SizedBox(
+                          width: 4,
+                        ),
+                        Text(
+                          "Add Product",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontFamily: 'inter'),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+            ],
           ),
         ];
       },
@@ -471,48 +503,74 @@ class _InventoryScreenState extends State<InventoryScreen> {
         padding: const EdgeInsets.only(top: 20.0, left: 10, right: 10),
         child: Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                dividerText(
-                  context: context,
-                  dividerText: "Inventory",
-                  desc: "",
-                ),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
-                    shape: StadiumBorder(),
-                  ),
-                  onPressed: _showInventoryadd,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Icon(
-                        Icons.add_circle_outline_outlined,
-                        color: Colors.white,
-                      ),
-                      const SizedBox(
-                        width: 4,
-                      ),
-                      Text(
-                        "Add Product",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontFamily: 'inter'),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+            
+                 
+              
             Divider(
               thickness: 1,
               color: myBlack,
             ),
             Expanded(
-              child: BlocBuilder<InventoryBloc, InventoryState>(
+              child: BlocConsumer<InventoryBloc, InventoryState>(
+                listener: (context, state) {
+                    if (state is InventoryDeletedActionState) {
+                    // ScaffoldMessenger.of(context).showSnackBar(
+                    //   SnackBar(
+                    //     content: Text('Deleted Successfully'),
+                    //     backgroundColor: Colors.red,
+                    //   ),
+                    // );
+                    Fluttertoast.showToast(
+                      msg: 'Deleted Successfully',
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      backgroundColor: Colors.red,
+                      textColor: whiteColor,
+                    );
+                  } else if (state is InventoryAddedActionState) {
+                    // ScaffoldMessenger.of(context).showSnackBar(
+                    //   SnackBar(
+                    //     content: Text('Order Added Successfully'),
+                    //     backgroundColor: Colors.green,
+                    //   ),
+                    // );
+                     Fluttertoast.showToast(
+                      msg: 'Product Added Successfully',
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      backgroundColor: Colors.green,
+                      textColor: whiteColor,
+                    );
+                  } else if (state is InventoryErrorActionState) {
+                    // ScaffoldMessenger.of(context).showSnackBar(
+                    //   SnackBar(
+                    //     content: Text('Something went wrong'),
+                    //     backgroundColor: Colors.red,
+                    //   ),
+                    // );
+                     Fluttertoast.showToast(
+                      msg: 'Something went wrong',
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      backgroundColor: Colors.red,
+                      textColor: whiteColor,
+                    );
+                  } else if (state is InventoryEditedActionState) {
+                    // ScaffoldMessenger.of(context).showSnackBar(
+                    //   SnackBar(
+                    //     content: Text('Edited Successfully'),
+                    //     backgroundColor: Colors.green,
+                    //   ),
+                    // );
+                    Fluttertoast.showToast(
+                      msg: 'Edited Successfully',
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      backgroundColor: Colors.green,
+                      textColor: whiteColor,
+                    );
+                  }
+                },
                 builder: (context, state) {
                   if (state is InventoryLoadingState) {
                     return Center(child: CircularProgressIndicator());
@@ -680,7 +738,21 @@ class _InventoryScreenState extends State<InventoryScreen> {
                                     style: TextStyle(fontSize: 14),
                                   )),
                                   DataCell(Row(
-                                    children: [
+                                    children: [ IconButton(
+                                          style: ButtonStyle(
+                                            backgroundColor:
+                                                WidgetStatePropertyAll(
+                                              viewdetailsColor,
+                                            ),
+                                          ),
+                                          onPressed: () {},
+                                          icon: Icon(
+                                            Icons.visibility,
+                                            color: Colors.white,
+                                          )),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
                                       IconButton(
                                         style: ButtonStyle(
                                           backgroundColor:
