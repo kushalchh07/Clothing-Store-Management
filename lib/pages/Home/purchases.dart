@@ -5,6 +5,7 @@ import 'dart:developer';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/route_manager.dart';
 import 'package:nepstyle_management_system/Logic/Bloc/supplierBloc/supplier_bloc.dart';
@@ -521,7 +522,46 @@ class _PurchasesState extends State<Purchases> {
               color: myBlack,
             ),
             Expanded(
-              child: BlocBuilder<PurchaseBloc, PurchaseState>(
+              child: BlocConsumer<PurchaseBloc, PurchaseState>(
+                listener: (context, state) {
+                  if (state is PurchaseDeletedActionState) {
+                  
+                    Fluttertoast.showToast(
+                      msg: 'Deleted Successfully',
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      backgroundColor: Colors.red,
+                      textColor: whiteColor,
+                    );
+                  } else if (state is PurchaseAddedActionState) {
+                    
+                    Fluttertoast.showToast(
+                      msg: 'Added Successfully',
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      backgroundColor: Colors.green,
+                      textColor: whiteColor,
+                    );
+                  } else if (state is PurchaseErrorActionState) {
+                  
+                    Fluttertoast.showToast(
+                      msg: 'Something went wrong',
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      backgroundColor: Colors.red,
+                      textColor: whiteColor,
+                    );
+                  } else if (state is PurchaseEditedActionState) {
+                    
+                    Fluttertoast.showToast(
+                      msg: 'Edited Successfully',
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      backgroundColor: Colors.green,
+                      textColor: whiteColor,
+                    );
+                  }
+                },
                 builder: (context, state) {
                   if (state is PurchaseLoadingState) {
                     return Center(child: CircularProgressIndicator());

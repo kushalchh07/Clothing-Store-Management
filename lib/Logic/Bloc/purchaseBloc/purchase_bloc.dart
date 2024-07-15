@@ -51,6 +51,8 @@ class PurchaseBloc extends Bloc<PurchaseEvent, PurchaseState> {
         totalAmount.toString(),
         event.description,
       );
+
+      emit(PurchaseAddedActionState());
     } catch (e) {
       log("Bloc bhitra error");
       log(e.toString());
@@ -78,6 +80,8 @@ class PurchaseBloc extends Bloc<PurchaseEvent, PurchaseState> {
         totalAmount.toString(),
         event.description,
       );
+
+      emit(PurchaseEditedActionState());
     } catch (e) {
       log(e.toString());
       rethrow;
@@ -89,6 +93,7 @@ class PurchaseBloc extends Bloc<PurchaseEvent, PurchaseState> {
       Emitter<PurchaseState> emit) async {
     try {
       await _crudServices.deletePurchase(event.id);
+      emit(PurchaseDeletedActionState());
     } catch (e) {
       log(e.toString());
       rethrow;
