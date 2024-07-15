@@ -19,3 +19,10 @@ class SupplierErrorState extends SupplierState {
   SupplierErrorState(this.message);
 }
 
+final class SupplierDeletedActionState extends SupplierState {}
+
+final class SupplierEditedActionState extends SupplierState {}
+
+final class SupplierAddedActionState extends SupplierState {}
+
+final class SupplierErrorActionState extends SupplierState {}

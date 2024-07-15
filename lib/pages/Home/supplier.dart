@@ -343,7 +343,7 @@ class _SupplierState extends State<Supplier> {
       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
         return <Widget>[
           SliverAppBar(
-            expandedHeight: 120.0,
+            expandedHeight: 80.0,
             backgroundColor: primaryColor,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.only(
@@ -354,15 +354,43 @@ class _SupplierState extends State<Supplier> {
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
               // centerTitle: true,
-              title: Padding(
-                padding: const EdgeInsets.only(right: 20, bottom: 10),
-                child: Text("Suppliers",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16.0,
-                    )),
-              ),
+              title: Text("Suppliers",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16.0,
+                  )),
             ),
+            actions: [
+              Padding(
+                  padding: const EdgeInsets.only(top: 25.0,right: 20),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: primaryColorJustLight,
+                      shape: StadiumBorder(),
+                    ),
+                    onPressed: _showAddCSupplierDialog,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Icon(
+                          Icons.add_circle_outline_outlined,
+                          color: Colors.white,
+                        ),
+                        const SizedBox(
+                          width: 4,
+                        ),
+                        Text(
+                          "Add Supplier",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontFamily: 'inter'),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+            ],
           ),
         ];
       },
@@ -370,42 +398,7 @@ class _SupplierState extends State<Supplier> {
         padding: const EdgeInsets.only(top: 20.0, left: 10, right: 10),
         child: Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                dividerText(
-                  context: context,
-                  dividerText: "Suppliers",
-                  desc: "",
-                ),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
-                    shape: StadiumBorder(),
-                  ),
-                  onPressed: _showAddCSupplierDialog,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Icon(
-                        Icons.add_circle_outline_outlined,
-                        color: Colors.white,
-                      ),
-                      const SizedBox(
-                        width: 4,
-                      ),
-                      Text(
-                        "Add Supplier",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontFamily: 'inter'),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+          
             Divider(
               thickness: 1,
               color: myBlack,
