@@ -44,6 +44,8 @@ class SupplierBloc extends Bloc<SupplierEvent, SupplierState> {
         event.phone,
         event.email,
       );
+
+      emit(SupplierAddedActionState());
       log("Add supplier Added");
     } catch (e) {
       log(e.toString());
@@ -57,6 +59,7 @@ class SupplierBloc extends Bloc<SupplierEvent, SupplierState> {
     try {
       await _crudServices.deleteSupplier(event.id);
       log("supplier deleted");
+      emit(SupplierDeletedActionState());
     } catch (e) {
       log(e.toString());
       rethrow;
@@ -69,6 +72,7 @@ class SupplierBloc extends Bloc<SupplierEvent, SupplierState> {
     try {
       await _crudServices.updateSuppliers(
           event.id, event.name, event.address, event.phone, event.email);
+          emit(SupplierEditedActionState());
       log("supplier updated");
     } catch (e) {
       log("U[pdate failed]");

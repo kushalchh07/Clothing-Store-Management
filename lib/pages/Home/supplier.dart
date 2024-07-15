@@ -4,6 +4,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/route_manager.dart';
 import 'package:nepstyle_management_system/Logic/Bloc/supplierBloc/supplier_bloc.dart';
@@ -404,7 +405,47 @@ class _SupplierState extends State<Supplier> {
               color: myBlack,
             ),
             Expanded(
-              child: BlocBuilder<SupplierBloc, SupplierState>(
+              child: BlocConsumer<SupplierBloc, SupplierState>(
+                listener: (context, state) {
+                  
+                  if (state is SupplierDeletedActionState) {
+                  
+                    Fluttertoast.showToast(
+                      msg: 'Deleted Successfully',
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      backgroundColor: Colors.red,
+                      textColor: whiteColor,
+                    );
+                  } else if (state is SupplierAddedActionState) {
+                    
+                    Fluttertoast.showToast(
+                      msg: 'Supplier Added Successfully',
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      backgroundColor: Colors.green,
+                      textColor: whiteColor,
+                    );
+                  } else if (state is SupplierErrorActionState) {
+                  
+                    Fluttertoast.showToast(
+                      msg: 'Something went wrong',
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      backgroundColor: Colors.red,
+                      textColor: whiteColor,
+                    );
+                  } else if (state is SupplierEditedActionState) {
+                    
+                    Fluttertoast.showToast(
+                      msg: 'Edited Successfully',
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      backgroundColor: Colors.green,
+                      textColor: whiteColor,
+                    );
+                  }
+                },
                 builder: (context, state) {
                   if (state is SupplierLoadingState) {
                     return Center(child: CircularProgressIndicator());
