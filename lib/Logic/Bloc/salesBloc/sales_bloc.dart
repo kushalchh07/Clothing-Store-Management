@@ -48,6 +48,8 @@ class SalesBloc extends Bloc<SalesEvent, SalesState> {
         event.salesPrice.toString(),
         totalAmount.toString(),
       );
+
+      emit(SaleAddedActionState());
     } catch (e) {
       log(e.toString());
       emit(SalesLoadErrorState());
@@ -70,6 +72,8 @@ class SalesBloc extends Bloc<SalesEvent, SalesState> {
         event.salesPrice.toString(),
         totalAmount.toString(),
       );
+
+      emit(SaleEditedActionState());
       log(event.productName);
       log(event.customerName);
       log(event.quantity.toString());
@@ -84,6 +88,7 @@ class SalesBloc extends Bloc<SalesEvent, SalesState> {
       SalesDeleteButtonTappedEvent event, Emitter<SalesState> emit) async {
     try {
       await _crudServices.deleteSales(event.id);
+      emit(SaleDeletedActionState());
     } catch (e) {
       log(e.toString());
       emit(SalesLoadErrorState());

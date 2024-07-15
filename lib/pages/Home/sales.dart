@@ -4,6 +4,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/route_manager.dart';
 import 'package:nepstyle_management_system/Logic/Bloc/salesBloc/sales_bloc.dart';
 import 'package:nepstyle_management_system/pages/Home/customers.dart';
@@ -116,7 +117,47 @@ class _SalesState extends State<Sales> {
               color: myBlack,
             ),
             Expanded(
-              child: BlocBuilder<SalesBloc, SalesState>(
+              child: BlocConsumer<SalesBloc, SalesState>(
+                listener: (context, state) {
+                  
+                  if (state is SaleDeletedActionState) {
+                  
+                    Fluttertoast.showToast(
+                      msg: 'Deleted Successfully',
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      backgroundColor: Colors.red,
+                      textColor: whiteColor,
+                    );
+                  } else if (state is SaleAddedActionState) {
+                    
+                    Fluttertoast.showToast(
+                      msg: 'Added Successfully',
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      backgroundColor: Colors.green,
+                      textColor: whiteColor,
+                    );
+                  } else if (state is SaleErrorActionState) {
+                  
+                    Fluttertoast.showToast(
+                      msg: 'Something went wrong',
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      backgroundColor: Colors.red,
+                      textColor: whiteColor,
+                    );
+                  } else if (state is SaleEditedActionState) {
+                    
+                    Fluttertoast.showToast(
+                      msg: 'Edited Successfully',
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      backgroundColor: Colors.green,
+                      textColor: whiteColor,
+                    );
+                  }
+                },
                 builder: (context, state) {
                   if (state is SalesLoadingState) {
                     return Center(child: CircularProgressIndicator());
