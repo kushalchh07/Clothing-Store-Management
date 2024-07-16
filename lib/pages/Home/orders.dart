@@ -64,6 +64,81 @@ class _OrderScreenState extends State<OrderScreen> {
     }
   }
 
+  void viewDescriptionDialogBox(
+    BuildContext context, {
+    required String productName,
+    required String category,
+    required String orderCode,
+    required double pricePerPiece,
+    required int quantity,
+    required double totalAmount,
+    required String customerName,
+    required String orderStatus,
+    required DateTime orderDate,
+  }) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Order Details"),
+          content: Container(
+            width: Get.width * 0.5,
+            child: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  _buildDetailRow("Product Name", productName),
+                  _buildDetailRow("Category", category),
+                  _buildDetailRow("Order Code", orderCode),
+                  _buildDetailRow("Price Per Piece",
+                      "Rs ${pricePerPiece.toStringAsFixed(2)}"),
+                  _buildDetailRow("Quantity", quantity.toString()),
+                  _buildDetailRow(
+                      "Total Amount", "Rs${totalAmount.toStringAsFixed(2)}"),
+                  _buildDetailRow("Customer Name", customerName),
+                  _buildDetailRow("Order Status", orderStatus),
+                  _buildDetailRow(
+                      "Order Date", "${orderDate.toLocal()}".split(' ')[0]),
+                ],
+              ),
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text("Close"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildDetailRow(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Text(
+              "$label:",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
+          Flexible(
+            child: Text(
+              value,
+              textAlign: TextAlign.right,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   void _showDeleteConfirmationDialog(String id) {
     showDialog(
       context: context,
@@ -749,7 +824,28 @@ class _OrderScreenState extends State<OrderScreen> {
                                               viewdetailsColor,
                                             ),
                                           ),
-                                          onPressed: () {},
+                                          onPressed: () {
+                                            viewDescriptionDialogBox(context,
+                                                productName: state
+                                                    .orders[index].productName,
+                                                category: state
+                                                    .orders[index].category,
+                                                orderCode: state
+                                                    .orders[index].orderCode,
+                                                pricePerPiece: state
+                                                    .orders[index]
+                                                    .perPiecePrice,
+                                                quantity: int.parse(state
+                                                    .orders[index].quantity),
+                                                totalAmount: state
+                                                    .orders[index].totalAmount,
+                                                customerName: state
+                                                    .orders[index].customerName,
+                                                orderStatus: state
+                                                    .orders[index].orderStatus,
+                                                orderDate: DateTime.parse(
+                                                    state.orders[index].date));
+                                          },
                                           icon: Icon(
                                             Icons.visibility,
                                             color: Colors.white,

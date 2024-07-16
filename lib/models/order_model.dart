@@ -8,7 +8,7 @@ class OrderModel {
   String quantity;
   double perPiecePrice;
   double totalAmount;
-
+  String orderStatus;
   // String description;
 
   OrderModel({
@@ -21,6 +21,7 @@ class OrderModel {
     required this.totalAmount,
     required this.category,
     required this.orderCode,
+    required this.orderStatus,
     // required this.description,
   });
 
@@ -34,7 +35,7 @@ class OrderModel {
       'totalAmount': totalAmount,
       'category': category,
       'orderCode': orderCode,
-
+      'orderStatus': orderStatus,
       // 'description': description,
       'id': id
     };
@@ -55,6 +56,7 @@ class OrderModel {
           : 0.0,
       category: map['category'] ?? '',
       orderCode: map['orderCode'] ?? '',
+      orderStatus: map['orderStatus'] ?? '',
       // description: map['description'] ?? '',
     );
   }
