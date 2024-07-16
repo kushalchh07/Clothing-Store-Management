@@ -79,11 +79,11 @@ class _PurchasesState extends State<Purchases> {
             child: Column(
               children: <Widget>[
                 Container(
+                  width: Get.width * 0.45,
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      topRight: Radius.circular(10),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10),
                     ),
                   ),
                   child: Column(
@@ -116,21 +116,20 @@ class _PurchasesState extends State<Purchases> {
                       SizedBox(height: 10),
                       _buildPurchaseDetailRow("Description", description),
                       SizedBox(height: 10),
+                      TextButton(
+                        child: Text(
+                          "Close",
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontSize: 18,
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
                     ],
                   ),
-                ),
-                SizedBox(height: 10),
-                TextButton(
-                  child: Text(
-                    "Close",
-                    style: TextStyle(
-                      color: Colors.blue,
-                      fontSize: 18,
-                    ),
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
                 ),
               ],
             ),
