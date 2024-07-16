@@ -80,9 +80,16 @@ class _OrderScreenState extends State<OrderScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Order Details"),
+          title: Text(
+            "Order Details",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+              color: Colors.black,
+            ),
+          ),
           content: Container(
-            width: Get.width * 0.5,
+            width: MediaQuery.of(context).size.width * 0.7,
             child: SingleChildScrollView(
               child: ListBody(
                 children: <Widget>[
@@ -93,18 +100,24 @@ class _OrderScreenState extends State<OrderScreen> {
                       "Rs ${pricePerPiece.toStringAsFixed(2)}"),
                   _buildDetailRow("Quantity", quantity.toString()),
                   _buildDetailRow(
-                      "Total Amount", "Rs${totalAmount.toStringAsFixed(2)}"),
+                      "Total Amount", "Rs ${totalAmount.toStringAsFixed(2)}"),
                   _buildDetailRow("Customer Name", customerName),
                   _buildDetailRow("Order Status", orderStatus),
-                  _buildDetailRow(
-                      "Order Date", "${orderDate.toLocal()}".split(' ')[0]),
+                  _buildDetailRow("Order Date",
+                      "${orderDate.day}/${orderDate.month}/${orderDate.year}"),
                 ],
               ),
             ),
           ),
           actions: <Widget>[
             TextButton(
-              child: Text("Close"),
+              child: Text(
+                "Close",
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.blue,
+                ),
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -115,29 +128,7 @@ class _OrderScreenState extends State<OrderScreen> {
     );
   }
 
-  Widget _buildDetailRow(String label, String value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Text(
-              "$label:",
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-          ),
-          Flexible(
-            child: Text(
-              value,
-              textAlign: TextAlign.right,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  
 
   void _showDeleteConfirmationDialog(String id) {
     showDialog(
@@ -908,4 +899,37 @@ class _OrderScreenState extends State<OrderScreen> {
       ),
     );
   }
+  
 }
+Widget _buildDetailRow(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Expanded(
+            flex: 3,
+            child: Text(
+              "$label",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                color: Colors.black,
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 5,
+            child: Text(
+              value,
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.black54,
+              ),
+              textAlign: TextAlign.right,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
