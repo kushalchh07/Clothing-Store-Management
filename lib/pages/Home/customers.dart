@@ -32,6 +32,90 @@ class _CustomerScreenState extends State<CustomerScreen> {
     BlocProvider.of<CustomerBloc>(context).add(CustomerLoadEvent());
   }
 
+  void _viewCustomerDetailsDialogBox(
+    BuildContext context, {
+    required String customerName,
+    required String phoneNumber,
+    required String emailAddress,
+    required String address,
+  }) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            "Customer Details",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+              color: Colors.black,
+            ),
+          ),
+          content: Container(
+            width: MediaQuery.of(context).size.width * 0.7,
+            child: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  _buildCustomerDetailRow("Name", customerName),
+                  _buildCustomerDetailRow("Phone Number", phoneNumber),
+                  _buildCustomerDetailRow("Email Address", emailAddress),
+                  _buildCustomerDetailRow("Address", address),
+                ],
+              ),
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text(
+                "Close",
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.blue,
+                ),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildCustomerDetailRow(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Expanded(
+            flex: 3,
+            child: Text(
+              "$label",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                color: Colors.black,
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 5,
+            child: Text(
+              value,
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.black54,
+              ),
+              textAlign: TextAlign.right,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   void _showAddCustomerDialog() {
     showDialog(
       context: context,
@@ -397,67 +481,78 @@ class _CustomerScreenState extends State<CustomerScreen> {
                 itemCount: customers.length,
                 itemBuilder: (context, index) {
                   final customer = customers[index];
-                  return Card(
-                    elevation: 4.0,
-                    margin:
-                        EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        backgroundColor: Colors.green,
-                        child: Text(
-                          customer.name[0],
-                          style: TextStyle(color: Colors.white),
+                  return GestureDetector(
+                    onTap: () {
+                      _viewCustomerDetailsDialogBox(
+                        context,
+                        customerName: customer.name,
+                        phoneNumber: customer.phone,
+                        emailAddress: customer.email,
+                        address: customer.address,
+                      );
+                    },
+                    child: Card(
+                      elevation: 4.0,
+                      margin:
+                          EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          backgroundColor: Colors.green,
+                          child: Text(
+                            customer.name[0],
+                            style: TextStyle(color: Colors.white),
+                          ),
                         ),
-                      ),
-                      title: Text(customer.name),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          SizedBox(height: 5),
-                          Row(
-                            children: <Widget>[
-                              Icon(Icons.location_on,
-                                  size: 16, color: Colors.grey),
-                              SizedBox(width: 5),
-                              Flexible(child: Text(customer.address)),
-                            ],
-                          ),
-                          SizedBox(height: 5),
-                          Row(
-                            children: <Widget>[
-                              Icon(Icons.phone, size: 16, color: Colors.grey),
-                              SizedBox(width: 5),
-                              Text(customer.phone),
-                            ],
-                          ),
-                          SizedBox(height: 5),
-                          Row(
-                            children: <Widget>[
-                              Icon(Icons.email, size: 16, color: Colors.grey),
-                              SizedBox(width: 5),
-                              Flexible(child: Text(customer.email)),
-                            ],
-                          ),
-                        ],
-                      ),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          IconButton(
-                            icon: Icon(Icons.edit, color: Colors.green),
-                            onPressed: () {
-                              _showEditDialog(customer);
-                            },
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.delete, color: Colors.red),
-                            onPressed: () {
-                              _showDeleteConfirmationDialog(customer.id);
-                              BlocProvider.of<CustomerBloc>(context)
-                                  .add(CustomerLoadEvent());
-                            },
-                          ),
-                        ],
+                        title: Text(customer.name),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            SizedBox(height: 5),
+                            Row(
+                              children: <Widget>[
+                                Icon(Icons.location_on,
+                                    size: 16, color: Colors.grey),
+                                SizedBox(width: 5),
+                                Flexible(child: Text(customer.address)),
+                              ],
+                            ),
+                            SizedBox(height: 5),
+                            Row(
+                              children: <Widget>[
+                                Icon(Icons.phone, size: 16, color: Colors.grey),
+                                SizedBox(width: 5),
+                                Text(customer.phone),
+                              ],
+                            ),
+                            SizedBox(height: 5),
+                            Row(
+                              children: <Widget>[
+                                Icon(Icons.email, size: 16, color: Colors.grey),
+                                SizedBox(width: 5),
+                                Flexible(child: Text(customer.email)),
+                              ],
+                            ),
+                          ],
+                        ),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            IconButton(
+                              icon: Icon(Icons.edit, color: Colors.green),
+                              onPressed: () {
+                                _showEditDialog(customer);
+                              },
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.delete, color: Colors.red),
+                              onPressed: () {
+                                _showDeleteConfirmationDialog(customer.id);
+                                BlocProvider.of<CustomerBloc>(context)
+                                    .add(CustomerLoadEvent());
+                              },
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   );
