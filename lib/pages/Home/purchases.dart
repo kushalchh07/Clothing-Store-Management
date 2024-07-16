@@ -56,6 +56,120 @@ class _PurchasesState extends State<Purchases> {
     }
   }
 
+  void viewPurchaseDetailsDialogBox(
+    BuildContext context, {
+    required DateTime date,
+    required String supplier,
+    required String productName,
+    required int quantity,
+    required double pricePerPiece,
+    required double totalAmount,
+    required String description,
+  }) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          elevation: 0.0,
+          backgroundColor: Colors.transparent,
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10),
+                    ),
+                  ),
+                  child: Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "Purchase Details",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      Divider(),
+                      _buildPurchaseDetailRow(
+                          "Date", "${date.toLocal()}".split(' ')[0]),
+                      SizedBox(height: 10),
+                      _buildPurchaseDetailRow("Supplier", supplier),
+                      SizedBox(height: 10),
+                      _buildPurchaseDetailRow("Product Name", productName),
+                      SizedBox(height: 10),
+                      _buildPurchaseDetailRow("Quantity", quantity.toString()),
+                      SizedBox(height: 10),
+                      _buildPurchaseDetailRow("Price Per Piece",
+                          "Rs ${pricePerPiece.toStringAsFixed(2)}"),
+                      SizedBox(height: 10),
+                      _buildPurchaseDetailRow("Total Amount",
+                          "Rs ${totalAmount.toStringAsFixed(2)}"),
+                      SizedBox(height: 10),
+                      _buildPurchaseDetailRow("Description", description),
+                      SizedBox(height: 10),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 10),
+                TextButton(
+                  child: Text(
+                    "Close",
+                    style: TextStyle(
+                      color: Colors.blue,
+                      fontSize: 18,
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildPurchaseDetailRow(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Text(
+            label,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+              color: Colors.black,
+            ),
+          ),
+          SizedBox(width: 10),
+          Expanded(
+            child: Text(
+              value,
+              textAlign: TextAlign.right,
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.black54,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   void _showDeleteConfirmationDialog(String id) {
     showDialog(
       context: context,
@@ -525,7 +639,6 @@ class _PurchasesState extends State<Purchases> {
               child: BlocConsumer<PurchaseBloc, PurchaseState>(
                 listener: (context, state) {
                   if (state is PurchaseDeletedActionState) {
-                  
                     Fluttertoast.showToast(
                       msg: 'Deleted Successfully',
                       toastLength: Toast.LENGTH_SHORT,
@@ -534,7 +647,6 @@ class _PurchasesState extends State<Purchases> {
                       textColor: whiteColor,
                     );
                   } else if (state is PurchaseAddedActionState) {
-                    
                     Fluttertoast.showToast(
                       msg: 'Added Successfully',
                       toastLength: Toast.LENGTH_SHORT,
@@ -543,7 +655,6 @@ class _PurchasesState extends State<Purchases> {
                       textColor: whiteColor,
                     );
                   } else if (state is PurchaseErrorActionState) {
-                  
                     Fluttertoast.showToast(
                       msg: 'Something went wrong',
                       toastLength: Toast.LENGTH_SHORT,
@@ -552,7 +663,6 @@ class _PurchasesState extends State<Purchases> {
                       textColor: whiteColor,
                     );
                   } else if (state is PurchaseEditedActionState) {
-                    
                     Fluttertoast.showToast(
                       msg: 'Edited Successfully',
                       toastLength: Toast.LENGTH_SHORT,
@@ -683,7 +793,7 @@ class _PurchasesState extends State<Purchases> {
                                     style: TextStyle(fontSize: 14),
                                   )),
                                   DataCell(Text(
-                                   "Rs ${purchase.perPiecePrice.toString()}",
+                                    "Rs ${purchase.perPiecePrice.toString()}",
                                     style: TextStyle(fontSize: 14),
                                   )),
                                   DataCell(Text(
@@ -699,7 +809,23 @@ class _PurchasesState extends State<Purchases> {
                                               viewdetailsColor,
                                             ),
                                           ),
-                                          onPressed: () {},
+                                          onPressed: () {
+                                            viewPurchaseDetailsDialogBox(
+                                                context,
+                                                date: DateTime.parse(
+                                                    purchase.date),
+                                                supplier: purchase.supplier,
+                                                productName:
+                                                    purchase.productName,
+                                                quantity: int.parse(
+                                                    purchase.quantity),
+                                                pricePerPiece:
+                                                    purchase.perPiecePrice,
+                                                totalAmount:
+                                                    purchase.totalAmount,
+                                                description:
+                                                    purchase.description);
+                                          },
                                           icon: Icon(
                                             Icons.visibility,
                                             color: Colors.white,
