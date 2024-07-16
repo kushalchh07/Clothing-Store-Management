@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last, use_build_context_synchronously
 
 import 'dart:developer';
 import 'dart:io' as io; // Alias for native file handling
@@ -332,6 +332,131 @@ class _InventoryScreenState extends State<InventoryScreen> {
     );
   }
 
+  void viewInventoryDetailsDialogBox(
+    BuildContext context, {
+    required String productName,
+    required String productImage,
+    required String category,
+    required int quantity,
+    required double purchasePrice,
+    required double sellingPrice,
+    required String description,
+  }) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          elevation: 0.0,
+          backgroundColor: Colors.transparent,
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                Container(
+                  width: Get.width * 0.5,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                  ),
+                  child: Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "Inventory Details",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      Divider(),
+                      _buildInventoryDetailRow("Product Name", productName),
+                      SizedBox(height: 10),
+                      _buildInventoryDetailRow("Category", category),
+                      SizedBox(height: 10),
+                      _buildInventoryDetailRow("Quantity", quantity.toString()),
+                      SizedBox(height: 10),
+                      _buildInventoryDetailRow("Purchase Price",
+                          "Rs ${purchasePrice.toStringAsFixed(2)}"),
+                      SizedBox(height: 10),
+                      _buildInventoryDetailRow("Selling Price",
+                          "Rs ${sellingPrice.toStringAsFixed(2)}"),
+                      SizedBox(height: 10),
+                      _buildInventoryDetailRow("Description", description),
+                      SizedBox(height: 10),
+                      SizedBox(
+                        width: 80,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(10),
+                            bottomRight: Radius.circular(10),
+                          ),
+                          child: Image.network(
+                            productImage,
+                            width: double.infinity,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 10),
+                TextButton(
+                  child: Text(
+                    "Close",
+                    style: TextStyle(
+                      color: Colors.blue,
+                      fontSize: 18,
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildInventoryDetailRow(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Text(
+            label,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+              color: Colors.black,
+            ),
+          ),
+          SizedBox(width: 10),
+          Expanded(
+            child: Text(
+              value,
+              textAlign: TextAlign.right,
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.black54,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   void _showInventoryEditDialog(Inventory inventory) {
     _productNameController.text = inventory.productName;
     _categoryController.text = inventory.category;
@@ -628,15 +753,6 @@ class _InventoryScreenState extends State<InventoryScreen> {
                                 ),
                               ),
                             ),
-                            DataColumn(
-                              label: Text(
-                                'Details',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
                           ],
                           rows: List<DataRow>.generate(
                             state.inventory.length,
@@ -720,7 +836,22 @@ class _InventoryScreenState extends State<InventoryScreen> {
                                               viewdetailsColor,
                                             ),
                                           ),
-                                          onPressed: () {},
+                                          onPressed: () {
+                                            viewInventoryDetailsDialogBox(
+                                                context,
+                                                productName:
+                                                    inventory.productName,
+                                                productImage:
+                                                    inventory.productImage,
+                                                category: inventory.category,
+                                                quantity: inventory.quantity,
+                                                purchasePrice:
+                                                    inventory.purchasePrice,
+                                                sellingPrice:
+                                                    inventory.sellingPrice,
+                                                description:
+                                                    inventory.description);
+                                          },
                                           icon: Icon(
                                             Icons.visibility,
                                             color: Colors.white,
@@ -763,19 +894,6 @@ class _InventoryScreenState extends State<InventoryScreen> {
                                           }),
                                     ],
                                   )),
-                                  DataCell(
-                                    ElevatedButton(
-                                        onPressed: () {},
-                                        child: Text('View More',
-                                            style: TextStyle(
-                                                fontSize: 14, color: myWhite)),
-                                        style: ElevatedButton.styleFrom(
-                                            backgroundColor: Colors.blue,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(8.0),
-                                            ))),
-                                  ),
                                 ],
                               );
                             },
