@@ -10,6 +10,7 @@ import 'package:nepstyle_management_system/Logic/Bloc/dashboardBloc/dashboard_bl
 import 'package:nepstyle_management_system/Logic/Bloc/orderBloc/order_bloc.dart';
 import 'package:nepstyle_management_system/Logic/Bloc/purchaseBloc/purchase_bloc.dart';
 import 'package:nepstyle_management_system/Logic/Bloc/salesBloc/sales_bloc.dart';
+import 'package:nepstyle_management_system/Logic/Bloc/signupBloc/signup_bloc.dart';
 import 'package:nepstyle_management_system/Logic/Bloc/supplierBloc/supplier_bloc.dart';
 import 'package:nepstyle_management_system/firebase_options.dart';
 
@@ -73,6 +74,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => DashboardBloc(),
+        ),
+        BlocProvider(
+          create: (context) => SignupBloc(),
         ),
       ],
       child: GetMaterialApp(

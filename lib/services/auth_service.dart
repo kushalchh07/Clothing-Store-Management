@@ -13,7 +13,7 @@ class AuthService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 //creating new account
   static Future<String> createAccountWithEmail(
-      String email, String password) async {
+      String email, String password, String name, String phone, String address, String shopName, ) async {
     log("Signup Tapped");
     try {
       UserCredential userCredential = await FirebaseAuth.instance
