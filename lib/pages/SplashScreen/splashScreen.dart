@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:nepstyle_management_system/pages/Home/category.dart';
 import 'package:nepstyle_management_system/pages/login%20&%20signup/login.dart';
+import 'package:nepstyle_management_system/pages/login%20&%20signup/signup.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../constants/color/color.dart';
@@ -33,7 +34,7 @@ class SplashScreenState extends State<SplashScreen> {
       if (isLoggedin != null && isLoggedin) {
         Get.offAll(() => MainLayout());
       } else {
-        Get.offAll(() => Login());
+        Get.offAll(() => SignUp());
       }
     });
   }
