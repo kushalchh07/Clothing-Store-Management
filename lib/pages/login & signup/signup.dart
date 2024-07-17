@@ -424,16 +424,21 @@ class _SignUpState extends State<SignUp> {
   }
 
   void signup() {
-    if (formKey.currentState!.validate()) {
-      BlocProvider.of<SignupBloc>(context).add(SignupAddButtonTappedEvent(
-          id: DateTime.now().toString(),
-          email: emailController.text.trim(),
-          name: nameController.text.trim(),
-          address: addressController.text.trim(),
-          phone: phoneController.text.trim(),
-          shopName: shopNameController.text.trim(),
-          shopAddress: addressController.text.trim(),
-          password: passController.text.trim()));
-    }
+    // if (formKey.currentState!.validate()) {
+    //   BlocProvider.of<SignupBloc>(context).add(SignupAddButtonTappedEvent(
+    //       id: DateTime.now().toString(),
+    //       email: emailController.text.trim(),
+    //       name: nameController.text.trim(),
+    //       address: addressController.text.trim(),
+    //       phone: phoneController.text.trim(),
+    //       shopName: shopNameController.text.trim(),
+    //       shopAddress: addressController.text.trim(),
+    //       password: passController.text.trim()));
+    // }
+    Fluttertoast.showToast(
+        msg: "This is a Demo System You cannot register",
+        gravity: ToastGravity.CENTER,
+        backgroundColor: primaryColor,
+        timeInSecForIosWeb: 2);
   }
 }
