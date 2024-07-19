@@ -24,7 +24,7 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
       InventoryLoadEvent event, Emitter<InventoryState> emit) async {
     try {
       List<Inventory> inventoryList = await _crudServices.getInventory();
-      log(inventoryList.toString());
+      // log(inventoryList.toString());
       emit(InventoryLoadedState(inventoryList));
     } catch (e) {
       log(e.toString());

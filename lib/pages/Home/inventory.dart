@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last, use_build_context_synchronously
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last, use_build_context_synchronously, unused_local_variable
 
 import 'dart:developer';
 import 'dart:io' as io; // Alias for native file handling
@@ -41,33 +41,65 @@ class _InventoryScreenState extends State<InventoryScreen> {
 
   // Needed for handling file bytes
 
-  Future<void> _pickImage() async {
-    if (kIsWeb) {
-      final html.FileUploadInputElement uploadInput =
-          html.FileUploadInputElement();
-      uploadInput.accept = 'image/*';
-      uploadInput.click();
+  // Future<void> _pickImage() async {
+    // if (kIsWeb) {
+      // Handle web image upload
+      // final ImagePicker _picker = ImagePicker();
+      // XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+      // if (image != null) {
+      //   final imageBytes = await image.readAsBytes();
+      //   final imageName = image.name;
+      //   // final imageType = image.type;
+      //   // Upload image to Firebase Storage
+      //   final storageRef = FirebaseStorage.instance.ref();
+      //   final imageRef = storageRef.child('products/$imageName');
+      //   await imageRef.putData(imageBytes);
+      //   final imageUrl = await imageRef.getDownloadURL();
+      //   setState(() {
+      //     _imageFile = image;
+      //     _imageUrl = imageUrl;
+      //   });
+      // }
+      // final html.FileUploadInputElement uploadInput =
+      //     html.FileUploadInputElement();
+      // uploadInput.accept = 'image/*';
+      // uploadInput.click();
 
-      uploadInput.onChange.listen((e) async {
-        final files = uploadInput.files;
-        if (files!.isNotEmpty) {
-          final file = files[0];
-          setState(() {
-            _imageFile = file; // Store the selected file
-          });
-        }
-      });
-    } else {
-      final pickedFile =
-          await ImagePicker().pickImage(source: ImageSource.gallery);
-      if (pickedFile != null) {
-        setState(() {
-          _imageFile = io.File(pickedFile.path);
-        });
-      }
-    }
+      // uploadInput.onChange.listen((e) async {
+      //   final files = uploadInput.files;
+      //   if (files!.isNotEmpty) {
+      //     final file = files[0];
+      //     setState(() {
+      //       _imageFile = file; // Store the selected file
+      //     });
+      //   }
+      // });
+  //   } else {
+  //     final pickedFile =
+  //         await ImagePicker().pickImage(source: ImageSource.gallery);
+  //     if (pickedFile != null) {
+  //       setState(() {
+  //         _imageFile = io.File(pickedFile.path);
+  //       });
+  //     }
+  //   }
+  // }
+
+
+Future<void> _pickImage() async {
+  if(!kIsWeb){
+ final ImagePicker _picker = ImagePicker();
+ XFile ? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+  
+  if (pickedFile != null) {
+    
+    setState(() {
+      _imageFile = io.File(pickedFile.path);
+    });
   }
-
+  }
+ 
+}
   Future<String> uploadImage(dynamic imageFile) async {
     try {
       final fileName = DateTime.now().millisecondsSinceEpoch.toString();
@@ -281,7 +313,8 @@ class _InventoryScreenState extends State<InventoryScreen> {
               onPressed: () async {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
-                  _imageUrl = await uploadImage(_imageFile);
+                  log(_imageUrl.toString());
+                  // _imageUrl = await uploadImage(_imageFile);
                   log(_imageUrl.toString());
                   BlocProvider.of<InventoryBloc>(context)
                       .add(InventoryAddButtonTappedEvent(
@@ -531,11 +564,11 @@ class _InventoryScreenState extends State<InventoryScreen> {
               onPressed: () async {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
-                  if (_imageFile != null) {
-                    _imageUrl = await uploadImage(_imageFile);
-                  } else {
-                    _imageUrl = inventory.productImage;
-                  }
+                  // if (_imageFile != null) {
+                  //   _imageUrl = await uploadImage(_imageFile);
+                  // } else {
+                  //   _imageUrl = inventory.productImage;
+                  // }
 
                   BlocProvider.of<InventoryBloc>(context).add(
                     InventoryUpdateButtonTappedEvent(
@@ -902,6 +935,8 @@ class _InventoryScreenState extends State<InventoryScreen> {
                       ),
                     );
                   } else {
+                    BlocProvider.of<InventoryBloc>(context)
+                        .add(InventoryLoadEvent());
                     return Center(child: CupertinoActivityIndicator());
                   }
                 },

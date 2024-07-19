@@ -31,21 +31,23 @@ class CrudServices {
       return e.toString();
     }
   }
-Future<String> updateCustomer(String id, String name, String address, String phone, String email) async {
-  log("Inside updateCustomer");
-  try {
-    await _firestore.collection('customers').doc(id).update({
-      'name': name,
-      'phone': phone,
-      'email': email,
-      'address': address,
-    });
-    log("data updated");
-    return "Data updated";
-  } catch (e) {
-    return e.toString();
+
+  Future<String> updateCustomer(String id, String name, String address,
+      String phone, String email) async {
+    log("Inside updateCustomer");
+    try {
+      await _firestore.collection('customers').doc(id).update({
+        'name': name,
+        'phone': phone,
+        'email': email,
+        'address': address,
+      });
+      log("data updated");
+      return "Data updated";
+    } catch (e) {
+      return e.toString();
+    }
   }
-}
 
   Future<List<Customer>> getCustomers() async {
     try {
@@ -97,32 +99,33 @@ Future<String> updateCustomer(String id, String name, String address, String pho
       return e.toString();
     }
   }
-Future<String> updateProducts(
-    String id,
-    String productName,
-    String description,
-    String purPrice,
-    String sellingPrice,
-    String quantity,
-    String productImage,
-    String category) async {
-  log("Inside updateProducts");
-  try {
-    _firestore.collection('products').doc(id).update({
-      'name': productName,
-      'description': description,
-      'purPrice': purPrice,
-      'sellingprice': sellingPrice,
-      'quantity': quantity,
-      'productImage': productImage,
-      'category': category
-    });
-    log("data updated");
-    return "Data updated";
-  } catch (e) {
-    return e.toString();
+
+  Future<String> updateProducts(
+      String id,
+      String productName,
+      String description,
+      String purPrice,
+      String sellingPrice,
+      String quantity,
+      String productImage,
+      String category) async {
+    log("Inside updateProducts");
+    try {
+      _firestore.collection('products').doc(id).update({
+        'name': productName,
+        'description': description,
+        'purPrice': purPrice,
+        'sellingprice': sellingPrice,
+        'quantity': quantity,
+        'productImage': productImage,
+        'category': category
+      });
+      log("data updated");
+      return "Data updated";
+    } catch (e) {
+      return e.toString();
+    }
   }
-}
 
   Future<List<Inventory>> getInventory() async {
     try {
@@ -130,7 +133,7 @@ Future<String> updateProducts(
       final products = snapshot.docs.map((doc) {
         return Inventory.fromMap(doc.id, doc.data() as Map<String, dynamic>);
       }).toList();
-      log(products.toString());
+      // log(products.toString());
       return products;
     } catch (e) {
       log('error during geting  invventory');
@@ -163,21 +166,23 @@ Future<String> updateProducts(
       return e.toString();
     }
   }
-Future<String> updateSuppliers(String id, String name, String address, String phone, String email) async {
-  log("Inside updateSuppliers");
-  try {
-    _firestore.collection('suppliers').doc(id).update({
-      'name': name,
-      'address': address,
-      'phone': phone,
-      'email': email,
-    });
-    log("data updated");
-    return "Data updated";
-  } catch (e) {
-    return e.toString();
+
+  Future<String> updateSuppliers(String id, String name, String address,
+      String phone, String email) async {
+    log("Inside updateSuppliers");
+    try {
+      _firestore.collection('suppliers').doc(id).update({
+        'name': name,
+        'address': address,
+        'phone': phone,
+        'email': email,
+      });
+      log("data updated");
+      return "Data updated";
+    } catch (e) {
+      return e.toString();
+    }
   }
-}
 
   Future<List<SupplierModel>> getSuppliers() async {
     try {
@@ -232,35 +237,36 @@ Future<String> updateSuppliers(String id, String name, String address, String ph
       return e.toString();
     }
   }
-Future<String> updatePurchases(
-  String id,
-  String date,
-  String supplier,
-  String category,
-  String productName,
-  String quantity,
-  String perPiecePrice,
-  String totalAmount,
-  String description,
-) async {
-  log("Inside updatePurchases");
-  try {
-    _firestore.collection('purchases').doc(id).update({
-      'date': date,
-      'supplier': supplier,
-      'category': category,
-      'productName': productName,
-      'quantity': quantity,
-      'perPiecePrice': perPiecePrice,
-      'totalAmount': totalAmount,
-      'description': description,
-    });
-    log("data updated");
-    return "Data updated";
-  } catch (e) {
-    return e.toString();
+
+  Future<String> updatePurchases(
+    String id,
+    String date,
+    String supplier,
+    String category,
+    String productName,
+    String quantity,
+    String perPiecePrice,
+    String totalAmount,
+    String description,
+  ) async {
+    log("Inside updatePurchases");
+    try {
+      _firestore.collection('purchases').doc(id).update({
+        'date': date,
+        'supplier': supplier,
+        'category': category,
+        'productName': productName,
+        'quantity': quantity,
+        'perPiecePrice': perPiecePrice,
+        'totalAmount': totalAmount,
+        'description': description,
+      });
+      log("data updated");
+      return "Data updated";
+    } catch (e) {
+      return e.toString();
+    }
   }
-}
 
   Future<List<PurchaseModel>> getPurchases() async {
     try {
@@ -311,31 +317,32 @@ Future<String> updatePurchases(
       return e.toString();
     }
   }
-Future<String> updateSales(
-  String id,
-  String date,
-  String customerName,
-  String productName,
-  String quantity,
-  String perPiecePrice,
-  String totalAmount,
-) async {
-  log("Inside updateSales");
-  try {
-    _firestore.collection('sales').doc(id).update({
-      'date': date,
-      'customerName': customerName,
-      'productName': productName,
-      'quantity': quantity,
-      'perPiecePrice': perPiecePrice,
-      'totalAmount': totalAmount,
-    });
-    log("data updated");
-    return "Data updated";
-  } catch (e) {
-    return e.toString();
+
+  Future<String> updateSales(
+    String id,
+    String date,
+    String customerName,
+    String productName,
+    String quantity,
+    String perPiecePrice,
+    String totalAmount,
+  ) async {
+    log("Inside updateSales");
+    try {
+      _firestore.collection('sales').doc(id).update({
+        'date': date,
+        'customerName': customerName,
+        'productName': productName,
+        'quantity': quantity,
+        'perPiecePrice': perPiecePrice,
+        'totalAmount': totalAmount,
+      });
+      log("data updated");
+      return "Data updated";
+    } catch (e) {
+      return e.toString();
+    }
   }
-}
 
   Future<List<SalesModel>> getSales() async {
     try {
@@ -389,35 +396,36 @@ Future<String> updateSales(
       return e.toString();
     }
   }
-Future<String> updateOrder(
-  String id,
-  String date,
-  String customerName,
-  String orderCode,
-  String productName,
-  String category,
-  String quantity,
-  String perPiecePrice,
-  String totalAmount,
-) async {
-  log("Inside updateOrder");
-  try {
-    _firestore.collection('orders').doc(id).update({
-      'date': date,
-      'customerName': customerName,
-      'orderCode': orderCode,
-      'productName': productName,
-      'category': category,
-      'quantity': quantity,
-      'perPiecePrice': perPiecePrice,
-      'totalAmount': totalAmount,
-    });
-    log("data updated");
-    return "Data updated";
-  } catch (e) {
-    return e.toString();
+
+  Future<String> updateOrder(
+    String id,
+    String date,
+    String customerName,
+    String orderCode,
+    String productName,
+    String category,
+    String quantity,
+    String perPiecePrice,
+    String totalAmount,
+  ) async {
+    log("Inside updateOrder");
+    try {
+      _firestore.collection('orders').doc(id).update({
+        'date': date,
+        'customerName': customerName,
+        'orderCode': orderCode,
+        'productName': productName,
+        'category': category,
+        'quantity': quantity,
+        'perPiecePrice': perPiecePrice,
+        'totalAmount': totalAmount,
+      });
+      log("data updated");
+      return "Data updated";
+    } catch (e) {
+      return e.toString();
+    }
   }
-}
 
   Future<List<OrderModel>> getOrder() async {
     try {
@@ -441,22 +449,18 @@ Future<String> updateOrder(
       return e.toString();
     }
   }
+
   Future<String> addCategory(
-      String id,
-      
- 
-      String category,
-      String quantity,
-     
-    ) async {
+    String id,
+    String category,
+    String quantity,
+  ) async {
     log("Inside add sales");
     try {
       _firestore.collection('category').doc(id).set({
         'id': id,
-      
         'category': category,
         'quantity': quantity,
-     
       });
       log("data added");
       return "Data added";
@@ -464,33 +468,32 @@ Future<String> updateOrder(
       return e.toString();
     }
   }
+
   Future<String> updateCategory(
-  String id,
- 
-  String category,
-  String quantity,
-  
-) async {
-  log("Inside updateOrder");
-  try {
-    _firestore.collection('category').doc(id).update({
-      'id':id,
-      'category': category,
-      'quantity': quantity,
-     
-    });
-    log("data updated");
-    return "Data updated";
-  } catch (e) {
-    return e.toString();
+    String id,
+    String category,
+    String quantity,
+  ) async {
+    log("Inside updateOrder");
+    try {
+      _firestore.collection('category').doc(id).update({
+        'id': id,
+        'category': category,
+        'quantity': quantity,
+      });
+      log("data updated");
+      return "Data updated";
+    } catch (e) {
+      return e.toString();
+    }
   }
-}
 
   Future<List<CategoryModel>> getCategory() async {
     try {
       final snapshot = await _firestore.collection('category').get();
       final category = snapshot.docs.map((doc) {
-        return CategoryModel.fromMap(doc.id, doc.data() as Map<String, dynamic>);
+        return CategoryModel.fromMap(
+            doc.id, doc.data() as Map<String, dynamic>);
       }).toList();
       log(category.toString());
       return category;
@@ -508,34 +511,42 @@ Future<String> updateOrder(
       return e.toString();
     }
   }
+
   Future<List<StockDataModel>> getStockData() async {
-  try {
-    final categories = await getCategory();
-    final stockData = categories.map((category) {
-      return StockDataModel(category.category, double.parse(category.quantity));
-    }).toList();
-    return stockData;
-  } catch (e) {
-    log('error during getting category');
-    rethrow;
+    try {
+      final categories = await getCategory();
+      final stockData = categories.map((category) {
+        return StockDataModel(
+            category.category, double.parse(category.quantity));
+      }).toList();
+      return stockData;
+    } catch (e) {
+      log('error during getting category');
+      rethrow;
+    }
   }
-}
 
+  Future<int> getCustomerCount() async {
+    final QuerySnapshot snapshot =
+        await _firestore.collection('customers').get();
+    return snapshot.size;
+  }
 
-Future<int>getCustomerCount()async{
-   final QuerySnapshot snapshot = await _firestore.collection('customers').get();
+  Future<int> getCategoryCount() async {
+    final QuerySnapshot snapshot =
+        await _firestore.collection('category').get();
     return snapshot.size;
-}
-Future<int>getCategoryCount()async{
-   final QuerySnapshot snapshot = await _firestore.collection('category').get();
+  }
+
+  Future<int> getProductsCount() async {
+    final QuerySnapshot snapshot =
+        await _firestore.collection('products').get();
     return snapshot.size;
-}
-Future<int>getProductsCount()async{
-   final QuerySnapshot snapshot = await _firestore.collection('products').get();
+  }
+
+  Future<int> getSuppliersCount() async {
+    final QuerySnapshot snapshot =
+        await _firestore.collection('suppliers').get();
     return snapshot.size;
-}
-Future<int>getSuppliersCount()async{
-   final QuerySnapshot snapshot = await _firestore.collection('suppliers').get();
-    return snapshot.size;
-}
+  }
 }
