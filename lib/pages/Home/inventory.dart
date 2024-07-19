@@ -3,7 +3,9 @@
 import 'dart:developer';
 import 'dart:io' as io; // Alias for native file handling
 import 'dart:html' as html; // Import for web image handling
-
+import 'dart:io';
+import 'package:path/path.dart' as Path;
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +14,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/route_manager.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:image_picker_web/image_picker_web.dart';
+import 'package:mime_type/mime_type.dart';
 import 'package:nepstyle_management_system/Logic/Bloc/InventoryBloc/inventory_bloc.dart';
 import 'package:flutter/foundation.dart' show kIsWeb; // Import kIsWeb
 import 'package:nepstyle_management_system/pages/Home/customers.dart';
@@ -34,105 +38,67 @@ TextEditingController _purPriceController = TextEditingController();
 TextEditingController _sellingPriceController = TextEditingController();
 TextEditingController _quantityController = TextEditingController();
 final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+CollectionReference _reference =
+    FirebaseFirestore.instance.collection('products');
+
+enum UploadType {
+  string,
+  file,
+  clear,
+}
+
+List<UploadTask> _uploadTasks = [];
+UploadTask? uploadTask;
 
 class _InventoryScreenState extends State<InventoryScreen> {
   dynamic _imageFile;
   String? _imageUrl;
 
-  // Needed for handling file bytes
-
-  // Future<void> _pickImage() async {
-    // if (kIsWeb) {
-      // Handle web image upload
-      // final ImagePicker _picker = ImagePicker();
-      // XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-      // if (image != null) {
-      //   final imageBytes = await image.readAsBytes();
-      //   final imageName = image.name;
-      //   // final imageType = image.type;
-      //   // Upload image to Firebase Storage
-      //   final storageRef = FirebaseStorage.instance.ref();
-      //   final imageRef = storageRef.child('products/$imageName');
-      //   await imageRef.putData(imageBytes);
-      //   final imageUrl = await imageRef.getDownloadURL();
-      //   setState(() {
-      //     _imageFile = image;
-      //     _imageUrl = imageUrl;
-      //   });
-      // }
-      // final html.FileUploadInputElement uploadInput =
-      //     html.FileUploadInputElement();
-      // uploadInput.accept = 'image/*';
-      // uploadInput.click();
-
-      // uploadInput.onChange.listen((e) async {
-      //   final files = uploadInput.files;
-      //   if (files!.isNotEmpty) {
-      //     final file = files[0];
-      //     setState(() {
-      //       _imageFile = file; // Store the selected file
-      //     });
-      //   }
-      // });
-  //   } else {
-  //     final pickedFile =
-  //         await ImagePicker().pickImage(source: ImageSource.gallery);
-  //     if (pickedFile != null) {
-  //       setState(() {
-  //         _imageFile = io.File(pickedFile.path);
-  //       });
-  //     }
-  //   }
-  // }
-
-
-Future<void> _pickImage() async {
-  if(!kIsWeb){
- final ImagePicker _picker = ImagePicker();
- XFile ? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-  
-  if (pickedFile != null) {
-    
+  pickImage() async {
+    html.File? imageFile = (await ImagePickerWeb.getMultiImagesAsFile())?[0];
+    log(imageFile.toString());
     setState(() {
-      _imageFile = io.File(pickedFile.path);
+      _imageFile = imageFile;
     });
   }
-  }
- 
-}
-  Future<String> uploadImage(dynamic imageFile) async {
+
+  uploadImage(XFile file) async {
     try {
-      final fileName = DateTime.now().millisecondsSinceEpoch.toString();
-      final storageRef =
-          FirebaseStorage.instance.ref().child('products/$fileName');
-
+      Reference ref = FirebaseStorage.instance
+          .ref()
+          .child('flutter-tests')
+          .child('/some-image.jpg');
+      final metadata = SettableMetadata(
+        contentType: 'image/jpeg',
+        customMetadata: {'picked-file-path': file.path},
+      );
       if (kIsWeb) {
-        // Handle web image upload
-        final reader = html.FileReader();
-        reader.readAsArrayBuffer(imageFile);
-        await reader.onLoadEnd.first;
-        final data = reader.result as Uint8List;
-
-        final uploadTask = storageRef.putData(
-          data,
-          SettableMetadata(contentType: imageFile.type), // Set content type
-        );
-
-        final snapshot = await uploadTask.whenComplete(() {});
-        final downloadUrl = await snapshot.ref.getDownloadURL();
-        return downloadUrl;
+        uploadTask = ref.putData(await file.readAsBytes(), metadata);
       } else {
-        // Handle native image upload
-        final uploadTask = storageRef.putFile(imageFile as io.File);
-
-        final snapshot = await uploadTask.whenComplete(() {});
-        final downloadUrl = await snapshot.ref.getDownloadURL();
-        return downloadUrl;
+        uploadTask = ref.putFile(io.File(file.path), metadata);
       }
+      return Future.value(uploadTask);
     } catch (e) {
       log(e.toString());
-      rethrow;
     }
+  }
+
+  Future<void> _downloadFile(Reference ref) async {
+    final io.Directory systemTempDir = io.Directory.systemTemp;
+    final io.File tempFile = io.File('${systemTempDir.path}/temp-${ref.name}');
+    if (tempFile.existsSync()) await tempFile.delete();
+
+    await ref.writeToFile(tempFile);
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          'Success!\n Downloaded ${ref.name} \n from bucket: ${ref.bucket}\n '
+          'at path: ${ref.fullPath} \n'
+          'Wrote "${ref.fullPath}" to tmp-${ref.name}',
+        ),
+      ),
+    );
   }
 
   void _showInventoryadd() {
@@ -276,7 +242,7 @@ Future<void> _pickImage() async {
                   height: 10,
                 ),
                 ElevatedButton(
-                  onPressed: _pickImage,
+                  onPressed: pickImage,
                   child: Text('Pick Image'),
                 ),
                 if (_imageFile != null)
@@ -313,9 +279,9 @@ Future<void> _pickImage() async {
               onPressed: () async {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
-                  log(_imageUrl.toString());
-                  // _imageUrl = await uploadImage(_imageFile);
-                  log(_imageUrl.toString());
+
+                  _imageUrl = await uploadImage(_imageFile);
+
                   BlocProvider.of<InventoryBloc>(context)
                       .add(InventoryAddButtonTappedEvent(
                     name: _productNameController.text.trim(),
@@ -526,7 +492,7 @@ Future<void> _pickImage() async {
                   _buildTextFormField(_descriptionController, 'Description'),
                   const SizedBox(height: 10),
                   ElevatedButton(
-                    onPressed: _pickImage,
+                    onPressed: pickImage,
                     child: Text('Pick Image'),
                   ),
                   if (_imageFile != null)

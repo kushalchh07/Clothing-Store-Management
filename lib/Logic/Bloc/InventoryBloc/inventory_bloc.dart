@@ -46,7 +46,7 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
         event.category,
       );
       emit(InventoryAddedActionState());
-      log("Add products Added");
+      // log("Add products Added");
     } catch (e) {
       log(e.toString());
       rethrow;

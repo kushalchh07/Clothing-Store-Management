@@ -55,7 +55,7 @@ class CrudServices {
       final customers = snapshot.docs.map((doc) {
         return Customer.fromMap(doc.id, doc.data() as Map<String, dynamic>);
       }).toList();
-      log(customers.toString());
+      // log(customers.toString());
       return customers;
     } catch (e) {
       log('error during geting  customers');
@@ -81,7 +81,7 @@ class CrudServices {
       String quantity,
       String productImage,
       String category) async {
-    log("Inside addproducts");
+    // log("Inside addproducts");
     try {
       _firestore.collection('products').doc(id).set({
         'id': id,
@@ -93,7 +93,7 @@ class CrudServices {
         'productImage': productImage,
         'category': category
       });
-      log("data added");
+      // log("data added");
       return "Data added";
     } catch (e) {
       return e.toString();
