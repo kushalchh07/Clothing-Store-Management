@@ -265,6 +265,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                   ),
                   onPressed: () {
                     Navigator.of(context).pop();
+                    _clearControllers();
                   },
                 ),
                 ElevatedButton(
@@ -598,7 +599,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
 
 OutlineInputBorder customFocusBorder() {
   return OutlineInputBorder(
-      borderRadius: BorderRadius.circular(35),
+      borderRadius: BorderRadius.circular(15),
       borderSide: BorderSide(color: primaryColor, width: 2));
 }
 
