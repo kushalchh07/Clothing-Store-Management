@@ -4,9 +4,10 @@ import 'dart:developer';
 import 'dart:io' as io; // Alias for native file handling
 import 'dart:html' as html; // Import for web image handling
 import 'dart:io';
+import 'package:file_picker/file_picker.dart';
 import 'package:path/path.dart' as Path;
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+// import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,6 +17,7 @@ import 'package:get/route_manager.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_picker_web/image_picker_web.dart';
 import 'package:mime_type/mime_type.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firabase_storage;
 import 'package:nepstyle_management_system/Logic/Bloc/InventoryBloc/inventory_bloc.dart';
 import 'package:flutter/foundation.dart' show kIsWeb; // Import kIsWeb
 import 'package:nepstyle_management_system/pages/Home/customers.dart';
@@ -47,13 +49,17 @@ enum UploadType {
   clear,
 }
 
-List<UploadTask> _uploadTasks = [];
-UploadTask? uploadTask;
-
 class _InventoryScreenState extends State<InventoryScreen> {
   dynamic _imageFile;
   String? _imageUrl;
-
+  String defaultImageUrl =
+      'https://cdn.pixabay.com/photo/2016/03/23/15/00/ice-cream-1274894_1280.jpg';
+  String selectedFile = '';
+  XFile? file;
+  Uint8List? selectedImageInBytes;
+  List<Uint8List> pickedImagesInBytes = [];
+  List<String> imageUrls = [];
+  List<firabase_storage.UploadTask> _uploadTasks = [];
   pickImage() async {
     html.File? imageFile = (await ImagePickerWeb.getMultiImagesAsFile())?[0];
     log(imageFile.toString());
@@ -62,44 +68,85 @@ class _InventoryScreenState extends State<InventoryScreen> {
     });
   }
 
-  uploadImage(XFile file) async {
-    try {
-      Reference ref = FirebaseStorage.instance
-          .ref()
-          .child('flutter-tests')
-          .child('/some-image.jpg');
-      final metadata = SettableMetadata(
-        contentType: 'image/jpeg',
-        customMetadata: {'picked-file-path': file.path},
-      );
-      if (kIsWeb) {
-        uploadTask = ref.putData(await file.readAsBytes(), metadata);
-      } else {
-        uploadTask = ref.putFile(io.File(file.path), metadata);
-      }
-      return Future.value(uploadTask);
-    } catch (e) {
-      log(e.toString());
+  // Future<void> _selectFile(bool imageFrom) async {
+  //   FilePickerResult? fileResult =
+  //       await FilePicker.platform.pickFiles(allowMultiple: true);
+
+  //   if (fileResult != null) {
+  //     selectedFile = fileResult.files.first.name;
+  //     fileResult.files.forEach((element) {
+  //       setState(() {
+  //         if (element.bytes != null) {
+  //           pickedImagesInBytes.add(element.bytes!);
+  //         } //selectedImageInBytes = fileResult.files.first.bytes;
+  //         // imageCounts += 1;
+  //       });
+  //     });
+  //   }
+  //   print(selectedFile);
+  // }
+  Future<void> _selectFile(bool imageFrom) async {
+    FilePickerResult? fileResult =
+        await FilePicker.platform.pickFiles(allowMultiple: true);
+
+    if (fileResult != null) {
+      setState(() {
+        selectedFile = fileResult.files.first.name;
+        pickedImagesInBytes = fileResult.files
+            .where((element) => element.bytes != null)
+            .map((element) => element.bytes!)
+            .toList();
+      });
     }
+    print(selectedFile);
   }
 
-  Future<void> _downloadFile(Reference ref) async {
-    final io.Directory systemTempDir = io.Directory.systemTemp;
-    final io.File tempFile = io.File('${systemTempDir.path}/temp-${ref.name}');
-    if (tempFile.existsSync()) await tempFile.delete();
+  Future<String> _uploadFile(String selectedFile) async {
+    log(selectedFile);
+    String imageUrl = '';
+    try {
+      firabase_storage.UploadTask uploadTask;
 
-    await ref.writeToFile(tempFile);
+      firabase_storage.Reference ref = firabase_storage.FirebaseStorage.instance
+          .ref()
+          .child('product')
+          .child('/' + selectedFile);
+      print("ref: $ref");
+      final metadata =
+          firabase_storage.SettableMetadata(contentType: 'image/jpeg');
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          'Success!\n Downloaded ${ref.name} \n from bucket: ${ref.bucket}\n '
-          'at path: ${ref.fullPath} \n'
-          'Wrote "${ref.fullPath}" to tmp-${ref.name}',
-        ),
-      ),
-    );
+      uploadTask = ref.putFile(File(file!.path));
+      log(uploadTask.toString());
+      uploadTask = ref.putData(selectedImageInBytes!, metadata);
+      await uploadTask.whenComplete(() => {});
+      imageUrl = await ref.getDownloadURL();
+      log(imageUrl);
+    } catch (e) {
+      print(e);
+    }
+    return imageUrl;
   }
+
+  // uploadImage(XFile file) async {
+  //   try {
+  //     Reference ref = FirebaseStorage.instance
+  //         .ref()
+  //         .child('flutter-tests')
+  //         .child('/some-image.jpg');
+  //     final metadata = SettableMetadata(
+  //       contentType: 'image/jpeg',
+  //       customMetadata: {'picked-file-path': file.path},
+  //     );
+  //     if (kIsWeb) {
+  //       uploadTask = ref.putData(await file.readAsBytes(), metadata);
+  //     } else {
+  //       uploadTask = ref.putFile(io.File(file.path), metadata);
+  //     }
+  //     return Future.value(uploadTask);
+  //   } catch (e) {
+  //     log(e.toString());
+  //   }
+  // }
 
   void _showInventoryadd() {
     showDialog(
@@ -112,129 +159,33 @@ class _InventoryScreenState extends State<InventoryScreen> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                TextFormField(
-                  decoration: InputDecoration(
-                      floatingLabelStyle: floatingLabelTextStyle(),
-                      focusedBorder: customFocusBorder(),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          borderSide:
-                              BorderSide(color: primaryColor, width: 2)),
-                      labelStyle: TextStyle(color: greyColor, fontSize: 13),
-                      hintText: 'Product Name'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter the Product name';
-                    }
-                    return null;
-                  },
-                  controller: _productNameController,
-                ),
+                _buildTextFormField(_productNameController, 'Product Name'),
+
                 const SizedBox(
                   height: 10,
                 ),
-                TextFormField(
-                  decoration: InputDecoration(
-                      floatingLabelStyle: floatingLabelTextStyle(),
-                      focusedBorder: customFocusBorder(),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          borderSide:
-                              BorderSide(color: primaryColor, width: 2)),
-                      labelStyle: TextStyle(color: greyColor, fontSize: 13),
-                      hintText: 'Category'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter the Category';
-                    }
-                    return null;
-                  },
-                  controller: _categoryController,
-                ),
+                _buildTextFormField(_categoryController, 'Category'),
+
                 const SizedBox(
                   height: 10,
                 ),
-                TextFormField(
-                  decoration: InputDecoration(
-                      floatingLabelStyle: floatingLabelTextStyle(),
-                      focusedBorder: customFocusBorder(),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          borderSide:
-                              BorderSide(color: primaryColor, width: 2)),
-                      labelStyle: TextStyle(color: greyColor, fontSize: 13),
-                      hintText: 'Quantity'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter the Quantity';
-                    }
-                    return null;
-                  },
-                  controller: _quantityController,
-                ),
+                _buildTextFormField(_quantityController, 'Quantity'),
+
                 const SizedBox(
                   height: 10,
                 ),
-                TextFormField(
-                  decoration: InputDecoration(
-                      floatingLabelStyle: floatingLabelTextStyle(),
-                      focusedBorder: customFocusBorder(),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          borderSide:
-                              BorderSide(color: primaryColor, width: 2)),
-                      labelStyle: TextStyle(color: greyColor, fontSize: 13),
-                      hintText: 'Purchase Price'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter the Purchase price';
-                    }
-                    return null;
-                  },
-                  controller: _purPriceController,
-                ),
+                _buildTextFormField(_purPriceController, 'Purchase Price'),
+
                 const SizedBox(
                   height: 10,
                 ),
-                TextFormField(
-                  decoration: InputDecoration(
-                      floatingLabelStyle: floatingLabelTextStyle(),
-                      focusedBorder: customFocusBorder(),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          borderSide:
-                              BorderSide(color: primaryColor, width: 2)),
-                      labelStyle: TextStyle(color: greyColor, fontSize: 13),
-                      hintText: 'Selling Price'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter the Selling price';
-                    }
-                    return null;
-                  },
-                  controller: _sellingPriceController,
-                ),
+                _buildTextFormField(_sellingPriceController, 'Selling Price'),
+
                 const SizedBox(
                   height: 10,
                 ),
-                TextFormField(
-                  decoration: InputDecoration(
-                      floatingLabelStyle: floatingLabelTextStyle(),
-                      focusedBorder: customFocusBorder(),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          borderSide:
-                              BorderSide(color: primaryColor, width: 2)),
-                      labelStyle: TextStyle(color: greyColor, fontSize: 13),
-                      hintText: 'Description'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter the Description';
-                    }
-                    return null;
-                  },
-                  controller: _descriptionController,
-                ),
+                _buildTextFormField(_descriptionController, 'Description'),
+
                 SizedBox(
                   height: 4,
                 ),
@@ -242,17 +193,17 @@ class _InventoryScreenState extends State<InventoryScreen> {
                   height: 10,
                 ),
                 ElevatedButton(
-                  onPressed: pickImage,
+                  onPressed: () => _selectFile(true),
                   child: Text('Pick Image'),
                 ),
-                if (_imageFile != null)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10.0),
-                    child: kIsWeb
-                        ? Image.network((_imageFile as html.File).name,
-                            height: 150)
-                        : Image.file(_imageFile as io.File, height: 150),
-                  ),
+                // if (selectedFile != null)
+                //   Padding(
+                //     padding: const EdgeInsets.symmetric(vertical: 10.0),
+                //     child: kIsWeb
+                //         ? Image.network((selectedFile as html.File).name,
+                //             height: 150)
+                //         : Image.file(selectedFile as io.File, height: 150),
+                //   ),
               ],
             ),
           ),
@@ -280,8 +231,9 @@ class _InventoryScreenState extends State<InventoryScreen> {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
 
-                  _imageUrl = await uploadImage(_imageFile);
-
+                  print(selectedFile);
+                  _imageUrl = await _uploadFile(selectedFile);
+                  log(_imageUrl.toString());
                   BlocProvider.of<InventoryBloc>(context)
                       .add(InventoryAddButtonTappedEvent(
                     name: _productNameController.text.trim(),
@@ -307,27 +259,31 @@ class _InventoryScreenState extends State<InventoryScreen> {
     );
   }
 
-  _buildTextFormField(
-    TextEditingController controller,
-    String hint,
-  ) {
+  Widget _buildTextFormField(
+      TextEditingController controller, String labelText) {
     return TextFormField(
+      controller: controller,
       decoration: InputDecoration(
-          floatingLabelStyle: floatingLabelTextStyle(),
-          focusedBorder: customFocusBorder(),
-          border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(15),
-              borderSide: BorderSide(color: primaryColor, width: 2)),
-          labelStyle: TextStyle(color: greyColor, fontSize: 13),
-          labelText: hint,
-          hintText: hint),
+        labelText: labelText,
+        labelStyle: TextStyle(
+          fontFamily: 'inter',
+          fontSize: 14,
+          fontWeight: FontWeight.w600,
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(color: primaryColor, width: 2),
+        ),
+      ),
       validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Please enter the  ${hint}';
+        if (value!.isEmpty) {
+          return 'Please enter $labelText';
         }
         return null;
       },
-      controller: controller,
     );
   }
 
@@ -518,6 +474,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
               ),
               onPressed: () {
                 Navigator.of(context).pop();
+                _clearControllers();
               },
             ),
             ElevatedButton(
