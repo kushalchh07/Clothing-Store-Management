@@ -81,6 +81,7 @@ class _SupplierState extends State<Supplier> {
               ),
               onPressed: () {
                 Navigator.of(context).pop();
+                _clearControllers();
               },
             ),
             ElevatedButton(
@@ -123,26 +124,30 @@ class _SupplierState extends State<Supplier> {
   }
 
   Widget _buildTextFormField(
-    TextEditingController controller,
-    String hint,
-  ) {
+      TextEditingController controller, String labelText) {
     return TextFormField(
+      controller: controller,
       decoration: InputDecoration(
-          floatingLabelStyle: floatingLabelTextStyle(),
-          focusedBorder: customFocusBorder(),
-          border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(15),
-              borderSide: BorderSide(color: primaryColor, width: 2)),
-          labelStyle: TextStyle(color: greyColor, fontSize: 13),
-          labelText: hint,
-          hintText: hint),
+        labelText: labelText,
+        labelStyle: TextStyle(
+          fontFamily: 'inter',
+          fontSize: 14,
+          fontWeight: FontWeight.w600,
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(color: primaryColor, width: 2),
+        ),
+      ),
       validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Please enter the $hint';
+        if (value!.isEmpty) {
+          return 'Please enter $labelText';
         }
         return null;
       },
-      controller: controller,
     );
   }
 
@@ -198,81 +203,13 @@ class _SupplierState extends State<Supplier> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                TextFormField(
-                  decoration: InputDecoration(
-                      floatingLabelStyle: floatingLabelTextStyle(),
-                      focusedBorder: customFocusBorder(),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          borderSide:
-                              BorderSide(color: primaryColor, width: 2)),
-                      labelStyle: TextStyle(color: greyColor, fontSize: 13),
-                      hintText: 'Name'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter the name';
-                    }
-                    return null;
-                  },
-                  controller: _nameController,
-                ),
+                _buildTextFormField(_nameController, 'Name'),
                 const SizedBox(height: 10),
-                TextFormField(
-                  decoration: InputDecoration(
-                      floatingLabelStyle: floatingLabelTextStyle(),
-                      focusedBorder: customFocusBorder(),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          borderSide:
-                              BorderSide(color: primaryColor, width: 2)),
-                      labelStyle: TextStyle(color: greyColor, fontSize: 13),
-                      hintText: 'Address'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter the address';
-                    }
-                    return null;
-                  },
-                  controller: _addressController,
-                ),
+                _buildTextFormField(_addressController, 'Address'),
                 const SizedBox(height: 10),
-                TextFormField(
-                  decoration: InputDecoration(
-                      floatingLabelStyle: floatingLabelTextStyle(),
-                      focusedBorder: customFocusBorder(),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          borderSide:
-                              BorderSide(color: primaryColor, width: 2)),
-                      labelStyle: TextStyle(color: greyColor, fontSize: 13),
-                      hintText: 'Phone Number'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter the phone number';
-                    }
-                    return null;
-                  },
-                  controller: _phoneController,
-                ),
+                _buildTextFormField(_phoneController, 'Phone Number'),
                 const SizedBox(height: 10),
-                TextFormField(
-                  decoration: InputDecoration(
-                      floatingLabelStyle: floatingLabelTextStyle(),
-                      focusedBorder: customFocusBorder(),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          borderSide:
-                              BorderSide(color: primaryColor, width: 2)),
-                      labelStyle: TextStyle(color: greyColor, fontSize: 13),
-                      hintText: 'Email Address'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter the email address';
-                    }
-                    return null;
-                  },
-                  controller: _emailController,
-                ),
+                _buildTextFormField(_emailController, 'Email Address'),
                 const SizedBox(height: 10),
               ],
             ),
@@ -288,6 +225,7 @@ class _SupplierState extends State<Supplier> {
               ),
               onPressed: () {
                 Navigator.of(context).pop();
+                _clearControllers();
               },
             ),
             ElevatedButton(
@@ -363,34 +301,34 @@ class _SupplierState extends State<Supplier> {
             ),
             actions: [
               Padding(
-                  padding: const EdgeInsets.only(top: 25.0,right: 20),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: primaryColorJustLight,
-                      shape: StadiumBorder(),
-                    ),
-                    onPressed: _showAddCSupplierDialog,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Icon(
-                          Icons.add_circle_outline_outlined,
-                          color: Colors.white,
-                        ),
-                        const SizedBox(
-                          width: 4,
-                        ),
-                        Text(
-                          "Add Supplier",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontFamily: 'inter'),
-                        ),
-                      ],
-                    ),
+                padding: const EdgeInsets.only(top: 25.0, right: 20),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: primaryColorJustLight,
+                    shape: StadiumBorder(),
+                  ),
+                  onPressed: _showAddCSupplierDialog,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Icon(
+                        Icons.add_circle_outline_outlined,
+                        color: Colors.white,
+                      ),
+                      const SizedBox(
+                        width: 4,
+                      ),
+                      Text(
+                        "Add Supplier",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontFamily: 'inter'),
+                      ),
+                    ],
                   ),
                 ),
+              ),
             ],
           ),
         ];
@@ -399,7 +337,6 @@ class _SupplierState extends State<Supplier> {
         padding: const EdgeInsets.only(top: 20.0, left: 10, right: 10),
         child: Column(
           children: [
-          
             Divider(
               thickness: 1,
               color: myBlack,
@@ -407,9 +344,7 @@ class _SupplierState extends State<Supplier> {
             Expanded(
               child: BlocConsumer<SupplierBloc, SupplierState>(
                 listener: (context, state) {
-                  
                   if (state is SupplierDeletedActionState) {
-                  
                     Fluttertoast.showToast(
                       msg: 'Deleted Successfully',
                       toastLength: Toast.LENGTH_SHORT,
@@ -418,7 +353,6 @@ class _SupplierState extends State<Supplier> {
                       textColor: whiteColor,
                     );
                   } else if (state is SupplierAddedActionState) {
-                    
                     Fluttertoast.showToast(
                       msg: 'Supplier Added Successfully',
                       toastLength: Toast.LENGTH_SHORT,
@@ -427,7 +361,6 @@ class _SupplierState extends State<Supplier> {
                       textColor: whiteColor,
                     );
                   } else if (state is SupplierErrorActionState) {
-                  
                     Fluttertoast.showToast(
                       msg: 'Something went wrong',
                       toastLength: Toast.LENGTH_SHORT,
@@ -436,7 +369,6 @@ class _SupplierState extends State<Supplier> {
                       textColor: whiteColor,
                     );
                   } else if (state is SupplierEditedActionState) {
-                    
                     Fluttertoast.showToast(
                       msg: 'Edited Successfully',
                       toastLength: Toast.LENGTH_SHORT,
