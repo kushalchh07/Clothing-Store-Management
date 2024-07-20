@@ -128,8 +128,6 @@ class _OrderScreenState extends State<OrderScreen> {
     );
   }
 
-  
-
   void _showDeleteConfirmationDialog(String id) {
     showDialog(
       context: context,
@@ -170,6 +168,34 @@ class _OrderScreenState extends State<OrderScreen> {
     );
   }
 
+  Widget _buildTextFormField(
+      TextEditingController controller, String labelText) {
+    return TextFormField(
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: labelText,
+        labelStyle: TextStyle(
+          fontFamily: 'inter',
+          fontSize: 14,
+          fontWeight: FontWeight.w600,
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(color: primaryColor, width: 2),
+        ),
+      ),
+      validator: (value) {
+        if (value!.isEmpty) {
+          return 'Please enter $labelText';
+        }
+        return null;
+      },
+    );
+  }
+
   void _showOrderAdd() {
     showDialog(
       context: context,
@@ -183,104 +209,29 @@ class _OrderScreenState extends State<OrderScreen> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  TextFormField(
-                    decoration: InputDecoration(
-                      floatingLabelStyle: floatingLabelTextStyle(),
-                      focusedBorder: customFocusBorder(),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15),
-                        borderSide: BorderSide(color: primaryColor, width: 2),
-                      ),
-                      labelStyle: TextStyle(color: greyColor, fontSize: 13),
-                      hintText: 'Product Name',
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter the Product name';
-                      }
-                      return null;
-                    },
-                    controller: _productNameController,
+                  _buildTextFormField(
+                    _productNameController,
+                    'Product Name',
                   ),
                   const SizedBox(height: 10),
-                  TextFormField(
-                    decoration: InputDecoration(
-                      floatingLabelStyle: floatingLabelTextStyle(),
-                      focusedBorder: customFocusBorder(),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15),
-                        borderSide: BorderSide(color: primaryColor, width: 2),
-                      ),
-                      labelStyle: TextStyle(color: greyColor, fontSize: 13),
-                      hintText: 'Category',
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter the Category';
-                      }
-                      return null;
-                    },
-                    controller: _categoryController,
+                  _buildTextFormField(
+                    _categoryController,
+                    'Category',
                   ),
                   const SizedBox(height: 10),
-                  TextFormField(
-                    decoration: InputDecoration(
-                      floatingLabelStyle: floatingLabelTextStyle(),
-                      focusedBorder: customFocusBorder(),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15),
-                        borderSide: BorderSide(color: primaryColor, width: 2),
-                      ),
-                      labelStyle: TextStyle(color: greyColor, fontSize: 13),
-                      hintText: 'Quantity',
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter the Quantity';
-                      }
-                      return null;
-                    },
-                    controller: _quantityController,
+                  _buildTextFormField(
+                    _quantityController,
+                    'Quantity',
                   ),
                   const SizedBox(height: 10),
-                  TextFormField(
-                    decoration: InputDecoration(
-                      floatingLabelStyle: floatingLabelTextStyle(),
-                      focusedBorder: customFocusBorder(),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15),
-                        borderSide: BorderSide(color: primaryColor, width: 2),
-                      ),
-                      labelStyle: TextStyle(color: greyColor, fontSize: 13),
-                      hintText: 'Purchase Price',
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter the Purchase price';
-                      }
-                      return null;
-                    },
-                    controller: _purPriceController,
+                  _buildTextFormField(
+                    _purPriceController,
+                    'Purchase Price',
                   ),
                   const SizedBox(height: 10),
-                  TextFormField(
-                    decoration: InputDecoration(
-                      floatingLabelStyle: floatingLabelTextStyle(),
-                      focusedBorder: customFocusBorder(),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15),
-                        borderSide: BorderSide(color: primaryColor, width: 2),
-                      ),
-                      labelStyle: TextStyle(color: greyColor, fontSize: 13),
-                      hintText: 'Customer Name',
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter the Customer name';
-                      }
-                      return null;
-                    },
-                    controller: _customerNameController,
+                  _buildTextFormField(
+                    _customerNameController,
+                    'Customer Name',
                   ),
                   const SizedBox(height: 10),
                   Container(
@@ -391,27 +342,31 @@ class _OrderScreenState extends State<OrderScreen> {
     _purPriceController.text = order.perPiecePrice.toString();
     _quantityController.text = order.quantity.toString();
     _selectedDate = DateTime.parse(order.date);
-    _buildTextFormField(
-      TextEditingController controller,
-      String hint,
-    ) {
+    Widget _buildTextFormField(
+        TextEditingController controller, String labelText) {
       return TextFormField(
+        controller: controller,
         decoration: InputDecoration(
-            floatingLabelStyle: floatingLabelTextStyle(),
-            focusedBorder: customFocusBorder(),
-            border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
-                borderSide: BorderSide(color: primaryColor, width: 2)),
-            labelStyle: TextStyle(color: greyColor, fontSize: 13),
-            labelText: hint,
-            hintText: hint),
+          labelText: labelText,
+          labelStyle: TextStyle(
+            fontFamily: 'inter',
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+          ),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(color: primaryColor, width: 2),
+          ),
+        ),
         validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'Please enter the  ${hint}';
+          if (value!.isEmpty) {
+            return 'Please enter $labelText';
           }
           return null;
         },
-        controller: controller,
       );
     }
 
@@ -474,6 +429,7 @@ class _OrderScreenState extends State<OrderScreen> {
                     color: whiteColor, fontFamily: 'inter', fontSize: 16),
               ),
               onPressed: () {
+                _clearControllers();
                 Navigator.of(context).pop();
               },
             ),
@@ -899,37 +855,37 @@ class _OrderScreenState extends State<OrderScreen> {
       ),
     );
   }
-  
 }
+
 Widget _buildDetailRow(String label, String value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Expanded(
-            flex: 3,
-            child: Text(
-              "$label",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-                color: Colors.black,
-              ),
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 8.0),
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Expanded(
+          flex: 3,
+          child: Text(
+            "$label",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+              color: Colors.black,
             ),
           ),
-          Expanded(
-            flex: 5,
-            child: Text(
-              value,
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.black54,
-              ),
-              textAlign: TextAlign.right,
+        ),
+        Expanded(
+          flex: 5,
+          child: Text(
+            value,
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.black54,
             ),
+            textAlign: TextAlign.right,
           ),
-        ],
-      ),
-    );
-  }
+        ),
+      ],
+    ),
+  );
+}
