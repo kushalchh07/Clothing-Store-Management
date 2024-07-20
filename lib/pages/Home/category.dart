@@ -255,27 +255,31 @@ class _CategoryState extends State<Category> {
     ));
   }
 
-  _buildTextFormField(
-    TextEditingController controller,
-    String hint,
-  ) {
+  Widget _buildTextFormField(
+      TextEditingController controller, String labelText) {
     return TextFormField(
+      controller: controller,
       decoration: InputDecoration(
-          floatingLabelStyle: floatingLabelTextStyle(),
-          focusedBorder: customFocusBorder(),
-          border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(15),
-              borderSide: BorderSide(color: primaryColor, width: 2)),
-          labelStyle: TextStyle(color: greyColor, fontSize: 13),
-          labelText: hint,
-          hintText: hint),
+        labelText: labelText,
+        labelStyle: TextStyle(
+          fontFamily: 'inter',
+          fontSize: 14,
+          fontWeight: FontWeight.w600,
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(color: primaryColor, width: 2),
+        ),
+      ),
       validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Please enter the  ${hint}';
+        if (value!.isEmpty) {
+          return 'Please enter $labelText';
         }
         return null;
       },
-      controller: controller,
     );
   }
 
@@ -443,6 +447,7 @@ class _CategoryState extends State<Category> {
               ),
               onPressed: () {
                 Navigator.of(context).pop();
+                _clearControllers();
               },
             ),
             ElevatedButton(
