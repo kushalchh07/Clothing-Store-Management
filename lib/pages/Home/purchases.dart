@@ -40,6 +40,7 @@ class _PurchasesState extends State<Purchases> {
     _purPriceController.clear();
     // _sellingPriceController.clear();
     _quantityController.clear();
+    _supplierNameController.clear();
   }
 
   Future<void> _selectDate(BuildContext context) async {
@@ -275,6 +276,7 @@ class _PurchasesState extends State<Purchases> {
               ),
               onPressed: () {
                 Navigator.of(context).pop();
+                _clearControllers();
               },
             ),
             ElevatedButton(
@@ -323,26 +325,30 @@ class _PurchasesState extends State<Purchases> {
   }
 
   Widget _buildTextFormField(
-    TextEditingController controller,
-    String hint,
-  ) {
+      TextEditingController controller, String labelText) {
     return TextFormField(
+      controller: controller,
       decoration: InputDecoration(
-          floatingLabelStyle: floatingLabelTextStyle(),
-          focusedBorder: customFocusBorder(),
-          border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(15),
-              borderSide: BorderSide(color: primaryColor, width: 2)),
-          labelStyle: TextStyle(color: greyColor, fontSize: 13),
-          labelText: hint,
-          hintText: hint),
+        labelText: labelText,
+        labelStyle: TextStyle(
+          fontFamily: 'inter',
+          fontSize: 14,
+          fontWeight: FontWeight.w600,
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(color: primaryColor, width: 2),
+        ),
+      ),
       validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Please enter the $hint';
+        if (value!.isEmpty) {
+          return 'Please enter $labelText';
         }
         return null;
       },
-      controller: controller,
     );
   }
 
@@ -357,135 +363,27 @@ class _PurchasesState extends State<Purchases> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                TextFormField(
-                  decoration: InputDecoration(
-                      floatingLabelStyle: floatingLabelTextStyle(),
-                      focusedBorder: customFocusBorder(),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          borderSide:
-                              BorderSide(color: primaryColor, width: 2)),
-                      labelStyle: TextStyle(color: greyColor, fontSize: 13),
-                      labelText: 'Product Name',
-                      hintText: 'Product Name'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter the Product name';
-                    }
-                    return null;
-                  },
-                  controller: _productNameController,
-                ),
+                _buildTextFormField(_productNameController, 'Product Name'),
                 const SizedBox(
                   height: 10,
                 ),
-                TextFormField(
-                  decoration: InputDecoration(
-                      floatingLabelStyle: floatingLabelTextStyle(),
-                      focusedBorder: customFocusBorder(),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          borderSide:
-                              BorderSide(color: primaryColor, width: 2)),
-                      labelStyle: TextStyle(color: greyColor, fontSize: 13),
-                      labelText: 'Category',
-                      hintText: 'Category'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter the Category';
-                    }
-                    return null;
-                  },
-                  controller: _categoryController,
-                ),
+                _buildTextFormField(_categoryController, 'Category'),
                 const SizedBox(
                   height: 10,
                 ),
-                TextFormField(
-                  decoration: InputDecoration(
-                      floatingLabelStyle: floatingLabelTextStyle(),
-                      focusedBorder: customFocusBorder(),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          borderSide:
-                              BorderSide(color: primaryColor, width: 2)),
-                      labelStyle: TextStyle(color: greyColor, fontSize: 13),
-                      labelText: 'Quantity',
-                      hintText: 'Quantity'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter the Quantity';
-                    }
-                    return null;
-                  },
-                  controller: _quantityController,
-                ),
+                _buildTextFormField(_quantityController, 'Quantity'),
                 const SizedBox(
                   height: 10,
                 ),
-                TextFormField(
-                  decoration: InputDecoration(
-                      floatingLabelStyle: floatingLabelTextStyle(),
-                      focusedBorder: customFocusBorder(),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          borderSide:
-                              BorderSide(color: primaryColor, width: 2)),
-                      labelStyle: TextStyle(color: greyColor, fontSize: 13),
-                      labelText: 'Per Piece Price',
-                      hintText: 'Per Piece Price'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter the Purchase price';
-                    }
-                    return null;
-                  },
-                  controller: _purPriceController,
-                ),
+                _buildTextFormField(_purPriceController, 'Per Piece Price'),
                 const SizedBox(
                   height: 10,
                 ),
-                TextFormField(
-                  decoration: InputDecoration(
-                      floatingLabelStyle: floatingLabelTextStyle(),
-                      focusedBorder: customFocusBorder(),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          borderSide:
-                              BorderSide(color: primaryColor, width: 2)),
-                      labelStyle: TextStyle(color: greyColor, fontSize: 13),
-                      labelText: 'Supplier Name',
-                      hintText: 'Supplier Name'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter the Supplier name';
-                    }
-                    return null;
-                  },
-                  controller: _supplierNameController,
-                ),
+                _buildTextFormField(_supplierNameController, 'Supplier Name'),
                 const SizedBox(
                   height: 10,
                 ),
-                TextFormField(
-                  decoration: InputDecoration(
-                      floatingLabelStyle: floatingLabelTextStyle(),
-                      focusedBorder: customFocusBorder(),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          borderSide:
-                              BorderSide(color: primaryColor, width: 2)),
-                      labelStyle: TextStyle(color: greyColor, fontSize: 13),
-                      labelText: 'Description',
-                      hintText: 'Description'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter the Description';
-                    }
-                    return null;
-                  },
-                  controller: _descriptionController,
-                ),
+                _buildTextFormField(_descriptionController, 'Description'),
                 const SizedBox(
                   height: 10,
                 ),
