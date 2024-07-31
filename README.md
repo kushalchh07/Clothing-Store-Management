@@ -1,4 +1,4 @@
-![logo](https://github.com/user-attachments/assets/cbbc383a-4ae7-456d-9299-ad98b0f10549)
+![Logo](https://github.com/user-attachments/assets/483284e9-10fe-4f6c-b699-b15545ee673d)
 
 # Nepstyle Management System
 ## Overview
