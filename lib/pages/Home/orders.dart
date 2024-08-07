@@ -200,136 +200,141 @@ class _OrderScreenState extends State<OrderScreen> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Add New Order'),
-          content: Form(
-            key: _formKey,
-            child: SingleChildScrollView(
-              // Wrap with SingleChildScrollView
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  _buildTextFormField(
-                    _productNameController,
-                    'Product Name',
-                  ),
-                  const SizedBox(height: 10),
-                  _buildTextFormField(
-                    _categoryController,
-                    'Category',
-                  ),
-                  const SizedBox(height: 10),
-                  _buildTextFormField(
-                    _quantityController,
-                    'Quantity',
-                  ),
-                  const SizedBox(height: 10),
-                  _buildTextFormField(
-                    _purPriceController,
-                    'Purchase Price',
-                  ),
-                  const SizedBox(height: 10),
-                  _buildTextFormField(
-                    _customerNameController,
-                    'Customer Name',
-                  ),
-                  const SizedBox(height: 10),
-                  Container(
-                    height: 40,
-                    width: 180,
-                    child: TextButton(
-                      style: ButtonStyle(
-                        iconColor: WidgetStatePropertyAll(Colors.white),
-                        backgroundColor: WidgetStatePropertyAll(myButtonColor),
+        return StatefulBuilder(
+          // Use StatefulBuilder to manage state within the dialog
+          builder: (BuildContext context, StateSetter setState) {
+            return AlertDialog(
+              title: Text('Add New Order'),
+              content: Form(
+                key: _formKey,
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      _buildTextFormField(
+                        _productNameController,
+                        'Product Name',
                       ),
-                      onPressed: () => _selectDate(context),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Icon(Icons.calendar_month_outlined),
-                          Text(
-                            'Select Date',
-                            style: TextStyle(color: Colors.white, fontSize: 16),
+                      const SizedBox(height: 10),
+                      _buildTextFormField(
+                        _categoryController,
+                        'Category',
+                      ),
+                      const SizedBox(height: 10),
+                      _buildTextFormField(
+                        _quantityController,
+                        'Quantity',
+                      ),
+                      const SizedBox(height: 10),
+                      _buildTextFormField(
+                        _purPriceController,
+                        'Purchase Price',
+                      ),
+                      const SizedBox(height: 10),
+                      _buildTextFormField(
+                        _customerNameController,
+                        'Customer Name',
+                      ),
+                      const SizedBox(height: 10),
+                      Container(
+                        height: 40,
+                        width: 180,
+                        child: TextButton(
+                          style: ButtonStyle(
+                            iconColor: MaterialStateProperty.all(Colors.white),
+                            backgroundColor:
+                                MaterialStateProperty.all(myButtonColor),
                           ),
-                        ],
+                          onPressed: () => _selectDate(context),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Icon(Icons.calendar_month_outlined),
+                              Text(
+                                'Select Date',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 16),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
+                      const SizedBox(height: 10),
+                      ListTile(
+                        title: Text('Order Status'),
+                        trailing: DropdownButton<String>(
+                          value: _orderStatus,
+                          items: <String>['Pending', 'Delivered', 'Cancelled']
+                              .map((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              _orderStatus = newValue!;
+                            });
+                          },
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(redColor),
+                  ),
+                  child: Text(
+                    'Cancel',
+                    style: TextStyle(
+                      color: whiteColor,
+                      fontFamily: 'inter',
+                      fontSize: 16,
                     ),
                   ),
-                  const SizedBox(height: 10),
-                  ListTile(
-                    title: Text('Order Status'),
-                    trailing: DropdownButton<String>(
-                      value: _orderStatus,
-                      items: <String>['Pending', 'Delivered', 'Cancelled']
-                          .map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          _orderStatus = newValue!;
-                        });
-                      },
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(backgroundColor: greenColor),
+                  child: Text(
+                    'Save',
+                    style: TextStyle(
+                      color: whiteColor,
+                      fontFamily: 'inter',
+                      fontSize: 16,
                     ),
-                  )
-                ],
-              ),
-            ),
-          ),
-          // Add radio buttons here
+                  ),
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      _formKey.currentState!.save();
 
-          actions: <Widget>[
-            TextButton(
-              style: ButtonStyle(
-                backgroundColor: WidgetStatePropertyAll(redColor),
-              ),
-              child: Text(
-                'Cancel',
-                style: TextStyle(
-                  color: whiteColor,
-                  fontFamily: 'inter',
-                  fontSize: 16,
+                      BlocProvider.of<OrderBloc>(context)
+                          .add(OrderAddButtonTappedEvent(
+                        productName: _productNameController.text.trim(),
+                        category: _categoryController.text.trim(),
+                        orderCode: generateOrderCode(),
+                        customerName: _customerNameController.text.trim(),
+                        orderPrice:
+                            double.parse(_purPriceController.text.trim()),
+                        quantity: int.parse(_quantityController.text.trim()),
+                        date: _selectedDate,
+                        id: DateTime.now().toString(),
+                        status: _orderStatus,
+                      ));
+                      BlocProvider.of<OrderBloc>(context).add(OrderLoadEvent());
+                      _clearControllers();
+                      Navigator.of(context).pop();
+                    }
+                  },
                 ),
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(backgroundColor: greenColor),
-              child: Text(
-                'Save',
-                style: TextStyle(
-                  color: whiteColor,
-                  fontFamily: 'inter',
-                  fontSize: 16,
-                ),
-              ),
-              onPressed: () async {
-                if (_formKey.currentState!.validate()) {
-                  _formKey.currentState!.save();
-
-                  BlocProvider.of<OrderBloc>(context)
-                      .add(OrderAddButtonTappedEvent(
-                    productName: _productNameController.text.trim(),
-                    category: _categoryController.text.trim(),
-                    orderCode: generateOrderCode(),
-                    customerName: _customerNameController.text.trim(),
-                    orderPrice: double.parse(_purPriceController.text.trim()),
-                    quantity: int.parse(_quantityController.text.trim()),
-                    date: _selectedDate,
-                    id: DateTime.now().toString(),
-                    status: _orderStatus, // Pass the selected status
-                  ));
-                  BlocProvider.of<OrderBloc>(context).add(OrderLoadEvent());
-                  _clearControllers();
-                  Navigator.of(context).pop();
-                }
-              },
-            ),
-          ],
+              ],
+            );
+          },
         );
       },
     );
@@ -342,6 +347,7 @@ class _OrderScreenState extends State<OrderScreen> {
     _purPriceController.text = order.perPiecePrice.toString();
     _quantityController.text = order.quantity.toString();
     _selectedDate = DateTime.parse(order.date);
+    _orderStatus = order.orderStatus;
     Widget _buildTextFormField(
         TextEditingController controller, String labelText) {
       return TextFormField(
@@ -373,96 +379,124 @@ class _OrderScreenState extends State<OrderScreen> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(
-            'Edit Order',
-            style: TextStyle(fontFamily: 'inter', fontSize: 16),
-          ),
-          content: SingleChildScrollView(
-            child: Form(
-              key: _formKey,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  _buildTextFormField(_productNameController, 'Name'),
-                  const SizedBox(height: 10),
-                  _buildTextFormField(_categoryController, 'Category'),
-                  const SizedBox(height: 10),
-                  _buildTextFormField(_quantityController, 'Quantity'),
-                  const SizedBox(height: 10),
-                  _buildTextFormField(_purPriceController, 'Purchase Price'),
-                  const SizedBox(height: 10),
-                  _buildTextFormField(_customerNameController, 'Customer Name'),
-                  const SizedBox(height: 12),
-                  Container(
-                    height: 40,
-                    width: 180,
-                    child: TextButton(
-                      style: ButtonStyle(
-                        iconColor: WidgetStatePropertyAll(Colors.white),
-                        backgroundColor: WidgetStatePropertyAll(myButtonColor),
-                      ),
-                      onPressed: () => _selectDate(context),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Icon(Icons.calendar_month_outlined),
-                          Text(
-                            'Select Date',
-                            style: TextStyle(color: Colors.white, fontSize: 16),
-                          ),
-                        ],
+        return StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+          return AlertDialog(
+            title: Text(
+              'Edit Order',
+              style: TextStyle(fontFamily: 'inter', fontSize: 16),
+            ),
+            content: SingleChildScrollView(
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    _buildTextFormField(_productNameController, 'Name'),
+                    const SizedBox(height: 10),
+                    _buildTextFormField(_categoryController, 'Category'),
+                    const SizedBox(height: 10),
+                    _buildTextFormField(_quantityController, 'Quantity'),
+                    const SizedBox(height: 10),
+                    _buildTextFormField(_purPriceController, 'Purchase Price'),
+                    const SizedBox(height: 10),
+                    _buildTextFormField(
+                        _customerNameController, 'Customer Name'),
+                    const SizedBox(height: 12),
+                    Container(
+                      height: 40,
+                      width: 180,
+                      child: TextButton(
+                        style: ButtonStyle(
+                          iconColor: WidgetStatePropertyAll(Colors.white),
+                          backgroundColor:
+                              WidgetStatePropertyAll(myButtonColor),
+                        ),
+                        onPressed: () => _selectDate(context),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Icon(Icons.calendar_month_outlined),
+                            Text(
+                              'Select Date',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 16),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    ListTile(
+                      title: Text('Order Status'),
+                      trailing: DropdownButton<String>(
+                        value: _orderStatus,
+                        items: <String>['Pending', 'Delivered', 'Cancelled']
+                            .map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            _orderStatus = newValue!;
+                          });
+                        },
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              style: ButtonStyle(
-                  backgroundColor: WidgetStatePropertyAll(redColor)),
-              child: Text(
-                'Cancel',
-                style: TextStyle(
-                    color: whiteColor, fontFamily: 'inter', fontSize: 16),
-              ),
-              onPressed: () {
-                _clearControllers();
-                Navigator.of(context).pop();
-              },
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(backgroundColor: greenColor),
-              child: Text(
-                'Save',
-                style: TextStyle(
-                    color: whiteColor, fontFamily: 'inter', fontSize: 16),
-              ),
-              onPressed: () async {
-                if (_formKey.currentState!.validate()) {
-                  _formKey.currentState!.save();
-
-                  BlocProvider.of<OrderBloc>(context)
-                      .add(OrderUpdateButtonTappedEvent(
-                    id: order.id,
-                    productName: _productNameController.text.trim(),
-                    category: _categoryController.text.trim(),
-                    orderCode: order.orderCode,
-                    customerName: _customerNameController.text.trim(),
-                    orderPrice: double.parse(_purPriceController.text.trim()),
-                    quantity: int.parse(_quantityController.text.trim()),
-                    date: _selectedDate,
-                  ));
-                  BlocProvider.of<OrderBloc>(context).add(OrderLoadEvent());
+            actions: <Widget>[
+              TextButton(
+                style: ButtonStyle(
+                    backgroundColor: WidgetStatePropertyAll(redColor)),
+                child: Text(
+                  'Cancel',
+                  style: TextStyle(
+                      color: whiteColor, fontFamily: 'inter', fontSize: 16),
+                ),
+                onPressed: () {
                   _clearControllers();
                   Navigator.of(context).pop();
-                }
-              },
-            ),
-          ],
-        );
+                },
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(backgroundColor: greenColor),
+                child: Text(
+                  'Save',
+                  style: TextStyle(
+                      color: whiteColor, fontFamily: 'inter', fontSize: 16),
+                ),
+                onPressed: () async {
+                  if (_formKey.currentState!.validate()) {
+                    _formKey.currentState!.save();
+
+                    BlocProvider.of<OrderBloc>(context)
+                        .add(OrderUpdateButtonTappedEvent(
+                      id: order.id,
+                      productName: _productNameController.text.trim(),
+                      category: _categoryController.text.trim(),
+                      orderCode: order.orderCode,
+                      customerName: _customerNameController.text.trim(),
+                      orderPrice: double.parse(_purPriceController.text.trim()),
+                      quantity: int.parse(_quantityController.text.trim()),
+                      date: _selectedDate,
+                      status: _orderStatus,
+                    ));
+                    BlocProvider.of<OrderBloc>(context).add(OrderLoadEvent());
+                    _clearControllers();
+                    Navigator.of(context).pop();
+                  }
+                },
+              ),
+            ],
+          );
+        });
       },
     );
   }
@@ -755,7 +789,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                     style: TextStyle(fontSize: 14),
                                   )),
                                   DataCell(Text(
-                                    orders.date,
+                                    orders.orderStatus,
                                     style: TextStyle(fontSize: 14),
                                   )),
                                   DataCell(Text(

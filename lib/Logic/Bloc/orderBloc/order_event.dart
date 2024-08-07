@@ -38,6 +38,7 @@ class OrderUpdateButtonTappedEvent extends OrderEvent {
     required this.customerName,
     required this.orderCode,
     required this.category,
+    required this.status
   });
   final String id;
   final String productName;
@@ -47,6 +48,7 @@ class OrderUpdateButtonTappedEvent extends OrderEvent {
   final String customerName;
   final String orderCode;
   final String category;  
+  final String status;
 
 }
 

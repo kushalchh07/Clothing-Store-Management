@@ -46,6 +46,7 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
         event.quantity.toString(),
         event.orderPrice.toString(),
         totalAmount.toString(),
+        event.status
       );
 
       emit(OrderAddedActionState());
@@ -70,6 +71,7 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
         event.quantity.toString(),
         event.orderPrice.toString(),
         totalAmount.toString(),
+        event.status
       );
 
       emit(OrderEditedActionState());

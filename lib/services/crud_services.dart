@@ -376,7 +376,8 @@ class CrudServices {
       String category,
       String quantity,
       String perPiecePrice,
-      String totalAmount) async {
+      String totalAmount,
+      String orderStatus) async {
     log("Inside add sales");
     try {
       _firestore.collection('orders').doc(id).set({
@@ -389,6 +390,7 @@ class CrudServices {
         'quantity': quantity,
         'perPiecePrice': perPiecePrice,
         'totalAmount': totalAmount,
+        'orderStatus': orderStatus
       });
       log("data added");
       return "Data added";
@@ -407,6 +409,7 @@ class CrudServices {
     String quantity,
     String perPiecePrice,
     String totalAmount,
+    String orderStatus
   ) async {
     log("Inside updateOrder");
     try {
@@ -419,6 +422,7 @@ class CrudServices {
         'quantity': quantity,
         'perPiecePrice': perPiecePrice,
         'totalAmount': totalAmount,
+        'orderStatus': orderStatus
       });
       log("data updated");
       return "Data updated";
