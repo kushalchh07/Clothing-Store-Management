@@ -292,7 +292,7 @@ class _CategoryState extends State<Category> {
           height: Get.height * 0.7,
           child: AlertDialog(
             title: Text(
-              'Add New Customer',
+              'Add New Category',
               style: TextStyle(fontFamily: 'inter', fontSize: 16),
             ),
             content: Form(

@@ -197,7 +197,7 @@ class _SupplierState extends State<Supplier> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Add New Customer'),
+          title: Text('Add New Supplier'),
           content: Form(
             key: _formKey,
             child: Column(

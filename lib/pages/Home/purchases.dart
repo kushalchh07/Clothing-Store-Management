@@ -357,7 +357,7 @@ class _PurchasesState extends State<Purchases> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Add New Product'),
+          title: Text('Add New Purchase'),
           content: Form(
             key: _formKey,
             child: Column(
