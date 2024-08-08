@@ -67,10 +67,10 @@ class _LoginState extends State<Login> {
         }
       },
       child: Scaffold(
-        appBar: AppBar(
-          leading: Image.asset('assets/icons/logo.png'),
-          backgroundColor: primaryColor,
-        ),
+        // appBar: AppBar(
+        //   leading: Image.asset('assets/icons/logo.png'),
+        //   backgroundColor: primaryColor,
+        // ),
         backgroundColor: pageColor,
         body: Center(
           child: SingleChildScrollView(

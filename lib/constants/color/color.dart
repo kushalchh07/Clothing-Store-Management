@@ -51,6 +51,8 @@ Color myInputBorderColor = const Color.fromARGB(255, 197, 197, 197);
 Color myMoneyColor = const Color.fromARGB(255, 24, 162, 92);
 
 const Color primaryColor = Color.fromARGB(255, 71, 150, 189);
+// const Color primaryColor = Color.fromARGB(255, 224, 177, 94);
+// rgba(224, 177, 94, 1)
 const Color primaryColorjustDark = Color.fromARGB(255, 65, 149, 180);
 const Color primaryColorDark = Color.fromARGB(255, 61, 151, 168);
 const Color primaryColorVeryDark = Color.fromARGB(255, 47, 117, 131);
