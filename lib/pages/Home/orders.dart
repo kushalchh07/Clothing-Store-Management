@@ -788,9 +788,20 @@ class _OrderScreenState extends State<OrderScreen> {
                                     orders.customerName,
                                     style: TextStyle(fontSize: 14),
                                   )),
-                                  DataCell(Text(
-                                    orders.orderStatus,
-                                    style: TextStyle(fontSize: 14),
+                                  DataCell(Container(
+                                    width: Get.width * 0.09,
+                                    height: Get.height * 0.04,
+                                    decoration: BoxDecoration(
+                                      color:
+                                          orderStatusColor(orders.orderStatus),
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        orders.orderStatus,
+                                        style: TextStyle(fontSize: 14),
+                                      ),
+                                    ),
                                   )),
                                   DataCell(Text(
                                     orders.date,
@@ -888,6 +899,16 @@ class _OrderScreenState extends State<OrderScreen> {
         ),
       ),
     );
+  }
+
+  orderStatusColor(String orderStatus) {
+    if (orderStatus == "Pending") {
+      return pendingColor;
+    } else if (orderStatus == "Delivered") {
+      return deliveredColor;
+    } else if (orderStatus == "Cancelled") {
+      return cancelledColor;
+    }
   }
 }
 

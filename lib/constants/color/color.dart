@@ -73,3 +73,6 @@ const Color myButtonColor = Colors.black;
 const Color redColor = Colors.red;
 const Color editButtonColor = Colors.green;
 const Color viewdetailsColor = Colors.blue;
+const Color pendingColor = Colors.orange;
+const Color deliveredColor = Colors.green;
+const Color cancelledColor = Colors.red;
