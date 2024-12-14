@@ -890,7 +890,7 @@ class _OrderScreenState extends State<OrderScreen> {
                       ),
                     );
                   } else {
-                    return Center(child: Text('Failed to load purchase'));
+                    return Center(child: Text('Nothing To show'));
                   }
                 },
               ),

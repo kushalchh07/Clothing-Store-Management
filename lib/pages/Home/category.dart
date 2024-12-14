@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -245,7 +246,7 @@ class _CategoryState extends State<Category> {
                     ),
                   );
                 } else {
-                  return Center(child: Text('Failed to load customers'));
+                  return Center(child: CupertinoActivityIndicator());
                 }
               },
             ),

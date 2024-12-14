@@ -5,6 +5,7 @@ import 'dart:io' as io; // Alias for native file handling
 import 'dart:html' as html; // Import for web image handling
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
+import 'package:nepstyle_management_system/Logic/Bloc/categoryBloc/category_bloc.dart';
 import 'package:path/path.dart' as Path;
 import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:firebase_storage/firebase_storage.dart';
@@ -51,6 +52,8 @@ enum UploadType {
 
 class _InventoryScreenState extends State<InventoryScreen> {
   dynamic _imageFile;
+  String? selectedValue; // Holds the selected dropdown value
+
   String? _imageUrl;
   String defaultImageUrl =
       'https://cdn.pixabay.com/photo/2016/03/23/15/00/ice-cream-1274894_1280.jpg';
@@ -164,7 +167,36 @@ class _InventoryScreenState extends State<InventoryScreen> {
                 const SizedBox(
                   height: 10,
                 ),
-                _buildTextFormField(_categoryController, 'Category'),
+
+                BlocBuilder<CategoryBloc, CategoryState>(
+                  builder: (context, state) {
+                    if (state is CategoryLoaded) {
+                      //
+                      return DropdownButtonFormField<String>(
+                        value: selectedValue,
+                        hint: const Text('Choose an Category'),
+                        onChanged: (value) {
+                          setState(() {
+                            selectedValue = value;
+                          });
+                        },
+                        items: state.category.map((item) {
+                          return DropdownMenuItem<String>(
+                            value: item.category,
+                            child: Text(item.category),
+                          );
+                        }).toList(),
+                      );
+                    } else {
+                      return Container(
+                        child: Text("Loading..."),
+                      );
+                    }
+                  },
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
 
                 const SizedBox(
                   height: 10,
@@ -237,7 +269,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
                   BlocProvider.of<InventoryBloc>(context)
                       .add(InventoryAddButtonTappedEvent(
                     name: _productNameController.text.trim(),
-                    category: _categoryController.text.trim(),
+                    category: selectedValue.toString(),
                     description: _descriptionController.text.trim(),
                     purPrice: _purPriceController.text.trim(),
                     sellingPrice: _sellingPriceController.text.trim(),
@@ -523,6 +555,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
   void initState() {
     super.initState();
     BlocProvider.of<InventoryBloc>(context).add(InventoryLoadEvent());
+    BlocProvider.of<CategoryBloc>(context).add(CategoryLoadEvent());
   }
 
   @override

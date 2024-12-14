@@ -34,7 +34,8 @@ class SplashScreenState extends State<SplashScreen> {
       if (isLoggedin != null && isLoggedin) {
         Get.offAll(() => MainLayout());
       } else {
-        Get.offAll(() => Login());
+        // Get.offAll(() => Login());
+        Get.offAll(() => MainLayout());
       }
     });
   }
